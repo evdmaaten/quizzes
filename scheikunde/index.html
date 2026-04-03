@@ -1,20 +1,166 @@
-<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VWO 5 Scheikunde Quizzen</title><style>
-:root{--bg:#f4f7fb;--card:#fff;--ink:#1f2937;--muted:#6b7280;--accent:#2563eb;--line:#dbe3f0;--good:#15803d;--bad:#b91c1c}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
-.wrap{max-width:980px;margin:0 auto;padding:16px}.topbar{position:sticky;top:0;z-index:5;background:#ffffffee;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.topbar .inner{max-width:980px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.brand{font-weight:700}.navlinks{display:flex;gap:8px;flex-wrap:wrap}.navlinks a,.btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer;background:var(--accent);color:#fff;font-weight:600}
-.navlinks a.secondary,.btn.secondary{background:#475569}.hero,.card,.result{background:var(--card);border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.07);padding:18px;margin:14px 0}
-.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;padding:4px 10px;border-radius:999px;font-size:13px;margin-bottom:8px}.theory{background:#eef5ff;border-left:4px solid var(--accent);padding:12px;border-radius:8px;margin-bottom:12px}
-.small{font-size:14px;color:var(--muted)}.question{margin:16px 0 22px 0}.options label{display:block;margin:8px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#f9fafb}.options label:hover{background:#eef2ff}
-.feedback{margin-top:8px;font-weight:700}.feedback .solution{font-weight:400;margin-top:6px}.correct{color:var(--good)}.wrong{color:var(--bad)}
-.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0%}
-.meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.scorebox{font-size:22px;font-weight:700}.chartbox{margin-top:10px;background:#fafcff;border:1px solid var(--line);border-radius:10px;padding:8px}
-canvas.chart{width:100%;max-width:520px;height:240px;background:white;border:1px solid #e5e7eb;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.tile{background:white;border-radius:14px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.06)}.tile a{display:block;margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600}
-@media (max-width:640px){.wrap{padding:10px}.topbar .inner{padding:10px}.navlinks a,.btn{padding:9px 11px;font-size:14px}.hero,.card,.result{padding:14px}}
-</style></head><body>
-<div class="topbar"><div class="inner"><div class="brand">VWO 5 Scheikunde – Quizzen</div><div class="navlinks"><a href="index.html">Home</a></div></div></div>
-<div class="wrap"><div class="hero"><div class="badge">GitHub Pages klaar</div><h1 style="margin:4px 0 8px 0">VWO 5 Scheikunde – interactieve quizset</h1><p>Deze set bevat 25 quizzen op <strong>VWO 5 toetsniveau</strong>. Elke quiz kiest willekeurig 10 vragen uit een vraagbank, slaat je beste score op in de browser op, werkt goed op mobiel en tekent waar relevant eenvoudige grafieken automatisch.</p><p class="small">Upload alle bestanden naar je GitHub Pages repository. Dit bestand moet <strong>index.html</strong> heten.</p></div>
-<div class="grid"><div class="tile"><h2 style="margin-top:0">Reacties en rekenen</h2><a href="reacties_1_balanceren.html">Reacties 1 – Balanceren</a><a href="reacties_2_reactietypen.html">Reacties 2 – Reactietypen</a><a href="reacties_3_stoichiometrie.html">Reacties 3 – Stoichiometrie</a><a href="reacties_4_opbrengst.html">Reacties 4 – Opbrengst</a><a href="reacties_5_toepassingen.html">Reacties 5 – Toepassingen</a><a href="mol_1_basis.html">Mol 1 – Basis</a><a href="mol_2_concentratie.html">Mol 2 – Concentratie</a><a href="mol_3_verdunning.html">Mol 3 – Verdunning</a><a href="mol_4_reactieberekeningen.html">Mol 4 – Reactieberekeningen</a><a href="mol_5_gassen.html">Mol 5 – Gassen</a></div><div class="tile"><h2 style="margin-top:0">Zuren, basen en redox</h2><a href="zuurbase_1_ph.html">Zuren en basen 1 – pH</a><a href="zuurbase_2_neutralisatie.html">Zuren en basen 2 – Neutralisatie</a><a href="zuurbase_3_zwakke_zuren.html">Zuren en basen 3 – Zwakke zuren</a><a href="zuurbase_4_buffers.html">Zuren en basen 4 – Buffers</a><a href="zuurbase_5_titratie.html">Zuren en basen 5 – Titratie</a><a href="redox_1_basis.html">Redox 1 – Basis</a><a href="redox_2_oxidatiegetal.html">Redox 2 – Oxidatiegetallen</a><a href="redox_3_halfreacties.html">Redox 3 – Halfreacties</a><a href="redox_4_elektrochemie.html">Redox 4 – Elektrochemie</a><a href="redox_5_toepassing.html">Redox 5 – Toepassingen</a></div><div class="tile"><h2 style="margin-top:0">Evenwicht</h2><a href="evenwicht_1_basis.html">Evenwicht 1 – Basis</a><a href="evenwicht_2_lechatelier.html">Evenwicht 2 – Le Chatelier</a><a href="evenwicht_3_grafiek.html">Evenwicht 3 – Grafieken</a><a href="evenwicht_4_berekening.html">Evenwicht 4 – Berekening</a><a href="evenwicht_5_toepassing.html">Evenwicht 5 – Toepassingen</a></div></div>
-<div class="card"><h2 style="margin-top:0">Onderwerpen</h2><ul><li>Reactievergelijkingen, mol en concentraties</li><li>Zuren en basen, neutralisatie, buffers en titratie</li><li>Redox en elektrochemie</li><li>Evenwicht, Le Chatelier en industriële toepassingen</li></ul></div></div></body></html>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VWO 5 Scheikunde — Quizoverzicht</title>
+<style>
+
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b; --brand:#059669;
+  --brand-dark:#047857; --soft:#ecfdf5; --ok:#15803d; --bad:#b91c1c; --line:#dbe4f0;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+a{color:inherit}
+.container{max-width:1150px;margin:0 auto;padding:16px}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.sidebar,.panel,.question-card{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.sidebar{position:sticky;top:12px;padding:14px;max-height:calc(100vh - 24px);overflow:auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.brand h1{font-size:1.08rem;margin:0}
+.badge{display:inline-block;background:#d1fae5;color:#065f46;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.side-group{margin-top:12px}
+.side-group h3{font-size:.9rem;color:var(--muted);margin:10px 0 6px}
+.side-links{display:grid;gap:6px}
+.side-links a{display:block;text-decoration:none;padding:9px 10px;border-radius:10px;background:#f8fbff;border:1px solid var(--line);font-size:.92rem}
+.side-links a:hover,.side-links a.active{background:var(--soft);border-color:#a7f3d0}
+.main{min-width:0}
+.panel{padding:18px;margin-bottom:16px}
+.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.title h2{margin:0 0 4px;font-size:clamp(1.35rem,4vw,2rem)}
+.sub{color:var(--muted);margin:0}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,.btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:11px 15px;border-radius:10px;cursor:pointer;text-decoration:none;font-weight:700}
+button:hover,.btn:hover{background:var(--brand-dark)}
+button.secondary{background:#475569}
+button.secondary:hover{background:#334155}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button.ghost:hover{background:#f8fbff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--soft);border-radius:12px;padding:10px 12px}
+.stat .label{font-size:.82rem;color:var(--muted)}
+.stat .value{font-size:1.15rem;font-weight:700}
+.progress{margin-top:14px;background:#e8eef8;border-radius:999px;height:12px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#059669,#34d399);width:0%}
+.quiz-grid{display:grid;gap:14px}
+.question-card{padding:16px}
+.question-card h3{margin:0 0 8px;font-size:1.03rem}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{background:#ecfdf5;color:#334155;border-radius:999px;padding:4px 9px;font-size:.78rem}
+.theory{background:var(--soft);border-left:4px solid var(--brand);padding:10px 12px;border-radius:8px;margin:0 0 12px;font-size:.94rem}
+.graph-wrap{margin:8px 0 12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+canvas.graph{display:block;width:100%;height:220px}
+.options label{display:block;padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;cursor:pointer;background:#f9fbff}
+.options label:hover{background:var(--soft)}
+.feedback{margin-top:10px}
+.good{color:var(--ok);font-weight:700}
+.bad{color:var(--bad);font-weight:700}
+.explanation{margin-top:6px;color:#334155}
+.small{font-size:.92rem;color:var(--muted)}
+.notice{background:#fff8e8;border:1px solid #f8d572;padding:10px 12px;border-radius:10px;color:#7c5f00}
+.footer-note{color:var(--muted);font-size:.92rem}
+.toggle{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#f8fbff;border:1px solid var(--line);border-radius:10px}
+.nav-arrows{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;max-height:none}
+}
+@media (max-width:600px){
+  .container{padding:10px}
+  .panel,.question-card,.sidebar{padding:12px}
+  canvas.graph{height:190px}
+  button,.btn{width:100%;text-align:center}
+  .controls,.nav-arrows{display:grid;grid-template-columns:1fr}
+}
+
+body{background:linear-gradient(180deg,#f4f7fb,#edfdf7)}
+.hero{background:var(--card);border-radius:20px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:22px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.quiz-card{display:block;text-decoration:none;background:#059669;color:#fff;padding:16px;border-radius:14px;box-shadow:0 4px 14px rgba(5,150,105,.22)}
+.quiz-card:hover{background:#047857}
+.quiz-card strong{display:block;margin-bottom:6px}
+.index-section{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08);padding:18px;margin-bottom:16px}
+.hero ul{margin:8px 0 0 18px;padding:0}
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <div class="badge">GitHub Pages klaar</div>
+  <h1 style="margin:6px 0 8px;font-size:clamp(1.7rem,4vw,2.5rem)">VWO 5 Scheikunde — interactieve quizsite</h1>
+  <p class="sub">25 quizbestanden voor reacties, molberekeningen, zuren en basen, redox en evenwicht.</p>
+  <div class="stats">
+    <div class="stat"><div class="label">Aantal quizzen</div><div class="value">25</div></div>
+    <div class="stat"><div class="label">Vragen per ronde</div><div class="value">8</div></div>
+    <div class="stat"><div class="label">Extra functies</div><div class="value">timer + toetsmodus</div></div>
+    <div class="stat"><div class="label">Opslag</div><div class="value">beste score per quiz</div></div>
+  </div>
+  <ul>
+    <li>Elke quiz kiest willekeurig 8 vragen uit een databank van 10 vragen.</li>
+    <li>Je voortgangsbalk loopt mee terwijl je antwoorden invult.</li>
+    <li>Timer en toetsmodus kunnen per quiz worden ingeschakeld.</li>
+    <li>Grafieken worden automatisch getekend bij geschikte vragen.</li>
+  </ul>
+</div>
+
+<section class="index-section">
+  <h2>Reacties en vergelijkingen</h2>
+  <div class="grid">
+    <a class="quiz-card" href="reacties_1_balanceren.html"><strong>Reacties 1 — Balanceren</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="reacties_2_reactietypen.html"><strong>Reacties 2 — Reactietypen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="reacties_3_stoichiometrie.html"><strong>Reacties 3 — Stoichiometrie</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="reacties_4_opbrengst.html"><strong>Reacties 4 — Opbrengst en rendement</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="reacties_5_toepassingen.html"><strong>Reacties 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+  </div>
+</section>
+
+<section class="index-section">
+  <h2>Mol en concentratie</h2>
+  <div class="grid">
+    <a class="quiz-card" href="mol_1_basis.html"><strong>Mol en concentratie 1 — Basis</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="mol_2_concentratie.html"><strong>Mol en concentratie 2 — Concentratie</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="mol_3_verdunning.html"><strong>Mol en concentratie 3 — Verdunning</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="mol_4_reactieberekeningen.html"><strong>Mol en concentratie 4 — Reactieberekeningen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="mol_5_gassen.html"><strong>Mol en concentratie 5 — Gassen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+  </div>
+</section>
+
+<section class="index-section">
+  <h2>Zuren en basen</h2>
+  <div class="grid">
+    <a class="quiz-card" href="zuurbase_1_ph.html"><strong>Zuren en basen 1 — pH</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="zuurbase_2_neutralisatie.html"><strong>Zuren en basen 2 — Neutralisatie</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="zuurbase_3_zwakke_zuren.html"><strong>Zuren en basen 3 — Zwakke zuren</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="zuurbase_4_buffers.html"><strong>Zuren en basen 4 — Buffers</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="zuurbase_5_titratie.html"><strong>Zuren en basen 5 — Titratie</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+  </div>
+</section>
+
+<section class="index-section">
+  <h2>Redox</h2>
+  <div class="grid">
+    <a class="quiz-card" href="redox_1_basis.html"><strong>Redox 1 — Basis</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="redox_2_oxidatiegetal.html"><strong>Redox 2 — Oxidatiegetallen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="redox_3_halfreacties.html"><strong>Redox 3 — Halfreacties</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="redox_4_elektrochemie.html"><strong>Redox 4 — Elektrochemie</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="redox_5_toepassing.html"><strong>Redox 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+  </div>
+</section>
+
+<section class="index-section">
+  <h2>Evenwicht</h2>
+  <div class="grid">
+    <a class="quiz-card" href="evenwicht_1_basis.html"><strong>Evenwicht 1 — Basis</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="evenwicht_2_lechatelier.html"><strong>Evenwicht 2 — Le Chatelier</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="evenwicht_3_grafiek.html"><strong>Evenwicht 3 — Grafieken</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="evenwicht_4_berekening.html"><strong>Evenwicht 4 — Berekeningen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+    <a class="quiz-card" href="evenwicht_5_toepassing.html"><strong>Evenwicht 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
