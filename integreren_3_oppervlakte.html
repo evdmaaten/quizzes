@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integreren 3 — Oppervlakten</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b; --brand:#2563eb;
+  --brand-dark:#1d4ed8; --soft:#eef5ff; --ok:#15803d; --bad:#b91c1c; --line:#dbe4f0;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+a{color:inherit}
+.container{max-width:1150px;margin:0 auto;padding:16px}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.sidebar,.panel,.question-card{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.sidebar{position:sticky;top:12px;padding:14px;max-height:calc(100vh - 24px);overflow:auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.brand h1{font-size:1.08rem;margin:0}
+.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.side-group{margin-top:12px}
+.side-group h3{font-size:.9rem;color:var(--muted);margin:10px 0 6px}
+.side-links{display:grid;gap:6px}
+.side-links a{display:block;text-decoration:none;padding:9px 10px;border-radius:10px;background:#f8fbff;border:1px solid var(--line);font-size:.92rem}
+.side-links a:hover,.side-links a.active{background:var(--soft);border-color:#bfd4ff}
+.main{min-width:0}
+.panel{padding:18px;margin-bottom:16px}
+.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.title h2{margin:0 0 4px;font-size:clamp(1.35rem,4vw,2rem)}
+.sub{color:var(--muted);margin:0}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,.btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:11px 15px;border-radius:10px;cursor:pointer;text-decoration:none;font-weight:700}
+button:hover,.btn:hover{background:var(--brand-dark)}
+button.secondary{background:#475569}
+button.secondary:hover{background:#334155}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button.ghost:hover{background:#f8fbff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--soft);border-radius:12px;padding:10px 12px}
+.stat .label{font-size:.82rem;color:var(--muted)}
+.stat .value{font-size:1.15rem;font-weight:700}
+.progress{margin-top:14px;background:#e8eef8;border-radius:999px;height:12px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);width:0%}
+.quiz-grid{display:grid;gap:14px}
+.question-card{padding:16px}
+.question-card h3{margin:0 0 8px;font-size:1.03rem}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{background:#eef2ff;color:#334155;border-radius:999px;padding:4px 9px;font-size:.78rem}
+.theory{background:var(--soft);border-left:4px solid var(--brand);padding:10px 12px;border-radius:8px;margin:0 0 12px;font-size:.94rem}
+.graph-wrap{margin:8px 0 12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+canvas.graph{display:block;width:100%;height:220px}
+.options label{display:block;padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;cursor:pointer;background:#f9fbff}
+.options label:hover{background:var(--soft)}
+.feedback{margin-top:10px}
+.good{color:var(--ok);font-weight:700}
+.bad{color:var(--bad);font-weight:700}
+.explanation{margin-top:6px;color:#334155}
+.small{font-size:.92rem;color:var(--muted)}
+.notice{background:#fff8e8;border:1px solid #f8d572;padding:10px 12px;border-radius:10px;color:#7c5f00}
+.footer-note{color:var(--muted);font-size:.92rem}
+.toggle{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#f8fbff;border:1px solid var(--line);border-radius:10px}
+.nav-arrows{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;max-height:none}
+}
+@media (max-width:600px){
+  .container{padding:10px}
+  .panel,.question-card,.sidebar{padding:12px}
+  canvas.graph{height:190px}
+  button,.btn{width:100%;text-align:center}
+  .controls,.nav-arrows{display:grid;grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>VWO 5 Wiskunde B</h1>
+        <span class="badge">Quizsite</span>
+      </div>
+      <div class="small">Snelle navigatie tussen alle onderdelen.</div>
+      <div class="side-group"><div class="side-links"><a href="index.html">← Terug naar overzicht</a></div></div>
+      <div class="side-group"><h3>Differentiëren</h3><div class="side-links"><a class="" href="differentieren_1_basis.html">Differentiëren 1 — Basisregels</a><a class="" href="differentieren_2_tangenten.html">Differentiëren 2 — Raaklijnen</a><a class="" href="differentieren_3_extremen.html">Differentiëren 3 — Maxima en minima</a><a class="" href="differentieren_4_kettingregel.html">Differentiëren 4 — Kettingregel</a><a class="" href="differentieren_5_toepassingen.html">Differentiëren 5 — Toepassingen</a></div></div><div class="side-group"><h3>Integreren</h3><div class="side-links"><a class="" href="integreren_1_basis.html">Integreren 1 — Basis</a><a class="" href="integreren_2_bepaalde.html">Integreren 2 — Bepaalde integralen</a><a class="active" href="integreren_3_oppervlakte.html">Integreren 3 — Oppervlakten</a><a class="" href="integreren_4_substitutie.html">Integreren 4 — Herkennen en substitueren</a><a class="" href="integreren_5_toepassingen.html">Integreren 5 — Toepassingen</a></div></div><div class="side-group"><h3>Goniometrie</h3><div class="side-links"><a class="" href="goniometrie_1_basis.html">Goniometrie 1 — Basis</a><a class="" href="goniometrie_2_eenheidscirkel.html">Goniometrie 2 — Eenheidscirkel en radialen</a><a class="" href="goniometrie_3_vergelijkingen.html">Goniometrie 3 — Vergelijkingen</a><a class="" href="goniometrie_4_grafieken.html">Goniometrie 4 — Grafieken</a><a class="" href="goniometrie_5_toepassingen.html">Goniometrie 5 — Toepassingen</a></div></div><div class="side-group"><h3>Exponentieel en ln</h3><div class="side-links"><a class="" href="exponentieel_1_basis.html">Exponentieel en ln 1 — Basis en e</a><a class="" href="exponentieel_2_ln.html">Exponentieel en ln 2 — Rekenen met ln</a><a class="" href="exponentieel_3_groei.html">Exponentieel en ln 3 — Groei en verval</a><a class="" href="exponentieel_4_vergelijkingen.html">Exponentieel en ln 4 — Vergelijkingen oplossen</a><a class="" href="exponentieel_5_toepassingen.html">Exponentieel en ln 5 — Toepassingen</a></div></div><div class="side-group"><h3>Functies en modelleren</h3><div class="side-links"><a class="" href="functies_1_grafieken.html">Functies en modelleren 1 — Grafieken lezen</a><a class="" href="functies_2_nulpunten.html">Functies en modelleren 2 — Nulpunten</a><a class="" href="functies_3_asymptoten.html">Functies en modelleren 3 — Asymptoten</a><a class="" href="functies_4_transformaties.html">Functies en modelleren 4 — Transformaties</a><a class="" href="functies_5_modelleren.html">Functies en modelleren 5 — Modelleren</a></div></div>
+    </aside>
+
+    <main class="main">
+      <section class="panel">
+        <div class="topbar">
+          <div class="title">
+            <div class="badge">Integreren</div>
+            <h2>Integreren 3 — Oppervlakten</h2>
+            <p class="sub">VWO 5 Wiskunde B • 8 willekeurige vragen per ronde</p>
+          </div>
+          <div class="nav-arrows">
+            <a class="btn" href="integreren_2_bepaalde.html">Vorige</a>
+            <a class="btn" href="integreren_4_substitutie.html">Volgende</a>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button onclick="buildQuiz()">Nieuwe willekeurige quiz</button>
+          <button class="secondary" onclick="checkQuiz()">Controleer antwoorden</button>
+          <button class="ghost" onclick="toggleExamMode()"><span id="examBtnText">Toetsmodus: uit</span></button>
+          <button class="ghost" onclick="toggleTimer()"><span id="timerBtnText">Timer starten</span></button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="label">Vragen in databank</div><div class="value" id="bankCount"></div></div>
+          <div class="stat"><div class="label">Vragen in deze ronde</div><div class="value" id="roundCount"></div></div>
+          <div class="stat"><div class="label">Beantwoord</div><div class="value" id="answeredCount">0</div></div>
+          <div class="stat"><div class="label">Beste score</div><div class="value" id="bestScore">0</div></div>
+          <div class="stat"><div class="label">Laatste score</div><div class="value" id="lastScore">—</div></div>
+          <div class="stat"><div class="label">Timer</div><div class="value" id="timerValue">00:00</div></div>
+        </div>
+
+        <div class="progress" aria-label="Voortgang"><span id="progressBar"></span></div>
+        <p class="small" id="progressText">0 van 0 vragen ingevuld.</p>
+        <div class="notice" id="modeNotice">Toetsmodus uit: je kunt altijd tussendoor nakijken en een nieuwe set starten.</div>
+      </section>
+
+      <div class="quiz-grid" id="quiz"></div>
+
+      <section class="panel">
+        <h3 style="margin-top:0">Resultaat</h3>
+        <div id="result">Klik op <strong>Controleer antwoorden</strong> als je klaar bent.</div>
+        <p class="footer-note">Beste score en laatste score worden lokaal opgeslagen in je browser met <code>localStorage</code>. Timer en toetsmodus resetten bij een nieuwe ronde.</p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "integreren_3_oppervlakte";
+const BANK = [{"prompt": "Wat is de oppervlakte onder y=x van x=0 tot x=2?", "options": ["1", "2", "3", "4"], "answer": 1, "theory": "Oppervlakte boven de x-as is de bepaalde integraal.", "explanation": "∫₀² x dx = 2.", "graph": {"type": "line", "m": 1, "b": 0, "xmin": -0.5, "xmax": 2.5, "ymin": -0.5, "ymax": 3}}, {"prompt": "Wat is de oppervlakte onder y=2x+1 op [0,3]?", "options": ["9", "12", "15", "18"], "answer": 1, "theory": "Integreer de lijnfunctie.", "explanation": "∫₀³ (2x+1)dx = 12.", "graph": {"type": "line", "m": 2, "b": 1, "xmin": -0.5, "xmax": 3.5, "ymin": -1, "ymax": 8}}, {"prompt": "Wat is de oppervlakte tussen y=x+2 en y=x op [0,3]?", "options": ["2", "3", "6", "9"], "answer": 2, "theory": "Neem bovenste min onderste functie.", "explanation": "Verschil is 2, dus ∫₀³2dx=6.", "graph": {"type": "line", "m": 1, "b": 2, "xmin": -0.5, "xmax": 3.5, "ymin": -1, "ymax": 7}}, {"prompt": "Wat is de oppervlakte tussen y=-x en de x-as op [0,2]?", "options": ["-2", "2", "1", "4"], "answer": 1, "theory": "Oppervlakte is altijd positief.", "explanation": "De integraal is -2, de oppervlakte 2.", "graph": {"type": "line", "m": -1, "b": 0, "xmin": -0.5, "xmax": 2.5, "ymin": -3, "ymax": 1}}, {"prompt": "Wat is de oppervlakte tussen y=x²-1 en de x-as op [-1,1]?", "options": ["0", "2/3", "4/3", "8/3"], "answer": 2, "theory": "Op dit interval ligt de grafiek onder de x-as.", "explanation": "Oppervlakte = ∫₋₁¹(1-x²)dx = 4/3.", "graph": {"type": "parabola", "a": 1, "b": 0, "c": -1, "xmin": -2, "xmax": 2, "ymin": -2, "ymax": 3}}, {"prompt": "Wat is de oppervlakte tussen y=x+2 en y=x² op [-1,2]?", "options": ["9/2", "7/2", "5/2", "3"], "answer": 0, "theory": "Zoek snijpunten en integreer boven-min-onder.", "explanation": "Tussen -1 en 2 ligt x+2 boven x²; uitkomst 9/2.", "graph": {"type": "parabola", "a": 1, "b": 0, "c": 0, "xmin": -2, "xmax": 3, "ymin": -2, "ymax": 5}}, {"prompt": "Wat is de oppervlakte onder y=3 op [1,4]?", "options": ["3", "6", "9", "12"], "answer": 2, "theory": "Rechthoek: hoogte × breedte.", "explanation": "3·(4-1)=9.", "graph": null}, {"prompt": "Welke integraal hoort bij oppervlakte tussen f en g als f boven g ligt op [a,b]?", "options": ["∫(g-f)dx", "∫(f+g)dx", "∫(f-g)dx", "∫f dx + C"], "answer": 2, "theory": "Bovenste min onderste.", "explanation": "Dat geeft een positieve oppervlakte.", "graph": null}, {"prompt": "Wanneer mag je een bepaalde integraal direct als oppervlakte zien?", "options": ["Altijd", "Alleen als de grafiek boven de x-as ligt", "Nooit", "Alleen bij lijnen"], "answer": 1, "theory": "Onder de x-as wordt de integraal negatief.", "explanation": "Dan moet je corrigeren.", "graph": null}, {"prompt": "De grafiek y=4-x ligt boven de x-as op [0,4]. Wat is de oppervlakte?", "options": ["4", "8", "16", "6"], "answer": 1, "theory": "Driehoek of integraal.", "explanation": "∫₀⁴(4-x)dx = 8.", "graph": {"type": "line", "m": -1, "b": 4, "xmin": -0.5, "xmax": 4.5, "ymin": -1, "ymax": 5}}];
+const ROUND_SIZE = Math.min(8, BANK.length);
+let activeQuestions = [];
+let examMode = false;
+let timerRunning = false;
+let timerSeconds = 0;
+let timerHandle = null;
+let checkedAlready = false;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function updateTimerDisplay(){
+  document.getElementById('timerValue').textContent = formatTime(timerSeconds);
+}
+
+function toggleTimer(){
+  if(timerRunning){
+    clearInterval(timerHandle);
+    timerHandle = null;
+    timerRunning = false;
+    document.getElementById('timerBtnText').textContent = 'Timer starten';
+  } else {
+    timerRunning = true;
+    document.getElementById('timerBtnText').textContent = 'Timer pauzeren';
+    timerHandle = setInterval(() => {
+      timerSeconds += 1;
+      updateTimerDisplay();
+    }, 1000);
+  }
+}
+
+function stopTimer(){
+  if(timerHandle) clearInterval(timerHandle);
+  timerHandle = null;
+  timerRunning = false;
+  document.getElementById('timerBtnText').textContent = 'Timer starten';
+}
+
+function toggleExamMode(){
+  examMode = !examMode;
+  document.getElementById('examBtnText').textContent = examMode ? 'Toetsmodus: aan' : 'Toetsmodus: uit';
+  document.getElementById('modeNotice').innerHTML = examMode
+    ? 'Toetsmodus aan: na <strong>Controleer antwoorden</strong> wordt deze ronde vergrendeld. Start daarna een nieuwe willekeurige quiz voor de volgende ronde.'
+    : 'Toetsmodus uit: je kunt altijd tussendoor nakijken en een nieuwe set starten.';
+}
+
+function loadStats(){
+  const best = localStorage.getItem(STORAGE_KEY + "_best") || "0";
+  const last = localStorage.getItem(STORAGE_KEY + "_last") || "—";
+  document.getElementById("bestScore").textContent = best;
+  document.getElementById("lastScore").textContent = last;
+  document.getElementById("bankCount").textContent = BANK.length;
+}
+
+function updateProgress(){
+  let answered = 0;
+  activeQuestions.forEach((_, index) => {
+    const sel = document.querySelector(`input[name="q${index}"]:checked`);
+    if(sel) answered++;
+  });
+  const total = activeQuestions.length || 0;
+  const pct = total ? Math.round((answered/total)*100) : 0;
+  document.getElementById('answeredCount').textContent = String(answered);
+  document.getElementById('progressText').textContent = `${answered} van ${total} vragen ingevuld.`;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function attachOptionListeners(){
+  document.querySelectorAll('input[type="radio"]').forEach(el => {
+    el.addEventListener('change', updateProgress);
+  });
+}
+
+function buildQuiz(){
+  stopTimer();
+  timerSeconds = 0;
+  updateTimerDisplay();
+  checkedAlready = false;
+  activeQuestions = shuffle(BANK).slice(0, ROUND_SIZE);
+  document.getElementById("roundCount").textContent = activeQuestions.length;
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+  activeQuestions.forEach((item,index)=>{
+    const card = document.createElement("div");
+    card.className = "question-card";
+    const options = item.options.map((opt,i)=>`
+      <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
+    `).join("");
+    const graphHtml = item.graph ? `<div class="graph-wrap"><canvas class="graph" id="graph${index}" width="800" height="220"></canvas></div>` : "";
+    card.innerHTML = `
+      <div class="meta-row">
+        <span class="pill">Vraag ${index+1}</span>
+        <span class="pill">Integreren</span>
+      </div>
+      <div class="theory"><strong>Theorie:</strong> ${item.theory}</div>
+      <h3>${item.prompt}</h3>
+      ${graphHtml}
+      <div class="options">${options}</div>
+      <div class="feedback" id="fb${index}"></div>
+    `;
+    quiz.appendChild(card);
+  });
+  activeQuestions.forEach((item,index)=>{ if(item.graph) drawGraph("graph"+index,item.graph); });
+  attachOptionListeners();
+  updateProgress();
+  document.getElementById("result").innerHTML = "Nieuwe ronde klaar. Beantwoord de vragen en klik daarna op <strong>Controleer antwoorden</strong>.";
+}
+
+function lockInputs(){
+  document.querySelectorAll('input[type="radio"]').forEach(el => el.disabled = true);
+}
+
+function checkQuiz(){
+  if(!activeQuestions.length) return;
+  if(examMode && checkedAlready) return;
+  let score = 0, answered = 0;
+  activeQuestions.forEach((item,index)=>{
+    const sel = document.querySelector(`input[name="q${index}"]:checked`);
+    const fb = document.getElementById("fb"+index);
+    if(!sel){
+      fb.innerHTML = `<span class="bad">Nog niet ingevuld.</span><div class="explanation">${item.explanation}</div>`;
+      return;
+    }
+    answered++;
+    if(Number(sel.value)===item.answer){
+      score++;
+      fb.innerHTML = `<span class="good">Goed.</span><div class="explanation">${item.explanation}</div>`;
+    } else {
+      fb.innerHTML = `<span class="bad">Niet goed.</span><div class="explanation">${item.explanation}</div>`;
+    }
+  });
+  checkedAlready = true;
+  stopTimer();
+  localStorage.setItem(STORAGE_KEY+"_last", `${score} / ${activeQuestions.length} • ${formatTime(timerSeconds)}`);
+  const currentBest = Number(localStorage.getItem(STORAGE_KEY+"_best") || "0");
+  if(score > currentBest) localStorage.setItem(STORAGE_KEY+"_best", String(score));
+  loadStats();
+  let msg = "Goed bezig.";
+  if(score === activeQuestions.length) msg = "Perfecte score.";
+  else if(score >= activeQuestions.length*0.75) msg = "Sterke ronde.";
+  else if(score >= activeQuestions.length*0.5) msg = "Redelijke basis, nog even dooroefenen.";
+  else msg = "Nog wat oefenen helpt hier echt.";
+  document.getElementById("result").innerHTML = `<strong>Score:</strong> ${score} / ${activeQuestions.length}<br><strong>Ingevuld:</strong> ${answered} / ${activeQuestions.length}<br><strong>Tijd:</strong> ${formatTime(timerSeconds)}<br>${msg}`;
+  if(examMode) {
+    lockInputs();
+    document.getElementById('modeNotice').innerHTML = 'Toetsmodus aan: deze ronde is nu vergrendeld. Klik op <strong>Nieuwe willekeurige quiz</strong> voor een nieuwe ronde.';
+  }
+}
+
+function drawGraph(id, cfg){
+  const canvas = document.getElementById(id);
+  if(!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width, h = canvas.height;
+  const xmin = cfg.xmin, xmax = cfg.xmax, ymin = cfg.ymin, ymax = cfg.ymax;
+
+  const X = x => (x-xmin)/(xmax-xmin)*w;
+  const Y = y => h-(y-ymin)/(ymax-ymin)*h;
+
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,w,h);
+
+  ctx.strokeStyle = "#e5edf7";
+  ctx.lineWidth = 1;
+  for(let i=Math.ceil(xmin); i<=Math.floor(xmax); i++) {
+    ctx.beginPath(); ctx.moveTo(X(i),0); ctx.lineTo(X(i),h); ctx.stroke();
+  }
+  for(let j=Math.ceil(ymin); j<=Math.floor(ymax); j++) {
+    ctx.beginPath(); ctx.moveTo(0,Y(j)); ctx.lineTo(w,Y(j)); ctx.stroke();
+  }
+
+  ctx.strokeStyle = "#94a3b8";
+  ctx.lineWidth = 1.6;
+  if(xmin<0 && xmax>0) { ctx.beginPath(); ctx.moveTo(X(0),0); ctx.lineTo(X(0),h); ctx.stroke(); }
+  if(ymin<0 && ymax>0) { ctx.beginPath(); ctx.moveTo(0,Y(0)); ctx.lineTo(w,Y(0)); ctx.stroke(); }
+
+  function f(x){
+    switch(cfg.type){
+      case "line": return cfg.m*x + cfg.b;
+      case "parabola": return cfg.a*x*x + cfg.b*x + cfg.c;
+      case "trig":
+        const u = cfg.B*x + cfg.C;
+        return cfg.kind==="cos" ? cfg.A*Math.cos(u)+cfg.D : cfg.A*Math.sin(u)+cfg.D;
+      case "exp": return cfg.A*Math.exp(cfg.B*x)+cfg.C;
+      case "reciprocal":
+        if(Math.abs(x-cfg.h)<1e-4) return null;
+        return cfg.a/(x-cfg.h)+cfg.k;
+      case "poly":
+        return cfg.coeffs.reduce((acc,c)=>acc*x+c,0);
+      default: return null;
+    }
+  }
+
+  ctx.strokeStyle = "#2563eb";
+  ctx.lineWidth = 2.4;
+  let first = true;
+  for(let px=0; px<=w; px++) {
+    const x = xmin + (px/w)*(xmax-xmin);
+    const y = f(x);
+    if(y===null || !Number.isFinite(y) || y<ymin-10 || y>ymax+10) {
+      if(!first) ctx.stroke();
+      first = true;
+      continue;
+    }
+    const py = Y(y);
+    if(first) {
+      ctx.beginPath();
+      ctx.moveTo(px,py);
+      first=false;
+    } else {
+      ctx.lineTo(px,py);
+    }
+  }
+  if(!first) ctx.stroke();
+}
+
+loadStats();
+buildQuiz();
+</script>
+</body></html>
