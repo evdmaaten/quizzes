@@ -3,35 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VWO 5 Quizzen</title>
+
+<title>VWO 5 — interactieve quizsite</title>
+
 <style>
-body{{font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef4ff,#f7fbff);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;color:#1f2937}}
-.wrap{{max-width:1060px;width:100%}}
-.card{{background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(31,41,55,.12);padding:36px}}
-h1{{margin:0 0 8px;font-size:clamp(32px,6vw,48px)}}
-p{{color:#475569;margin:0 0 28px}}
-.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}}
-a{{display:block;text-decoration:none;color:#fff;padding:28px 20px;border-radius:18px;font-weight:700;font-size:24px;text-align:center;box-shadow:0 10px 20px rgba(0,0,0,.12);transition:.2s transform,.2s filter}}
-a:hover{{transform:translateY(-2px);filter:brightness(1.03)}}
-.math{{background:linear-gradient(135deg,#2563eb,#1d4ed8)}}
-.chem{{background:linear-gradient(135deg,#059669,#047857)}}
-.phys{{background:linear-gradient(135deg,#7c3aed,#6d28d9)}}
-.bio{{background:linear-gradient(135deg,#16a34a,#15803d)}}
-.econ{{background:linear-gradient(135deg,#ea580c,#c2410c)}}
-.small{{margin-top:20px;font-size:14px;color:#64748b}}
+
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --line:#dbe4f0;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(180deg,#f4f7fb,#eef3ff);
+color:var(--ink);
+line-height:1.45;
+}
+
+.container{
+max-width:1150px;
+margin:0 auto;
+padding:18px;
+}
+
+.hero{
+background:var(--card);
+border-radius:20px;
+box-shadow:0 6px 24px rgba(0,0,0,.08);
+padding:26px;
+margin-bottom:20px;
+}
+
+.badge{
+display:inline-block;
+background:#dbeafe;
+color:#1d4ed8;
+border-radius:999px;
+padding:4px 10px;
+font-size:.78rem;
+font-weight:700;
+margin-bottom:8px;
+}
+
+h1{
+margin:6px 0 8px;
+font-size:clamp(1.8rem,4vw,2.6rem);
+}
+
+.sub{
+color:var(--muted);
+margin:0 0 10px 0;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:10px;
+margin-top:12px;
+}
+
+.stat{
+background:#eef5ff;
+border-radius:12px;
+padding:10px 12px;
+}
+
+.stat .label{
+font-size:.82rem;
+color:var(--muted);
+}
+
+.stat .value{
+font-size:1.15rem;
+font-weight:700;
+}
+
+.index-section{
+background:var(--card);
+border-radius:16px;
+box-shadow:0 4px 18px rgba(0,0,0,.08);
+padding:20px;
+margin-bottom:18px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:14px;
+}
+
+.quiz-card{
+display:block;
+text-decoration:none;
+color:#fff;
+padding:18px;
+border-radius:14px;
+font-size:1.05rem;
+box-shadow:0 4px 14px rgba(0,0,0,.15);
+}
+
+.quiz-card strong{
+display:block;
+margin-bottom:6px;
+font-size:1.1rem;
+}
+
+.math{background:#2563eb}
+.math:hover{background:#1d4ed8}
+
+.chem{background:#059669}
+.chem:hover{background:#047857}
+
+.phys{background:#7c3aed}
+.phys:hover{background:#6d28d9}
+
+.bio{background:#16a34a}
+.bio:hover{background:#15803d}
+
+.eco{background:#ea580c}
+.eco:hover{background:#c2410c}
+
+ul{
+margin:8px 0 0 18px;
+}
+
+@media (max-width:600px){
+
+.container{
+padding:12px;
+}
+
+.hero{
+padding:18px;
+}
+
+.quiz-card{
+padding:16px;
+}
+
+}
+
 </style>
+
 </head>
+
 <body>
-<div class="wrap"><div class="card">
-<h1>VWO 5 Quizzen</h1>
-<p>Kies een vak en open daarna een onderwerp. Alle quizzen werken direct in de browser en zijn geschikt voor GitHub Pages.</p>
-<div class="grid">
-<a class="math" href="wiskunde/index.html">Wiskunde B</a>
-<a class="chem" href="scheikunde/index.html">Scheikunde</a>
-<a class="phys" href="natuurkunde/index.html">Natuurkunde</a>
-<a class="bio" href="biologie/index.html">Biologie</a>
-<a class="econ" href="economie/index.html">Economie</a>
+
+<div class="container">
+
+<div class="hero">
+
+<div class="badge">
+GitHub Pages klaar
 </div>
-<div class="small">Tip: upload deze hele mapstructuur naar de root van je GitHub-repository.</div>
-</div></div>
-</body></html>
+
+<h1>
+VWO 5 — interactieve quizsite
+</h1>
+
+<p class="sub">
+Complete oefenomgeving voor alle kernvakken met willekeurige vragen,
+grafieken, score-opslag en toetsmodus.
+</p>
+
+<div class="stats">
+
+<div class="stat">
+<div class="label">Aantal vakken</div>
+<div class="value">5</div>
+</div>
+
+<div class="stat">
+<div class="label">Totaal aantal quizzen</div>
+<div class="value">125+</div>
+</div>
+
+<div class="stat">
+<div class="label">Vragen per quiz</div>
+<div class="value">8 random</div>
+</div>
+
+<div class="stat">
+<div class="label">Extra functies</div>
+<div class="value">timer + score opslag</div>
+</div>
+
+</div>
+
+<ul>
+
+<li>Elke quiz kiest willekeurig vragen uit een grotere database.</li>
+
+<li>Voortgangsbalk en directe feedback per vraag.</li>
+
+<li>Grafieken worden automatisch getekend waar relevant.</li>
+
+<li>Geschikt voor mobiel, tablet en laptop.</li>
+
+</ul>
+
+</div>
+
+
+<section class="index-section">
+
+<h2>Vakken</h2>
+
+<div class="grid">
+
+<a class="quiz-card math" href="wiskunde/index.html">
+<strong>Wiskunde B</strong>
+Differentieren, integreren, goniometrie,
+exponentiële functies en analyse.
+</a>
+
+<a class="quiz-card chem" href="scheikunde/index.html">
+<strong>Scheikunde</strong>
+Reacties, mol, zuren en basen,
+redox en chemisch evenwicht.
+</a>
+
+<a class="quiz-card phys" href="natuurkunde/index.html">
+<strong>Natuurkunde</strong>
+Beweging, krachten, energie,
+golven en elektriciteit.
+</a>
+
+<a class="quiz-card bio" href="biologie/index.html">
+<strong>Biologie</strong>
+Cellen, DNA, ecologie,
+evolutie en fysiologie.
+</a>
+
+<a class="quiz-card eco" href="economie/index.html">
+<strong>Economie</strong>
+Vraag en aanbod,
+marktwerking en groei.
+</a>
+
+</div>
+
+</section>
+
+</div>
+
+</body>
+
+</html>
