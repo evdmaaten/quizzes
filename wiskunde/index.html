@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VWO 5 Wiskunde B — Quizoverzicht</title>
+<style>
 
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b; --brand:#2563eb;
+  --brand-dark:#1d4ed8; --soft:#eef5ff; --ok:#15803d; --bad:#b91c1c; --line:#dbe4f0;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+a{color:inherit}
+.container{max-width:1150px;margin:0 auto;padding:16px}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.sidebar,.panel,.question-card{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.sidebar{position:sticky;top:12px;padding:14px;max-height:calc(100vh - 24px);overflow:auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.brand h1{font-size:1.08rem;margin:0}
+.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.side-group{margin-top:12px}
+.side-group h3{font-size:.9rem;color:var(--muted);margin:10px 0 6px}
+.side-links{display:grid;gap:6px}
+.side-links a{display:block;text-decoration:none;padding:9px 10px;border-radius:10px;background:#f8fbff;border:1px solid var(--line);font-size:.92rem}
+.side-links a:hover,.side-links a.active{background:var(--soft);border-color:#bfd4ff}
+.main{min-width:0}
+.panel{padding:18px;margin-bottom:16px}
+.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.title h2{margin:0 0 4px;font-size:clamp(1.35rem,4vw,2rem)}
+.sub{color:var(--muted);margin:0}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,.btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:11px 15px;border-radius:10px;cursor:pointer;text-decoration:none;font-weight:700}
+button:hover,.btn:hover{background:var(--brand-dark)}
+button.secondary{background:#475569}
+button.secondary:hover{background:#334155}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button.ghost:hover{background:#f8fbff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--soft);border-radius:12px;padding:10px 12px}
+.stat .label{font-size:.82rem;color:var(--muted)}
+.stat .value{font-size:1.15rem;font-weight:700}
+.progress{margin-top:14px;background:#e8eef8;border-radius:999px;height:12px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);width:0%}
+.quiz-grid{display:grid;gap:14px}
+.question-card{padding:16px}
+.question-card h3{margin:0 0 8px;font-size:1.03rem}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{background:#eef2ff;color:#334155;border-radius:999px;padding:4px 9px;font-size:.78rem}
+.theory{background:var(--soft);border-left:4px solid var(--brand);padding:10px 12px;border-radius:8px;margin:0 0 12px;font-size:.94rem}
+.graph-wrap{margin:8px 0 12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+canvas.graph{display:block;width:100%;height:220px}
+.options label{display:block;padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;cursor:pointer;background:#f9fbff}
+.options label:hover{background:var(--soft)}
+.feedback{margin-top:10px}
+.good{color:var(--ok);font-weight:700}
+.bad{color:var(--bad);font-weight:700}
+.explanation{margin-top:6px;color:#334155}
+.small{font-size:.92rem;color:var(--muted)}
+.notice{background:#fff8e8;border:1px solid #f8d572;padding:10px 12px;border-radius:10px;color:#7c5f00}
+.footer-note{color:var(--muted);font-size:.92rem}
+.toggle{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#f8fbff;border:1px solid var(--line);border-radius:10px}
+.nav-arrows{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;max-height:none}
+}
+@media (max-width:600px){
+  .container{padding:10px}
+  .panel,.question-card,.sidebar{padding:12px}
+  canvas.graph{height:190px}
+  button,.btn{width:100%;text-align:center}
+  .controls,.nav-arrows{display:grid;grid-template-columns:1fr}
+}
+
+body{background:linear-gradient(180deg,#f4f7fb,#edf3ff)}
+.hero{background:var(--card);border-radius:20px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:22px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.quiz-card{display:block;text-decoration:none;background:#2563eb;color:#fff;padding:16px;border-radius:14px;box-shadow:0 4px 14px rgba(37,99,235,.22)}
+.quiz-card:hover{background:#1d4ed8}
+.quiz-card strong{display:block;margin-bottom:6px}
+.index-section{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08);padding:18px;margin-bottom:16px}
+.hero ul{margin:8px 0 0 18px;padding:0}
+</style></head><body><div class="container">
+<div class="hero">
+  <div class="badge">GitHub Pages klaar</div>
+  <h1 style="margin:6px 0 8px;font-size:clamp(1.7rem,4vw,2.5rem)">VWO 5 Wiskunde B — interactieve quizsite</h1>
+  <p class="sub">25 quizbestanden voor differentiëren, integreren, goniometrie, exponentiële functies en functie-analyse.</p>
+  <div class="stats">
+    <div class="stat"><div class="label">Aantal quizzen</div><div class="value">25</div></div>
+    <div class="stat"><div class="label">Vragen per ronde</div><div class="value">8</div></div>
+    <div class="stat"><div class="label">Extra functies</div><div class="value">timer + toetsmodus</div></div>
+    <div class="stat"><div class="label">Opslag</div><div class="value">beste score per quiz</div></div>
+  </div>
+  <ul>
+    <li>Elke quiz kiest willekeurig 8 vragen uit een databank van 10 vragen.</li>
+    <li>Je voortgangsbalk loopt mee terwijl je antwoorden invult.</li>
+    <li>Timer en toetsmodus kunnen per quiz worden ingeschakeld.</li>
+    <li>Grafieken worden automatisch getekend bij geschikte vragen.</li>
+  </ul>
+</div>
+<section class='index-section'><h2>Differentiëren</h2><div class='grid'><a class="quiz-card" href="differentieren_1_basis.html"><strong>Differentiëren 1 — Basisregels</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="differentieren_2_tangenten.html"><strong>Differentiëren 2 — Raaklijnen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="differentieren_3_extremen.html"><strong>Differentiëren 3 — Maxima en minima</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="differentieren_4_kettingregel.html"><strong>Differentiëren 4 — Kettingregel</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="differentieren_5_toepassingen.html"><strong>Differentiëren 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a></div></section><section class='index-section'><h2>Integreren</h2><div class='grid'><a class="quiz-card" href="integreren_1_basis.html"><strong>Integreren 1 — Basis</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="integreren_2_bepaalde.html"><strong>Integreren 2 — Bepaalde integralen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="integreren_3_oppervlakte.html"><strong>Integreren 3 — Oppervlakten</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="integreren_4_substitutie.html"><strong>Integreren 4 — Herkennen en substitueren</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="integreren_5_toepassingen.html"><strong>Integreren 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a></div></section><section class='index-section'><h2>Goniometrie</h2><div class='grid'><a class="quiz-card" href="goniometrie_1_basis.html"><strong>Goniometrie 1 — Basis</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="goniometrie_2_eenheidscirkel.html"><strong>Goniometrie 2 — Eenheidscirkel en radialen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="goniometrie_3_vergelijkingen.html"><strong>Goniometrie 3 — Vergelijkingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="goniometrie_4_grafieken.html"><strong>Goniometrie 4 — Grafieken</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="goniometrie_5_toepassingen.html"><strong>Goniometrie 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a></div></section><section class='index-section'><h2>Exponentieel en ln</h2><div class='grid'><a class="quiz-card" href="exponentieel_1_basis.html"><strong>Exponentieel en ln 1 — Basis en e</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="exponentieel_2_ln.html"><strong>Exponentieel en ln 2 — Rekenen met ln</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="exponentieel_3_groei.html"><strong>Exponentieel en ln 3 — Groei en verval</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="exponentieel_4_vergelijkingen.html"><strong>Exponentieel en ln 4 — Vergelijkingen oplossen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="exponentieel_5_toepassingen.html"><strong>Exponentieel en ln 5 — Toepassingen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a></div></section><section class='index-section'><h2>Functies en modelleren</h2><div class='grid'><a class="quiz-card" href="functies_1_grafieken.html"><strong>Functies en modelleren 1 — Grafieken lezen</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="functies_2_nulpunten.html"><strong>Functies en modelleren 2 — Nulpunten</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="functies_3_asymptoten.html"><strong>Functies en modelleren 3 — Asymptoten</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="functies_4_transformaties.html"><strong>Functies en modelleren 4 — Transformaties</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a><a class="quiz-card" href="functies_5_modelleren.html"><strong>Functies en modelleren 5 — Modelleren</strong><span>Willekeurige vragen, score-opslag, grafieken, timer en toetsmodus.</span></a></div></section>
+</div></body></html>
