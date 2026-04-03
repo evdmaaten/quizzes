@@ -17,14 +17,10 @@
   --brand:#059669;
   --brand-dark:#047857;
   --soft:#ecfdf5;
-  --ok:#15803d;
-  --bad:#b91c1c;
   --line:#dbe4f0;
 }
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
@@ -48,6 +44,13 @@ padding:26px;
 margin-bottom:20px;
 }
 
+.top-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+}
+
 .badge{
 display:inline-block;
 background:#d1fae5;
@@ -56,11 +59,9 @@ border-radius:999px;
 padding:4px 10px;
 font-size:.78rem;
 font-weight:700;
-margin-bottom:8px;
 }
 
 .home-btn{
-display:inline-block;
 background:#475569;
 color:white;
 padding:8px 14px;
@@ -68,7 +69,6 @@ border-radius:10px;
 text-decoration:none;
 font-weight:600;
 font-size:.9rem;
-margin-bottom:12px;
 }
 
 .home-btn:hover{
@@ -149,17 +149,11 @@ margin:8px 0 0 18px;
 
 @media (max-width:600px){
 
-.container{
-padding:12px;
-}
+.container{padding:12px}
 
-.hero{
-padding:18px;
-}
+.hero{padding:18px}
 
-.quiz-card{
-padding:16px;
-}
+.quiz-card{padding:16px}
 
 }
 
@@ -173,12 +167,16 @@ padding:16px;
 
 <div class="hero">
 
+<div class="top-row">
+
+<div class="badge">
+GitHub Pages klaar
+</div>
+
 <a href="../index.html" class="home-btn">
 ← Home
 </a>
 
-<div class="badge">
-GitHub Pages klaar
 </div>
 
 <h1>
@@ -186,7 +184,7 @@ VWO 5 Scheikunde — interactieve quizsite
 </h1>
 
 <p class="sub">
-25 quizbestanden voor reacties, molberekeningen, zuren en basen, redox en evenwicht.
+25 quizbestanden voor reacties, mol, zuren en basen, redox en evenwicht.
 </p>
 
 <div class="stats">
@@ -237,27 +235,27 @@ VWO 5 Scheikunde — interactieve quizsite
 
 <a class="quiz-card" href="reacties_1_balanceren.html">
 <strong>Reacties 1 — Balanceren</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Balanceren van reactievergelijkingen.
 </a>
 
 <a class="quiz-card" href="reacties_2_reactietypen.html">
 <strong>Reacties 2 — Reactietypen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Herkennen van soorten reacties.
 </a>
 
 <a class="quiz-card" href="reacties_3_stoichiometrie.html">
 <strong>Reacties 3 — Stoichiometrie</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Rekenen met molverhoudingen.
 </a>
 
 <a class="quiz-card" href="reacties_4_opbrengst.html">
-<strong>Reacties 4 — Opbrengst en rendement</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Reacties 4 — Opbrengst</strong>
+Rendement en reactieberekeningen.
 </a>
 
 <a class="quiz-card" href="reacties_5_toepassingen.html">
 <strong>Reacties 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Toepassen in contextopgaven.
 </a>
 
 </div>
@@ -273,28 +271,28 @@ Willekeurige vragen, score-opslag en grafieken.
 <div class="grid">
 
 <a class="quiz-card" href="mol_1_basis.html">
-<strong>Mol en concentratie 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Mol 1 — Basis</strong>
+Massa, mol en molaire massa.
 </a>
 
 <a class="quiz-card" href="mol_2_concentratie.html">
-<strong>Mol en concentratie 2 — Concentratie</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Mol 2 — Concentratie</strong>
+Molariteit berekenen.
 </a>
 
 <a class="quiz-card" href="mol_3_verdunning.html">
-<strong>Mol en concentratie 3 — Verdunning</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Mol 3 — Verdunning</strong>
+Verdunnen en mengen.
 </a>
 
 <a class="quiz-card" href="mol_4_reactieberekeningen.html">
-<strong>Mol en concentratie 4 — Reactieberekeningen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Mol 4 — Reactieberekeningen</strong>
+Berekeningen bij reacties.
 </a>
 
 <a class="quiz-card" href="mol_5_gassen.html">
-<strong>Mol en concentratie 5 — Gassen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Mol 5 — Gassen</strong>
+Gasvolume en mol.
 </a>
 
 </div>
@@ -311,27 +309,27 @@ Willekeurige vragen, score-opslag en grafieken.
 
 <a class="quiz-card" href="zuurbase_1_ph.html">
 <strong>Zuren en basen 1 — pH</strong>
-Willekeurige vragen, score-opslag en grafieken.
+pH berekenen.
 </a>
 
 <a class="quiz-card" href="zuurbase_2_neutralisatie.html">
 <strong>Zuren en basen 2 — Neutralisatie</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Zuur-base reacties.
 </a>
 
 <a class="quiz-card" href="zuurbase_3_zwakke_zuren.html">
 <strong>Zuren en basen 3 — Zwakke zuren</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Sterke vs zwakke zuren.
 </a>
 
 <a class="quiz-card" href="zuurbase_4_buffers.html">
 <strong>Zuren en basen 4 — Buffers</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Bufferoplossingen.
 </a>
 
 <a class="quiz-card" href="zuurbase_5_titratie.html">
 <strong>Zuren en basen 5 — Titratie</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Titratiecurves.
 </a>
 
 </div>
@@ -348,27 +346,27 @@ Willekeurige vragen, score-opslag en grafieken.
 
 <a class="quiz-card" href="redox_1_basis.html">
 <strong>Redox 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Elektronenoverdracht.
 </a>
 
 <a class="quiz-card" href="redox_2_oxidatiegetal.html">
-<strong>Redox 2 — Oxidatiegetallen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Redox 2 — Oxidatiegetal</strong>
+Oxidatiegetallen bepalen.
 </a>
 
 <a class="quiz-card" href="redox_3_halfreacties.html">
 <strong>Redox 3 — Halfreacties</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Halfreacties opstellen.
 </a>
 
 <a class="quiz-card" href="redox_4_elektrochemie.html">
 <strong>Redox 4 — Elektrochemie</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Batterijen en spanning.
 </a>
 
 <a class="quiz-card" href="redox_5_toepassing.html">
-<strong>Redox 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Redox 5 — Toepassing</strong>
+Praktische redoxproblemen.
 </a>
 
 </div>
@@ -385,27 +383,27 @@ Willekeurige vragen, score-opslag en grafieken.
 
 <a class="quiz-card" href="evenwicht_1_basis.html">
 <strong>Evenwicht 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Dynamisch evenwicht.
 </a>
 
 <a class="quiz-card" href="evenwicht_2_lechatelier.html">
 <strong>Evenwicht 2 — Le Chatelier</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Evenwicht verschuiving.
 </a>
 
 <a class="quiz-card" href="evenwicht_3_grafiek.html">
 <strong>Evenwicht 3 — Grafieken</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Concentratieverloop.
 </a>
 
 <a class="quiz-card" href="evenwicht_4_berekening.html">
 <strong>Evenwicht 4 — Berekeningen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+Evenwichtsconstante.
 </a>
 
 <a class="quiz-card" href="evenwicht_5_toepassing.html">
-<strong>Evenwicht 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
+<strong>Evenwicht 5 — Toepassing</strong>
+Evenwicht in context.
 </a>
 
 </div>
