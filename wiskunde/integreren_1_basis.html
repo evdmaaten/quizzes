@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exponentieel en ln 1 — Basis en e</title>
+<title>Integreren 1 — Basis</title>
 <style>
 :root{
   --bg:#f4f7fb; --card:#ffffff; --ink:#17324d; --muted:#5f748a; --line:#d8e2ee;
@@ -66,7 +66,7 @@ canvas.graph{display:block;width:100%;height:220px}
   <main class="quiz-shell">
     <div class="topbar">
       <div class="vraag-label" id="vraagNummer">Vraag 1</div>
-      <a class="home-btn" href="wiskunde/index.html">Home</a>
+      <a class="home-btn" href="index.html">Home</a>
     </div>
 
     <section class="question-box">
@@ -94,7 +94,7 @@ canvas.graph{display:block;width:100%;height:220px}
         <button class="nav-btn" id="prevBtn" type="button" aria-label="Vorige vraag">◀</button>
         <div>
           <div class="counter" id="counter">1 / 8</div>
-          <div class="meta">Exponentieel en ln • Basis en e</div>
+          <div class="meta">Integreren • Basis</div>
           <div class="meta" id="subjectProgressText"></div>
         </div>
         <button class="nav-btn" id="nextBtn" type="button" aria-label="Volgende vraag">▶</button>
@@ -110,29 +110,121 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
-  subjectKey: 'exponentieel',
+  storageKey: 'integreren_1_basis',
+  subjectKey: 'integreren',
   subjectTotal: 5,
   quizNumber: 1,
   prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
-  homePage: 'wiskunde/index.html',
+  nextQuiz: 'integreren_2_bepaalde.html',
+  homePage: 'index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+
+    {
+      prompt: 'Wat is integreren in het kort?',
+      options: [
+        'Het berekenen van een afgeleide',
+        'Het zoeken van een primitieve',
+        'Het oplossen van lineaire vergelijkingen',
+        'Het berekenen van een helling'
+      ],
+      answer: 1,
+      theory: 'Bij integreren zoek je een functie waarvan de afgeleide gelijk is aan de gegeven functie.',
+      explanation: 'Integreren betekent dus: een primitieve vinden.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van 2x?',
+      options: ['x² + C', '2x² + C', 'x + C', '2 + C'],
+      answer: 0,
+      theory: 'Omdat de afgeleide van x² gelijk is aan 2x.',
+      explanation: 'Dus een primitieve van 2x is x² + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van 3x²?',
+      options: ['x³ + C', '3x³ + C', 'x² + C', '6x + C'],
+      answer: 0,
+      theory: 'Omdat de afgeleide van x³ gelijk is aan 3x².',
+      explanation: 'Dus de primitieve is x³ + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van 5?',
+      options: ['5 + C', '5x + C', 'x⁵ + C', '0 + C'],
+      answer: 1,
+      theory: 'De afgeleide van 5x is 5.',
+      explanation: 'Dus een primitieve van 5 is 5x + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Waar staat de + C voor?',
+      options: [
+        'Voor een constante',
+        'Voor een coefficient',
+        'Voor een controle',
+        'Voor een kromme'
+      ],
+      answer: 0,
+      theory: 'Alle primitieven verschillen onderling alleen door een constante.',
+      explanation: 'Daarom schrijf je altijd + C erbij.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van x³?',
+      options: ['x⁴ + C', '¼x⁴ + C', '4x² + C', 'x² + C'],
+      answer: 1,
+      theory: 'Gebruik de machtsregel omgekeerd: macht +1, dan delen.',
+      explanation: 'Een primitieve van x³ is ¼x⁴ + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van x?',
+      options: ['x² + C', '½x² + C', '1 + C', '2x + C'],
+      answer: 1,
+      theory: 'Omdat de afgeleide van ½x² gelijk is aan x.',
+      explanation: 'Dus de primitieve is ½x² + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van 1/x?',
+      options: ['ln x + C', 'x² + C', '1/(2x²) + C', 'e^x + C'],
+      answer: 0,
+      theory: 'De afgeleide van ln x is 1/x voor x > 0.',
+      explanation: 'Dus een primitieve van 1/x is ln x + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van e^x?',
+      options: ['x·e^x + C', 'e^x + C', 'ln x + C', 'e^(x+1) + C'],
+      answer: 1,
+      theory: 'De afgeleide van e^x blijft e^x.',
+      explanation: 'Dus de primitieve van e^x is ook e^x + C.',
+      graph: null
+    },
+
+    {
+      prompt: 'Wat is een primitieve van cos x?',
+      options: ['-sin x + C', 'sin x + C', 'tan x + C', 'cos x + C'],
+      answer: 1,
+      theory: 'De afgeleide van sin x is cos x.',
+      explanation: 'Dus een primitieve van cos x is sin x + C.',
+      graph: null
+    }
+
   ]
 };
 </script>
-<script src="wiskunde/js/quiz-flow.js"></script>
+
+<script src="js/quiz-flow.js?v=3"></script>
 <script>
 createQuizApp(QUIZ_CONFIG);
 </script>
