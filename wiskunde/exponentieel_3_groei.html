@@ -110,25 +110,25 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
+  storageKey: 'exponentieel_3_groei',
   subjectKey: 'exponentieel',
   subjectTotal: 5,
-  quizNumber: 1,
-  prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
+  quizNumber: 3,
+  prevQuiz: 'exponentieel_2_ln.html',
+  nextQuiz: 'exponentieel_4_vergelijkingen.html',
   homePage: 'wiskunde/index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+    { prompt: 'Welke formule hoort bij exponentiële groei?', options: ['N = N0 + rt', 'N = N0 · g^t', 'N = at² + bt + c', 'N = 1/t'], answer: 1, theory: 'Bij exponentiële groei vermenigvuldig je telkens met dezelfde factor.', explanation: 'Dus N = N0 · g^t.', graph: null },
+    { prompt: 'Wanneer is er groei?', options: ['g < 0', 'g = 0', 'g > 1', '0 < g < 1'], answer: 2, theory: 'Bij groei is de groeifactor groter dan 1.', explanation: 'Dus g > 1.', graph: null },
+    { prompt: 'Wanneer is er verval?', options: ['g > 1', 'g = 1', '0 < g < 1', 'g < 0'], answer: 2, theory: 'Bij verval ligt de factor tussen 0 en 1.', explanation: 'Dus 0 < g < 1.', graph: null },
+    { prompt: 'Wat betekent groeifactor 1,05?', options: ['5% afname', '50% toename', '5% toename', '0,5% toename'], answer: 2, theory: '1,05 betekent 100% + 5%.', explanation: 'Dus 5% toename per stap.', graph: null },
+    { prompt: 'Wat betekent groeifactor 0,92?', options: ['8% afname', '92% afname', '8% toename', '0,92% afname'], answer: 0, theory: '0,92 = 1 - 0,08.', explanation: 'Dus 8% afname.', graph: null },
+    { prompt: 'Welke grafiek past bij exponentiële groei?', options: ['rechte lijn', 'dalende lijn', 'stijgende kromme', 'parabool omlaag'], answer: 2, theory: 'Exponentiële groei stijgt steeds sneller.', explanation: 'Dat geeft een stijgende kromme.', graph: null },
+    { prompt: 'Wat is de beginwaarde in N = 200 · 1,03^t?', options: ['1,03', '200', '3', '203'], answer: 1, theory: 'De beginwaarde is de waarde bij t = 0.', explanation: 'Dat is 200.', graph: null },
+    { prompt: 'Wat is de groeifactor in N = 80 · 0,97^t?', options: ['80', '0,97', '97', '-3%'], answer: 1, theory: 'De factor staat bij de macht t.', explanation: 'Dus 0,97.', graph: null },
+    { prompt: 'Een hoeveelheid verdubbelt elke stap. Wat is g?', options: ['0,5', '1', '2', '10'], answer: 2, theory: 'Verdubbelen betekent keer 2.', explanation: 'Dus g = 2.', graph: null },
+    { prompt: 'Een hoeveelheid halveert elke stap. Wat is g?', options: ['2', '1,5', '0,5', '0'], answer: 2, theory: 'Halveren betekent keer 0,5.', explanation: 'Dus g = 0,5.', graph: null }
   ]
 };
 </script>
