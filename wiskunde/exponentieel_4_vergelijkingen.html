@@ -110,25 +110,25 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
+  storageKey: 'exponentieel_4_vergelijkingen',
   subjectKey: 'exponentieel',
   subjectTotal: 5,
-  quizNumber: 1,
-  prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
+  quizNumber: 4,
+  prevQuiz: 'exponentieel_3_groei.html',
+  nextQuiz: 'exponentieel_5_toepassingen.html',
   homePage: 'wiskunde/index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+    { prompt: 'Wat doe je vaak eerst bij 2·e^x = 10?', options: ['ln nemen', 'delen door 2', 'x invullen', 'worteltrekken'], answer: 1, theory: 'Isoleer eerst de exponentiële term.', explanation: 'Dus eerst delen door 2.', graph: null },
+    { prompt: 'Na e^x = 5, wat is de volgende stap?', options: ['x = e^5', 'ln nemen', 'delen door x', 'machtsregel'], answer: 1, theory: 'Om x uit de exponent te halen gebruik je ln.', explanation: 'Dus ln aan beide kanten.', graph: null },
+    { prompt: 'Wat volgt uit e^x = 7?', options: ['x = 7', 'x = ln 7', 'x = e^7', 'x = 1/7'], answer: 1, theory: 'ln en e-macht zijn inverse functies.', explanation: 'Dus x = ln 7.', graph: null },
+    { prompt: 'Wat volgt uit ln x = 3?', options: ['x = 3', 'x = ln 3', 'x = e^3', 'x = 1/3'], answer: 2, theory: 'Maak de logaritme ongedaan met e-macht.', explanation: 'Dus x = e^3.', graph: null },
+    { prompt: 'Welke vergelijking los je op met ln?', options: ['x + 3 = 7', 'x² = 9', '3·1,2^x = 20', '2x = 8'], answer: 2, theory: 'Bij exponentiële vergelijkingen gebruik je vaak ln.', explanation: 'Daarmee haal je x uit de exponent.', graph: null },
+    { prompt: 'Wat is de eerste stap bij 5·1,1^x = 8?', options: ['delen door 5', 'ln nemen', 'aftrekken', 'worteltrekken'], answer: 0, theory: 'Isoleer eerst de machtsterm.', explanation: 'Dus eerst delen door 5.', graph: null },
+    { prompt: 'Waarom is ln handig bij 1,03^t = 2?', options: ['Omdat ln kleiner maakt', 'Omdat ln t wegwerkt', 'Omdat ln exponenten naar voren haalt', 'Omdat ln afrondt'], answer: 2, theory: 'ln(a^b) = b ln a.', explanation: 'Zo komt t vooraan te staan.', graph: null },
+    { prompt: 'Wat volgt uit 2^x = 16?', options: ['x = 4', 'x = 8', 'x = 2', 'x = ln 16'], answer: 0, theory: 'Herken machten als dat kan.', explanation: '16 = 2^4, dus x = 4.', graph: null },
+    { prompt: 'Wat is een geldige stap uit ln x = -2?', options: ['x = -2', 'x = e^-2', 'x = -e^2', 'x = ln(-2)'], answer: 1, theory: 'Maak ln ongedaan met de e-macht.', explanation: 'Dus x = e^-2.', graph: null },
+    { prompt: 'Wat moet gelden voor ln x in een oplossing?', options: ['x ≥ 0', 'x > 0', 'x ≠ 1', 'x < 0'], answer: 1, theory: 'ln is alleen gedefinieerd voor positieve x.', explanation: 'Dus x > 0.', graph: null }
   ]
 };
 </script>
