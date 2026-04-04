@@ -110,31 +110,92 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
-  subjectKey: 'exponentieel',
+  storageKey: 'differentieren_1_basis',
+  subjectKey: 'differentieren',
   subjectTotal: 5,
   quizNumber: 1,
   prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
-  homePage: 'wiskunde/index.html',
+  nextQuiz: 'differentieren_2_product_ketting.html',
+  homePage: 'index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
-  ]
-};
+
+{ prompt: 'Wat is de afgeleide van x²?',
+  options: ['2x','x','x³','2'],
+  answer: 0,
+  theory: 'Machtsregel: d/dx(x^n)=n x^(n-1)',
+  explanation: 'Dus 2x.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van x³?',
+  options: ['3x²','x²','3x','x³'],
+  answer: 0,
+  theory: 'Machtsregel.',
+  explanation: '3x².',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van 5x?',
+  options: ['5','x','5x','0'],
+  answer: 0,
+  theory: 'd/dx(ax)=a',
+  explanation: '5.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van een constante?',
+  options: ['0','1','de constante','x'],
+  answer: 0,
+  theory: 'Een constante verandert niet.',
+  explanation: 'Dus 0.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van x?',
+  options: ['1','0','x','2x'],
+  answer: 0,
+  theory: 'Basisregel.',
+  explanation: '1.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van 4x²?',
+  options: ['8x','4x','2x','8x²'],
+  answer: 0,
+  theory: 'Constante factor blijft staan.',
+  explanation: '8x.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van 1/x?',
+  options: ['-1/x²','1/x²','ln x','x'],
+  answer: 0,
+  theory: 'Schrijf als x^-1.',
+  explanation: 'Dus -x^-2.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van √x?',
+  options: ['1/(2√x)','√x','2√x','1/x'],
+  answer: 0,
+  theory: 'Schrijf als x^(1/2).',
+  explanation: '1/(2√x).',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van x⁴?',
+  options: ['4x³','x³','4x','x⁴'],
+  answer: 0,
+  theory: 'Machtsregel.',
+  explanation: '4x³.',
+  graph: null },
+
+{ prompt: 'Wat is de afgeleide van 7?',
+  options: ['0','7','1','x'],
+  answer: 0,
+  theory: 'Constante.',
+  explanation: '0.',
+  graph: null }
+
+]};
 </script>
-<script src="js/quiz-flow.js"></script>
+
+<script src="js/quiz-flow.js?v=3"></script>
+
 <script>
 createQuizApp(QUIZ_CONFIG);
-</script>
-</body>
+</script></body>
 </html>
