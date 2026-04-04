@@ -3,695 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Exponentieel en ln 1 — Basis en e</title>
-
 <style>
-
 :root{
---bg:#f4f7fb;
---card:#ffffff;
---ink:#17324d;
---muted:#5f748a;
---line:#d8e2ee;
---brand:#2563eb;
---soft:#eaf2ff;
---ok:#15803d;
---bad:#b91c1c;
---shadow:0 10px 30px rgba(0,0,0,.08);
+  --bg:#f4f7fb; --card:#ffffff; --ink:#17324d; --muted:#5f748a; --line:#d8e2ee;
+  --brand:#2563eb; --soft:#eaf2ff; --ok:#15803d; --bad:#b91c1c; --shadow:0 10px 30px rgba(0,0,0,.08);
 }
-
 *{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:var(--bg);
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh}
+.page{min-height:100vh;display:flex;justify-content:center;align-items:stretch}
+.quiz-shell{
+  width:100%;max-width:520px;min-height:100vh;
+  background:repeating-linear-gradient(to bottom,#fff 0px,#fff 50px,#dbe5f0 51px,#fff 52px);
+  display:flex;flex-direction:column;padding:18px 16px 20px;overflow:hidden
 }
-
-.page{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:stretch;
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.vraag-label{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:900;line-height:1;color:var(--brand);margin:6px 0 0}
+.home-btn{
+  display:inline-flex;align-items:center;justify-content:center;min-width:92px;padding:10px 14px;border:3px solid var(--brand);
+  border-radius:12px;background:#fff;color:var(--brand);text-decoration:none;font-weight:800;font-size:1rem;box-shadow:var(--shadow)
 }
-
-.quiz{
-width:100%;
-max-width:520px;
-min-height:100vh;
-
-background:
-repeating-linear-gradient(
-to bottom,
-white 0px,
-white 50px,
-#dbe5f0 51px,
-white 52px
-);
-
-display:flex;
-flex-direction:column;
-padding:18px 16px 20px;
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-margin-bottom:14px;
-}
-
-.vraag{
-font-size:2rem;
-font-weight:900;
-color:var(--brand);
-}
-
-.home{
-border:3px solid var(--brand);
-padding:10px 14px;
-border-radius:12px;
-text-decoration:none;
-font-weight:700;
-color:var(--brand);
-background:white;
-}
-
-.box{
-
-border:4px solid var(--brand);
-border-radius:18px;
-background:white;
-
-overflow:hidden;
-
-box-shadow:var(--shadow);
-
-margin-bottom:18px;
-}
-
-.vraagtekst{
-
-min-height:140px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-align:center;
-
-padding:22px;
-
-font-size:1.3rem;
-font-weight:800;
-
-}
-
-.theorieknop{
-
-border:none;
-
-border-top:4px solid var(--brand);
-
-background:white;
-
-padding:10px;
-
-font-weight:900;
-
-color:var(--brand);
-
-cursor:pointer;
-
-}
-
-.theorie{
-
-display:none;
-
-padding:14px;
-
-border-top:1px solid var(--line);
-
-}
-
-.theorie.open{
-
-display:block;
-
-}
-
-.answers{
-
-display:grid;
-
-gap:12px;
-
-}
-
+.question-box{border:4px solid var(--brand);border-radius:18px;background:#fff;overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px}
+.question-main{min-height:148px;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px 18px;font-size:clamp(1.25rem,4vw,1.6rem);font-weight:800;line-height:1.35}
+.theory-bar{width:100%;border:none;border-top:4px solid var(--brand);background:#fff;padding:10px 14px;text-align:center;font-weight:900;font-size:1.1rem;color:var(--brand);cursor:pointer}
+.theory-content{display:none;padding:14px 16px 16px;border-top:1px solid var(--line);font-size:1rem;line-height:1.5;background:#fdfefe}
+.theory-content.open{display:block}
+.graph-wrap{display:none;margin:0 0 16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.graph-wrap.show{display:block}
+canvas.graph{display:block;width:100%;height:220px}
+.answers{display:grid;gap:12px;margin:8px 0 18px}
 .answer{
-
-border:3px solid #9bb6db;
-
-border-radius:18px;
-
-background:white;
-
-padding:16px;
-
-font-size:1.05rem;
-
-font-weight:700;
-
-cursor:pointer;
-
+  display:block;width:100%;border:3px solid #9bb6db;border-radius:18px;background:#fff;padding:16px 14px;text-align:left;
+  font-size:1.08rem;font-weight:700;color:var(--ink);cursor:pointer;box-shadow:var(--shadow)
 }
-
-.answer.selected{
-
-border-color:var(--brand);
-
-background:var(--soft);
-
+.answer.selected{border-color:var(--brand);background:var(--soft)}
+.answer.correct{border-color:var(--ok);background:#ecfdf3;color:#14532d}
+.answer.wrong{border-color:var(--bad);background:#fef2f2;color:#7f1d1d}
+.check-wrap{margin-top:auto;padding-top:6px}
+.check-btn{
+  width:100%;border:4px solid var(--brand);border-radius:18px;background:#fff;color:var(--brand);
+  font-size:1.25rem;font-weight:900;padding:16px 14px;cursor:pointer;box-shadow:var(--shadow)
 }
-
-.answer.correct{
-
-border-color:var(--ok);
-
-background:#ecfdf3;
-
+.feedback{min-height:42px;text-align:center;font-weight:800;margin:12px 0 10px;font-size:1rem}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+.explanation{margin-top:6px;font-weight:400;color:var(--ink)}
+.bottom-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.tool-btn{border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-size:.98rem;font-weight:800;padding:12px 10px;cursor:pointer}
+.nav-bottom{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;gap:12px;margin-top:4px}
+.nav-btn{height:58px;border:none;background:transparent;color:var(--brand);font-size:2rem;font-weight:900;cursor:pointer;border-radius:14px}
+.counter{text-align:center;font-size:1.25rem;font-weight:900;color:var(--brand)}
+.meta{text-align:center;color:var(--muted);font-size:.95rem;margin-top:6px}
+.result-panel{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);font-size:.98rem}
+@media (min-width:800px){
+  .page{padding:24px}
+  .quiz-shell{min-height:calc(100vh - 48px);border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.12)}
 }
-
-.answer.wrong{
-
-border-color:var(--bad);
-
-background:#fef2f2;
-
-}
-
-.check{
-
-margin-top:auto;
-
-}
-
-.check button{
-
-width:100%;
-
-border:4px solid var(--brand);
-
-border-radius:18px;
-
-background:white;
-
-color:var(--brand);
-
-font-size:1.2rem;
-
-font-weight:900;
-
-padding:16px;
-
-cursor:pointer;
-
-}
-
-.feedback{
-
-text-align:center;
-
-font-weight:800;
-
-margin:12px 0;
-
-}
-
-.ok{color:var(--ok)}
-
-.bad{color:var(--bad)}
-
-.nav{
-
-display:grid;
-
-grid-template-columns:60px 1fr 60px;
-
-align-items:center;
-
-margin-top:6px;
-
-}
-
-.nav button{
-
-border:none;
-
-background:none;
-
-font-size:2rem;
-
-color:var(--brand);
-
-cursor:pointer;
-
-}
-
-.counter{
-
-text-align:center;
-
-font-weight:900;
-
-color:var(--brand);
-
-}
-
-.result{
-
-margin-top:10px;
-
-background:white;
-
-border:1px solid var(--line);
-
-padding:10px;
-
-border-radius:12px;
-
-}
-
 </style>
-
 </head>
-
 <body>
-
 <div class="page">
+  <main class="quiz-shell">
+    <div class="topbar">
+      <div class="vraag-label" id="vraagNummer">Vraag 1</div>
+      <a class="home-btn" href="wiskunde/index.html">Home</a>
+    </div>
 
-<div class="quiz">
+    <section class="question-box">
+      <div class="question-main" id="questionText"></div>
+      <button class="theory-bar" id="toggleTheoryBtn" type="button">THEORIE</button>
+      <div class="theory-content" id="theoryText"></div>
+    </section>
 
-<div class="top">
+    <div class="graph-wrap" id="graphWrap">
+      <canvas class="graph" id="graphCanvas" width="800" height="220"></canvas>
+    </div>
 
-<div class="vraag" id="vraagNr">Vraag 1</div>
+    <section class="answers" id="answersWrap"></section>
 
-<a class="home" href="wiskunde/index.html">Home</a>
+    <div class="check-wrap">
+      <div class="bottom-tools">
+        <button class="tool-btn" id="newQuizBtn" type="button">Nieuwe quiz</button>
+        <button class="tool-btn" id="toggleExamBtn" type="button">Toetsmodus: uit</button>
+      </div>
 
+      <button class="check-btn" id="checkBtn" type="button">CHECK ANTWOORD</button>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="nav-bottom">
+        <button class="nav-btn" id="prevBtn" type="button" aria-label="Vorige vraag">◀</button>
+        <div>
+          <div class="counter" id="counter">1 / 8</div>
+          <div class="meta">Exponentieel en ln • Basis en e</div>
+          <div class="meta" id="subjectProgressText"></div>
+        </div>
+        <button class="nav-btn" id="nextBtn" type="button" aria-label="Volgende vraag">▶</button>
+      </div>
+
+      <div class="result-panel">
+        <strong>Beste score:</strong> <span id="bestScore">0</span><br>
+        <strong>Laatste score:</strong> <span id="lastScore">—</span>
+      </div>
+    </div>
+  </main>
 </div>
-
-
-<div class="box">
-
-<div class="vraagtekst" id="vraagTekst"></div>
-
-<button class="theorieknop" id="theorieBtn">THEORIE</button>
-
-<div class="theorie" id="theorieTekst"></div>
-
-</div>
-
-
-<div class="answers" id="answers"></div>
-
-
-<div class="check">
-
-<button onclick="checkAntwoord()">CHECK ANTWOORD</button>
-
-<div class="feedback" id="feedback"></div>
-
-</div>
-
-
-<div class="nav">
-
-<button onclick="vorige()">◀</button>
-
-<div class="counter" id="counter"></div>
-
-<button onclick="volgende()">▶</button>
-
-</div>
-
-
-<div class="result">
-
-Beste score:
-
-<span id="best"></span>
-
-<br>
-
-Laatste score:
-
-<span id="last"></span>
-
-</div>
-
-</div>
-
-</div>
-
 
 <script>
-
-
-const NEXT_QUIZ = "exponentieel_2_ln.html";
-
-const PREV_QUIZ = null;
-
-const HOME_PAGE = "wiskunde/index.html";
-
-
-const STORAGE_KEY="exp1";
-
-
-const BANK=[
-
-{
-vraag:"Wat is e ongeveer?",
-opties:["1","2.71","3.14","10"],
-goed:1,
-theorie:"Het getal e ≈ 2.718",
-uitleg:"e is een belangrijk getal bij groei"
-},
-
-{
-vraag:"Wat is e^0?",
-opties:["0","1","e","niet gedefinieerd"],
-goed:1,
-theorie:"Elke macht 0 = 1",
-uitleg:"dus e^0=1"
-},
-
-{
-vraag:"Welke grafiek hoort bij e^x?",
-opties:["stijgend","dalend","lijn","parabool"],
-goed:0,
-theorie:"e^x groeit snel",
-uitleg:"exponentiële groei"
-},
-
-{
-vraag:"Wat is e^1?",
-opties:["0","1","2.71","10"],
-goed:2,
-theorie:"e^1=e",
-uitleg:"≈2.71"
-},
-
-{
-vraag:"Wat is e^-1?",
-opties:["1/e","-e","e","0"],
-goed:0,
-theorie:"negatieve exponent",
-uitleg:"1/e"
-},
-
-{
-vraag:"Welke functie groeit sneller?",
-opties:["x","x²","e^x","ln x"],
-goed:2,
-theorie:"exponentiële groei is snel",
-uitleg:"e^x groeit snelst"
-},
-
-{
-vraag:"Wat is ln(e)?",
-opties:["0","1","e","10"],
-goed:1,
-theorie:"ln(e)=1",
-uitleg:"log en exp zijn inverse"
-},
-
-{
-vraag:"Wat is ln(1)?",
-opties:["0","1","e","niet gedefinieerd"],
-goed:0,
-theorie:"e^0=1",
-uitleg:"dus ln(1)=0"
-},
-
-{
-vraag:"Wat is e^2 ongeveer?",
-opties:["4","5","7.39","10"],
-goed:2,
-theorie:"e^2≈7.39",
-uitleg:"rekenmachine"
-}
-
-];
-
-
-let vragen=[];
-let index=0;
-let gekozen=[];
-let nagekeken=[];
-let locked=false;
-
-
-function shuffle(a){
-
-return a.sort(()=>Math.random()-0.5);
-
-}
-
-
-function start(){
-
-vragen=shuffle(BANK).slice(0,8);
-
-gekozen=new Array(vragen.length);
-
-nagekeken=new Array(vragen.length);
-
-index=0;
-
-render();
-
-}
-
-
-function render(){
-
-let q=vragen[index];
-
-vraagNr.innerHTML="Vraag "+(index+1);
-
-vraagTekst.innerHTML=q.vraag;
-
-theorieTekst.innerHTML=q.theorie;
-
-counter.innerHTML=(index+1)+" / "+vragen.length;
-
-
-answers.innerHTML="";
-
-
-q.opties.forEach((o,i)=>{
-
-let b=document.createElement("div");
-
-b.className="answer";
-
-b.innerHTML=o;
-
-
-if(gekozen[index]==i)
-
-b.classList.add("selected");
-
-
-if(nagekeken[index]){
-
-if(i==q.goed)
-
-b.classList.add("correct");
-
-if(i==gekozen[index]&&i!=q.goed)
-
-b.classList.add("wrong");
-
-}
-
-
-b.onclick=()=>{
-
-if(nagekeken[index])return;
-
-gekozen[index]=i;
-
-render();
-
+const QUIZ_CONFIG = {
+  storageKey: 'exponentieel_1_basis',
+  subjectKey: 'exponentieel',
+  subjectTotal: 5,
+  quizNumber: 1,
+  prevQuiz: null,
+  nextQuiz: 'exponentieel_2_ln.html',
+  homePage: 'wiskunde/index.html',
+  roundSize: 8,
+  bank: [
+    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
+    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
+    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
+    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
+    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
+    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
+    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
+    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
+    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
+    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+  ]
 };
-
-
-answers.appendChild(b);
-
-});
-
-
-}
-
-
-function checkAntwoord(){
-
-if(gekozen[index]==null){
-
-feedback.innerHTML="kies antwoord";
-
-feedback.className="feedback bad";
-
-return;
-
-}
-
-
-nagekeken[index]=true;
-
-
-let q=vragen[index];
-
-
-if(gekozen[index]==q.goed){
-
-feedback.innerHTML="goed";
-
-feedback.className="feedback ok";
-
-}else{
-
-feedback.innerHTML="niet goed<br>"+q.uitleg;
-
-feedback.className="feedback bad";
-
-}
-
-
-render();
-
-
-if(nagekeken.every(v=>v)){
-
-finish();
-
-}
-
-}
-
-
-function finish(){
-
-let score=0;
-
-
-vragen.forEach((q,i)=>{
-
-if(gekozen[i]==q.goed)score++;
-
-});
-
-
-localStorage.setItem(STORAGE_KEY+"_last",score+"/"+vragen.length);
-
-
-let best=localStorage.getItem(STORAGE_KEY+"_best")||0;
-
-
-if(score>best)
-
-localStorage.setItem(STORAGE_KEY+"_best",score);
-
-
-best.innerHTML=localStorage.getItem(STORAGE_KEY+"_best");
-
-last.innerHTML=localStorage.getItem(STORAGE_KEY+"_last");
-
-
-locked=true;
-
-}
-
-
-function volgende(){
-
-
-if(index<vragen.length-1){
-
-index++;
-
-render();
-
-return;
-
-}
-
-
-if(!nagekeken.every(v=>v)){
-
-feedback.innerHTML="beantwoord alles";
-
-feedback.className="feedback bad";
-
-return;
-
-}
-
-
-if(NEXT_QUIZ)
-
-window.location.href=NEXT_QUIZ;
-
-else
-
-window.location.href=HOME_PAGE;
-
-
-}
-
-
-function vorige(){
-
-
-if(index>0){
-
-index--;
-
-render();
-
-return;
-
-}
-
-
-if(PREV_QUIZ)
-
-window.location.href=PREV_QUIZ;
-
-
-}
-
-
-theorieBtn.onclick=()=>{
-
-theorieTekst.classList.toggle("open");
-
-};
-
-
-best.innerHTML=localStorage.getItem(STORAGE_KEY+"_best")||0;
-
-last.innerHTML=localStorage.getItem(STORAGE_KEY+"_last")||"-";
-
-
-start();
-
-
 </script>
-
-
+<script src="wiskunde/js/quiz-flow.js"></script>
+<script>
+createQuizApp(QUIZ_CONFIG);
+</script>
 </body>
-
 </html>
