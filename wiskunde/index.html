@@ -1,420 +1,526 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VWO 5 Wiskunde B — Quizoverzicht</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --ink:#17324d;
+      --muted:#5f748a;
+      --line:#d8e2ee;
+      --brand:#2563eb;
+      --brand-dark:#1d4ed8;
+      --soft:#eaf2ff;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:22px;
+    }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    *{ box-sizing:border-box; }
 
-<title>VWO 5 Wiskunde B — Quizoverzicht</title>
+    html,body{
+      margin:0;
+      padding:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Arial, Helvetica, sans-serif;
+    }
 
-<style>
+    a{ color:inherit; }
 
-:root{
-  --bg:#f4f7fb;
-  --card:#ffffff;
-  --ink:#1f2937;
-  --muted:#64748b;
-  --brand:#2563eb;
-  --brand-dark:#1d4ed8;
-  --soft:#eef5ff;
-  --ok:#15803d;
-  --bad:#b91c1c;
-  --line:#dbe4f0;
-}
+    .page{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px 16px 40px;
+    }
 
-*{
-box-sizing:border-box;
-}
+    .hero{
+      background:linear-gradient(135deg, #ffffff 0%, #eef5ff 100%);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:24px 20px;
+      margin-bottom:22px;
+    }
 
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:linear-gradient(180deg,#f4f7fb,#edf3ff);
-color:var(--ink);
-line-height:1.45;
-}
+    .hero-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+    }
 
-.container{
-max-width:1150px;
-margin:0 auto;
-padding:18px;
-}
+    .badge{
+      display:inline-block;
+      background:#dbeafe;
+      color:#1d4ed8;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:.82rem;
+      font-weight:800;
+      margin-bottom:10px;
+    }
 
-.hero{
-background:var(--card);
-border-radius:20px;
-box-shadow:0 6px 24px rgba(0,0,0,.08);
-padding:26px;
-margin-bottom:20px;
-}
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 4vw, 2.7rem);
+      line-height:1.05;
+    }
 
-.badge{
-display:inline-block;
-background:#dbeafe;
-color:#1d4ed8;
-border-radius:999px;
-padding:4px 10px;
-font-size:.78rem;
-font-weight:700;
-margin-bottom:8px;
-}
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.5;
+      max-width:760px;
+    }
 
-.home-btn{
-display:inline-block;
-background:#475569;
-color:white;
-padding:8px 14px;
-border-radius:10px;
-text-decoration:none;
-font-weight:600;
-font-size:.9rem;
-margin-bottom:12px;
-}
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.home-btn:hover{
-background:#334155;
-}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:0 16px;
+      border-radius:14px;
+      border:2px solid var(--brand);
+      background:#fff;
+      color:var(--brand);
+      text-decoration:none;
+      font-weight:800;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+    }
 
-h1{
-margin:6px 0 8px;
-font-size:clamp(1.8rem,4vw,2.6rem);
-}
+    .btn:hover{
+      background:var(--soft);
+    }
 
-.sub{
-color:var(--muted);
-margin:0 0 10px 0;
-}
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:12px;
+      margin-top:18px;
+    }
 
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:10px;
-margin-top:12px;
-}
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 14px;
+    }
 
-.stat{
-background:var(--soft);
-border-radius:12px;
-padding:10px 12px;
-}
+    .stat-label{
+      color:var(--muted);
+      font-size:.88rem;
+      margin-bottom:6px;
+    }
 
-.stat .label{
-font-size:.82rem;
-color:var(--muted);
-}
+    .stat-value{
+      font-size:1.35rem;
+      font-weight:900;
+      color:var(--brand);
+    }
 
-.stat .value{
-font-size:1.15rem;
-font-weight:700;
-}
+    .section-title{
+      font-size:1.45rem;
+      font-weight:900;
+      margin:8px 0 14px;
+      color:var(--ink);
+    }
 
-.index-section{
-background:var(--card);
-border-radius:16px;
-box-shadow:0 4px 18px rgba(0,0,0,.08);
-padding:20px;
-margin-bottom:18px;
-}
+    .subjects{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:16px;
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:14px;
-}
+    .subject-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
 
-.quiz-card{
-display:block;
-text-decoration:none;
-color:white;
-background:#2563eb;
-padding:18px;
-border-radius:14px;
-box-shadow:0 4px 14px rgba(37,99,235,.22);
-font-size:1.02rem;
-}
+    .subject-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
 
-.quiz-card:hover{
-background:#1d4ed8;
-}
+    .subject-title{
+      margin:0;
+      font-size:1.15rem;
+      font-weight:900;
+    }
 
-.quiz-card strong{
-display:block;
-margin-bottom:6px;
-font-size:1.08rem;
-}
+    .subject-meta{
+      color:var(--muted);
+      font-size:.92rem;
+      margin:4px 0 0;
+      line-height:1.4;
+    }
 
-ul{
-margin:8px 0 0 18px;
-}
+    .subject-pill{
+      background:#eef2ff;
+      color:#334155;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:.78rem;
+      font-weight:800;
+      white-space:nowrap;
+    }
 
-@media (max-width:600px){
+    .progress-text{
+      font-size:.95rem;
+      font-weight:700;
+      color:var(--ink);
+    }
 
-.container{
-padding:12px;
-}
+    .progress-track{
+      width:100%;
+      height:14px;
+      background:#e8eef8;
+      border-radius:999px;
+      overflow:hidden;
+    }
 
-.hero{
-padding:18px;
-}
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#2563eb,#60a5fa);
+      transition:width .25s ease;
+    }
 
-.quiz-card{
-padding:16px;
-}
+    .quiz-list{
+      display:grid;
+      gap:8px;
+    }
 
-}
+    .quiz-link{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      background:#f8fbff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 12px;
+      transition:.2s ease;
+    }
 
-</style>
+    .quiz-link:hover{
+      background:var(--soft);
+      border-color:#bfd4ff;
+      transform:translateY(-1px);
+    }
 
+    .quiz-link-text{
+      font-size:.95rem;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .quiz-status{
+      font-size:.78rem;
+      font-weight:900;
+      color:var(--brand);
+      white-space:nowrap;
+    }
+
+    .subject-footer{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    .footer-note{
+      color:var(--muted);
+      font-size:.92rem;
+      margin-top:18px;
+      line-height:1.5;
+    }
+
+    @media (max-width:640px){
+      .page{
+        padding:12px 10px 26px;
+      }
+
+      .hero{
+        padding:18px 14px;
+        border-radius:22px;
+      }
+
+      .subject-card{
+        padding:14px 12px;
+      }
+
+      .quiz-link{
+        padding:11px 10px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="container">
-
-<div class="hero">
-
-<a href="../index.html" class="home-btn">
-← Home
-</a>
-
-<div class="badge">
-GitHub Pages klaar
-</div>
-
-<h1>
-VWO 5 Wiskunde B — interactieve quizsite
-</h1>
-
-<p class="sub">
-25 quizbestanden voor differentiëren, integreren, goniometrie, exponentiële functies en functie-analyse.
-</p>
-
-<div class="stats">
-
-<div class="stat">
-<div class="label">Aantal quizzen</div>
-<div class="value">25</div>
-</div>
-
-<div class="stat">
-<div class="label">Vragen per ronde</div>
-<div class="value">8</div>
-</div>
-
-<div class="stat">
-<div class="label">Extra functies</div>
-<div class="value">timer + toetsmodus</div>
-</div>
-
-<div class="stat">
-<div class="label">Opslag</div>
-<div class="value">beste score per quiz</div>
-</div>
-
-</div>
-
-<ul>
-
-<li>Elke quiz kiest willekeurig 8 vragen uit een databank van 10 vragen.</li>
-
-<li>Voortgangsbalk en directe feedback per vraag.</li>
-
-<li>Grafieken worden automatisch getekend waar relevant.</li>
-
-<li>Geschikt voor mobiel, tablet en laptop.</li>
-
-</ul>
-
-</div>
-
-
-
-<section class="index-section">
-
-<h2>Differentiëren</h2>
-
-<div class="grid">
-
-<a class="quiz-card" href="differentieren_1_basis.html">
-<strong>Differentiëren 1 — Basisregels</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="differentieren_2_tangenten.html">
-<strong>Differentiëren 2 — Raaklijnen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="differentieren_3_extremen.html">
-<strong>Differentiëren 3 — Maxima en minima</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="differentieren_4_kettingregel.html">
-<strong>Differentiëren 4 — Kettingregel</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="differentieren_5_toepassingen.html">
-<strong>Differentiëren 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-</div>
-
-</section>
-
-
-
-<section class="index-section">
-
-<h2>Integreren</h2>
-
-<div class="grid">
-
-<a class="quiz-card" href="integreren_1_basis.html">
-<strong>Integreren 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="integreren_2_bepaalde.html">
-<strong>Integreren 2 — Bepaalde integralen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="integreren_3_oppervlakte.html">
-<strong>Integreren 3 — Oppervlakten</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="integreren_4_substitutie.html">
-<strong>Integreren 4 — Substitutie</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="integreren_5_toepassingen.html">
-<strong>Integreren 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-</div>
-
-</section>
-
-
-
-<section class="index-section">
-
-<h2>Goniometrie</h2>
-
-<div class="grid">
-
-<a class="quiz-card" href="goniometrie_1_basis.html">
-<strong>Goniometrie 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="goniometrie_2_eenheidscirkel.html">
-<strong>Goniometrie 2 — Eenheidscirkel</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="goniometrie_3_vergelijkingen.html">
-<strong>Goniometrie 3 — Vergelijkingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="goniometrie_4_grafieken.html">
-<strong>Goniometrie 4 — Grafieken</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="goniometrie_5_toepassingen.html">
-<strong>Goniometrie 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-</div>
-
-</section>
-
-
-
-<section class="index-section">
-
-<h2>Exponentieel en ln</h2>
-
-<div class="grid">
-
-<a class="quiz-card" href="exponentieel_1_basis.html">
-<strong>Exponentieel 1 — Basis</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="exponentieel_2_ln.html">
-<strong>Exponentieel 2 — ln functies</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="exponentieel_3_groei.html">
-<strong>Exponentieel 3 — Groei en verval</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="exponentieel_4_vergelijkingen.html">
-<strong>Exponentieel 4 — Vergelijkingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="exponentieel_5_toepassingen.html">
-<strong>Exponentieel 5 — Toepassingen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-</div>
-
-</section>
-
-
-
-<section class="index-section">
-
-<h2>Functies en modelleren</h2>
-
-<div class="grid">
-
-<a class="quiz-card" href="functies_1_grafieken.html">
-<strong>Functies 1 — Grafieken lezen</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="functies_2_nulpunten.html">
-<strong>Functies 2 — Nulpunten</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="functies_3_asymptoten.html">
-<strong>Functies 3 — Asymptoten</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="functies_4_transformaties.html">
-<strong>Functies 4 — Transformaties</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-<a class="quiz-card" href="functies_5_modelleren.html">
-<strong>Functies 5 — Modelleren</strong>
-Willekeurige vragen, score-opslag en grafieken.
-</a>
-
-</div>
-
-</section>
-
-
-
-</div>
-
+  <div class="page">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="badge">VWO 5 Wiskunde B</div>
+          <h1>Quizoverzicht</h1>
+          <p class="sub">
+            Kies een onderwerp en werk de quizzen één voor één door. Op mobiel zie je telkens één vraag per scherm.
+            Na afronden ga je automatisch door naar de volgende quiz binnen hetzelfde onderwerp.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn" type="button" onclick="resetAllProgress()">Reset alle voortgang</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Onderwerpen</div>
+          <div class="stat-value" id="totalSubjects">5</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Totaal quizzen</div>
+          <div class="stat-value" id="totalQuizzes">25</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Voltooide quizzen</div>
+          <div class="stat-value" id="completedQuizzes">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Totale voortgang</div>
+          <div class="stat-value" id="overallPercent">0%</div>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Onderwerpen</h2>
+
+    <section class="subjects" id="subjectsGrid"></section>
+
+    <p class="footer-note">
+      Voortgang wordt lokaal opgeslagen in je browser via <code>localStorage</code>.
+      Als je op een ander apparaat werkt, begint de voortgang daar opnieuw.
+    </p>
+  </div>
+
+  <script>
+    const SUBJECTS = [
+      {
+        key: "differentieren",
+        title: "Differentiëren",
+        description: "Afgeleiden, raaklijnen, extremen en toepassingen",
+        quizzes: [
+          { file: "differentieren_1_basis.html", label: "Differentiëren 1 — Basisregels" },
+          { file: "differentieren_2_tangenten.html", label: "Differentiëren 2 — Raaklijnen" },
+          { file: "differentieren_3_extremen.html", label: "Differentiëren 3 — Maxima en minima" },
+          { file: "differentieren_4_kettingregel.html", label: "Differentiëren 4 — Kettingregel" },
+          { file: "differentieren_5_toepassingen.html", label: "Differentiëren 5 — Toepassingen" }
+        ]
+      },
+      {
+        key: "integreren",
+        title: "Integreren",
+        description: "Primitiveren, bepaalde integralen en toepassingen",
+        quizzes: [
+          { file: "integreren_1_basis.html", label: "Integreren 1 — Basis" },
+          { file: "integreren_2_bepaalde.html", label: "Integreren 2 — Bepaalde integralen" },
+          { file: "integreren_3_oppervlakte.html", label: "Integreren 3 — Oppervlakten" },
+          { file: "integreren_4_substitutie.html", label: "Integreren 4 — Herkennen en substitueren" },
+          { file: "integreren_5_toepassingen.html", label: "Integreren 5 — Toepassingen" }
+        ]
+      },
+      {
+        key: "goniometrie",
+        title: "Goniometrie",
+        description: "Eenheidscirkel, vergelijkingen, grafieken en toepassingen",
+        quizzes: [
+          { file: "goniometrie_1_basis.html", label: "Goniometrie 1 — Basis" },
+          { file: "goniometrie_2_eenheidscirkel.html", label: "Goniometrie 2 — Eenheidscirkel en radialen" },
+          { file: "goniometrie_3_vergelijkingen.html", label: "Goniometrie 3 — Vergelijkingen" },
+          { file: "goniometrie_4_grafieken.html", label: "Goniometrie 4 — Grafieken" },
+          { file: "goniometrie_5_toepassingen.html", label: "Goniometrie 5 — Toepassingen" }
+        ]
+      },
+      {
+        key: "exponentieel",
+        title: "Exponentieel en ln",
+        description: "e, ln, groei, verval en exponentiële vergelijkingen",
+        quizzes: [
+          { file: "exponentieel_1_basis.html", label: "Exponentieel en ln 1 — Basis en e" },
+          { file: "exponentieel_2_ln.html", label: "Exponentieel en ln 2 — Rekenen met ln" },
+          { file: "exponentieel_3_groei.html", label: "Exponentieel en ln 3 — Groei en verval" },
+          { file: "exponentieel_4_vergelijkingen.html", label: "Exponentieel en ln 4 — Vergelijkingen oplossen" },
+          { file: "exponentieel_5_toepassingen.html", label: "Exponentieel en ln 5 — Toepassingen" }
+        ]
+      },
+      {
+        key: "functies",
+        title: "Functies en modelleren",
+        description: "Grafieken lezen, nulpunten, asymptoten en transformaties",
+        quizzes: [
+          { file: "functies_1_grafieken.html", label: "Functies en modelleren 1 — Grafieken lezen" },
+          { file: "functies_2_nulpunten.html", label: "Functies en modelleren 2 — Nulpunten" },
+          { file: "functies_3_asymptoten.html", label: "Functies en modelleren 3 — Asymptoten" },
+          { file: "functies_4_transformaties.html", label: "Functies en modelleren 4 — Transformaties" },
+          { file: "functies_5_modelleren.html", label: "Functies en modelleren 5 — Modelleren" }
+        ]
+      }
+    ];
+
+    function getDoneArray(subjectKey){
+      try {
+        return JSON.parse(localStorage.getItem("subject_" + subjectKey + "_done") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function isQuizDone(subjectKey, quizNumber){
+      const done = getDoneArray(subjectKey);
+      return done.includes(quizNumber);
+    }
+
+    function renderSubjects(){
+      const grid = document.getElementById("subjectsGrid");
+      grid.innerHTML = "";
+
+      let totalQuizzes = 0;
+      let completedQuizzes = 0;
+
+      SUBJECTS.forEach(subject => {
+        const total = subject.quizzes.length;
+        const done = getDoneArray(subject.key);
+        const completed = done.length;
+        const percent = Math.round((completed / total) * 100);
+
+        totalQuizzes += total;
+        completedQuizzes += completed;
+
+        const card = document.createElement("article");
+        card.className = "subject-card";
+
+        const listHtml = subject.quizzes.map((quiz, index) => {
+          const number = index + 1;
+          const doneLabel = isQuizDone(subject.key, number) ? "Klaar" : "Open";
+          return `
+            <a class="quiz-link" href="${quiz.file}">
+              <span class="quiz-link-text">${quiz.label}</span>
+              <span class="quiz-status">${doneLabel}</span>
+            </a>
+          `;
+        }).join("");
+
+        const firstQuiz = subject.quizzes[0]?.file || "#";
+
+        card.innerHTML = `
+          <div class="subject-header">
+            <div>
+              <h3 class="subject-title">${subject.title}</h3>
+              <p class="subject-meta">${subject.description}</p>
+            </div>
+            <span class="subject-pill">${total} quizzen</span>
+          </div>
+
+          <div class="progress-text">Voortgang: ${completed} / ${total}</div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:${percent}%"></div>
+          </div>
+
+          <div class="quiz-list">
+            ${listHtml}
+          </div>
+
+          <div class="subject-footer">
+            <a class="btn" href="${firstQuiz}">Start onderwerp</a>
+            <button class="btn" type="button" onclick="resetSubjectProgress('${subject.key}')">Reset onderwerp</button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      document.getElementById("totalSubjects").textContent = SUBJECTS.length;
+      document.getElementById("totalQuizzes").textContent = totalQuizzes;
+      document.getElementById("completedQuizzes").textContent = completedQuizzes;
+      document.getElementById("overallPercent").textContent =
+        Math.round((completedQuizzes / totalQuizzes) * 100) + "%";
+    }
+
+    function resetSubjectProgress(subjectKey){
+      localStorage.removeItem("subject_" + subjectKey + "_done");
+
+      for(let i = 1; i <= 5; i++){
+        const prefixes = [
+          subjectKey + "_" + i,
+          subjectKey + "_quiz_" + i
+        ];
+        prefixes.forEach(prefix => {
+          localStorage.removeItem(prefix + "_best");
+          localStorage.removeItem(prefix + "_last");
+        });
+      }
+
+      const specificKeys = [
+        "differentieren_1_basis","differentieren_2_tangenten","differentieren_3_extremen","differentieren_4_kettingregel","differentieren_5_toepassingen",
+        "integreren_1_basis","integreren_2_bepaalde","integreren_3_oppervlakte","integreren_4_substitutie","integreren_5_toepassingen",
+        "goniometrie_1_basis","goniometrie_2_eenheidscirkel","goniometrie_3_vergelijkingen","goniometrie_4_grafieken","goniometrie_5_toepassingen",
+        "exponentieel_1_basis","exponentieel_2_ln","exponentieel_3_groei","exponentieel_4_vergelijkingen","exponentieel_5_toepassingen",
+        "functies_1_grafieken","functies_2_nulpunten","functies_3_asymptoten","functies_4_transformaties","functies_5_modelleren"
+      ];
+
+      specificKeys.forEach(key => {
+        if(key.startsWith(subjectKey + "_")){
+          localStorage.removeItem(key + "_best");
+          localStorage.removeItem(key + "_last");
+        }
+      });
+
+      renderSubjects();
+    }
+
+    function resetAllProgress(){
+      SUBJECTS.forEach(subject => {
+        localStorage.removeItem("subject_" + subject.key + "_done");
+      });
+
+      const allQuizKeys = [
+        "differentieren_1_basis","differentieren_2_tangenten","differentieren_3_extremen","differentieren_4_kettingregel","differentieren_5_toepassingen",
+        "integreren_1_basis","integreren_2_bepaalde","integreren_3_oppervlakte","integreren_4_substitutie","integreren_5_toepassingen",
+        "goniometrie_1_basis","goniometrie_2_eenheidscirkel","goniometrie_3_vergelijkingen","goniometrie_4_grafieken","goniometrie_5_toepassingen",
+        "exponentieel_1_basis","exponentieel_2_ln","exponentieel_3_groei","exponentieel_4_vergelijkingen","exponentieel_5_toepassingen",
+        "functies_1_grafieken","functies_2_nulpunten","functies_3_asymptoten","functies_4_transformaties","functies_5_modelleren"
+      ];
+
+      allQuizKeys.forEach(key => {
+        localStorage.removeItem(key + "_best");
+        localStorage.removeItem(key + "_last");
+      });
+
+      renderSubjects();
+    }
+
+    renderSubjects();
+  </script>
 </body>
 </html>
