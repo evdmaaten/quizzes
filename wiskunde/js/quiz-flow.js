@@ -1,4 +1,3 @@
-<script>
 window.createQuizApp = function(config){
   const STORAGE_KEY = config.storageKey;
   const BANK = config.bank;
@@ -323,4 +322,3 @@ window.createQuizApp = function(config){
   startRound();
   initSwipe();
 };
-</script>
