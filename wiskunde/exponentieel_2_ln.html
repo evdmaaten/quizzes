@@ -110,25 +110,25 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
+  storageKey: 'exponentieel_2_ln',
   subjectKey: 'exponentieel',
   subjectTotal: 5,
-  quizNumber: 1,
-  prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
+  quizNumber: 2,
+  prevQuiz: 'exponentieel_1_basis.html',
+  nextQuiz: 'exponentieel_3_groei.html',
   homePage: 'wiskunde/index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+    { prompt: 'Wat is ln(xy)?', options: ['ln x + ln y', 'ln x · ln y', 'ln(x+y)', 'x ln y'], answer: 0, theory: 'Productregel voor logaritmen.', explanation: 'ln(xy) = ln x + ln y.', graph: null },
+    { prompt: 'Wat is ln(x²)?', options: ['2ln x', 'ln x +2', 'x ln x', '(ln x)²'], answer: 0, theory: 'Machtsregel voor logaritmen.', explanation: 'ln(x²) = 2ln x voor x > 0.', graph: null },
+    { prompt: 'Wat is ln(1/x)?', options: ['ln x', '-ln x', '1/ln x', 'x'], answer: 1, theory: 'Schrijf als ln(x^-1).', explanation: 'Dus -ln x.', graph: null },
+    { prompt: 'Wat is ln(e^x)?', options: ['e ln x', 'x', '1', 'e^x'], answer: 1, theory: 'Inverse functies.', explanation: 'Geeft x.', graph: null },
+    { prompt: 'Welke uitspraak klopt?', options: ['ln(a+b)=ln a + ln b', 'ln(ab)=ln a + ln b', 'ln(a-b)=ln a - ln b altijd', 'ln(a²)=ln a² zonder vereenvoudiging'], answer: 1, theory: 'Alleen voor producten en machten zijn er standaardregels.', explanation: 'Sommen mogen niet zo worden gesplitst.', graph: null },
+    { prompt: 'Wat is 2ln x gelijk aan?', options: ['ln(2x)', 'ln(x²)', 'x²', 'ln x +2'], answer: 1, theory: 'Machtsregel omgekeerd.', explanation: '2ln x = ln(x²).', graph: null },
+    { prompt: 'Voor welke x is ln x gedefinieerd?', options: ['x≥0', 'x>0', 'alle x', 'x≠0'], answer: 1, theory: 'Logaritme van positieve getallen.', explanation: 'Dus x > 0.', graph: null },
+    { prompt: 'Wat is ln(e^-3)?', options: ['-3', '3', 'e^-3', '1/3'], answer: 0, theory: 'Inverse relatie.', explanation: 'Geeft -3.', graph: null },
+    { prompt: 'Wat is ln(√x)?', options: ['1/2 ln x', '2 ln x', 'ln x / x', '√(ln x)'], answer: 0, theory: 'Wortel als macht 1/2.', explanation: 'ln(x^(1/2)) = 1/2 ln x.', graph: null },
+    { prompt: 'Waarom is ln handig bij exponentiële modellen?', options: ['Omdat het kwadraten maakt', 'Omdat het exponenten naar voren haalt', 'Omdat het getallen kleiner maakt', 'Omdat het lineair wordt'], answer: 1, theory: 'Je kunt exponenten isoleren.', explanation: 'Daarom is oplossen makkelijker.', graph: null }
   ]
 };
 </script>
