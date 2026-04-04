@@ -110,25 +110,25 @@ canvas.graph{display:block;width:100%;height:220px}
 
 <script>
 const QUIZ_CONFIG = {
-  storageKey: 'exponentieel_1_basis',
+  storageKey: 'exponentieel_5_toepassingen',
   subjectKey: 'exponentieel',
   subjectTotal: 5,
-  quizNumber: 1,
-  prevQuiz: null,
-  nextQuiz: 'exponentieel_2_ln.html',
+  quizNumber: 5,
+  prevQuiz: 'exponentieel_4_vergelijkingen.html',
+  nextQuiz: null,
   homePage: 'wiskunde/index.html',
   roundSize: 8,
   bank: [
-    { prompt: 'Wat is e^0?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'Elke niet-nul macht tot 0 is 1.', explanation: 'Dus e^0 = 1.', graph: null },
-    { prompt: 'Wat is e^1?', options: ['0', '1', 'e', '2'], answer: 2, theory: 'Macht 1 verandert niets.', explanation: 'Dus e^1 = e.', graph: null },
-    { prompt: 'Wat is ln(e)?', options: ['0', '1', 'e', 'niet gedefinieerd'], answer: 1, theory: 'ln en e-macht heffen elkaar op.', explanation: 'ln(e) = 1.', graph: null },
-    { prompt: 'Wat is ln(1)?', options: ['0', '1', 'e', '-1'], answer: 0, theory: 'Omdat e^0 = 1.', explanation: 'Dus ln(1) = 0.', graph: null },
-    { prompt: 'Wat is e^(ln 5)?', options: ['ln 5', '5', 'e+5', '1'], answer: 1, theory: 'Inverse functies.', explanation: 'e^(ln 5) = 5.', graph: null },
-    { prompt: 'Wat is ln(e²)?', options: ['1', '2', 'e', 'e²'], answer: 1, theory: 'ln(e^a) = a.', explanation: 'Dus ln(e²) = 2.', graph: null },
-    { prompt: 'Wat is e^(ln x) voor x > 0?', options: ['1', 'x', 'ln x', 'e+x'], answer: 1, theory: 'Inverse relatie.', explanation: 'e^(ln x) = x.', graph: null },
-    { prompt: 'Welke functie groeit sneller voor grote x?', options: ['x²', 'e^x', 'x³', 'ln x'], answer: 1, theory: 'Exponentiële groei overheerst veeltermgroei.', explanation: 'e^x groeit hier het snelst.', graph: null },
-    { prompt: 'Wat is de afgeleide van e^x?', options: ['e^x', 'xe^(x-1)', '1/x', 'x'], answer: 0, theory: 'Unieke eigenschap van e^x.', explanation: 'De afgeleide van e^x blijft e^x.', graph: null },
-    { prompt: 'Wat is de afgeleide van ln x?', options: ['x', '1/x', 'ln x', 'e^x'], answer: 1, theory: 'Standaardregel.', explanation: 'Voor x > 0 is de afgeleide 1/x.', graph: null }
+    { prompt: 'Waarvoor wordt exponentiële groei vaak gebruikt?', options: ['constante snelheid', 'bevolkingsgroei', 'rechte lijnen', 'oppervlakte van driehoeken'], answer: 1, theory: 'Exponentiële modellen passen bij procentuele verandering per stap.', explanation: 'Bevolkingsgroei is een klassiek voorbeeld.', graph: null },
+    { prompt: 'Waarvoor wordt exponentieel verval vaak gebruikt?', options: ['radioactief verval', 'lineaire winst', 'optellen', 'worteltrekken'], answer: 0, theory: 'Bij een vaste procentuele afname gebruik je exponentieel verval.', explanation: 'Radioactief verval is daar een standaardvoorbeeld van.', graph: null },
+    { prompt: 'Wat betekent een groeifactor van 1,02 in een model?', options: ['2% afname', '20% toename', '2% toename', '0,2% toename'], answer: 2, theory: '1,02 = 100% + 2%.', explanation: 'Dus 2% groei per stap.', graph: null },
+    { prompt: 'Wat betekent een factor 0,85?', options: ['15% afname', '85% afname', '15% toename', '0,85% afname'], answer: 0, theory: '0,85 = 1 - 0,15.', explanation: 'Dus 15% afname.', graph: null },
+    { prompt: 'Wat is de beginwaarde in P(t)=500·0,9^t?', options: ['500', '0,9', '50', 't'], answer: 0, theory: 'De beginwaarde is de waarde bij t = 0.', explanation: 'Dat is 500.', graph: null },
+    { prompt: 'Hoe herken je exponentiële verandering in een tabel?', options: ['vast verschil', 'vaste vermenigvuldigingsfactor', 'vast kwadraat', 'altijd dalend'], answer: 1, theory: 'Exponentieel betekent telkens vermenigvuldigen met dezelfde factor.', explanation: 'Dus een vaste groeifactor.', graph: null },
+    { prompt: 'Bij welke situatie past ln vaak in de uitwerking?', options: ['als je tijd wilt vinden in een groeimodel', 'als je wilt optellen', 'als je een lijn tekent', 'als je nulpunten van x+2 zoekt'], answer: 0, theory: 'Met ln haal je de onbekende uit de exponent.', explanation: 'Dat gebruik je vaak om tijd of aantal perioden te vinden.', graph: null },
+    { prompt: 'Een bedrag groeit jaarlijks met 4%. Welke factor hoort daarbij?', options: ['0,96', '1,04', '1,4', '4'], answer: 1, theory: '4% groei betekent 100% + 4%.', explanation: 'Dus factor 1,04.', graph: null },
+    { prompt: 'Een hoeveelheid neemt elk uur 12% af. Welke factor hoort daarbij?', options: ['1,12', '0,12', '0,88', '1,88'], answer: 2, theory: '12% afname betekent overblijven: 88%.', explanation: 'Dus factor 0,88.', graph: null },
+    { prompt: 'Waarom is exponentieel modelleren nuttig?', options: ['Omdat alles lineair is', 'Omdat veel echte processen procentueel veranderen', 'Omdat het makkelijker is dan optellen', 'Omdat grafieken dan recht worden'], answer: 1, theory: 'Veel processen groeien of dalen relatief in plaats van absoluut.', explanation: 'Daarom zijn exponentiële modellen vaak realistisch.', graph: null }
   ]
 };
 </script>
