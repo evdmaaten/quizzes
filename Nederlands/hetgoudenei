@@ -1,130 +1,53 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VWO 5 Literatuur — Het Gouden Ei (Tim Krabbé)</title>
 
-<style>
-:root{
-  --bg:#f4f7fb;
-  --card:#ffffff;
-  --ink:#1f2937;
-  --muted:#64748b;
-  --brand:#2563eb;
-  --brand-dark:#1d4ed8;
-  --soft:#eef5ff;
-  --ok:#15803d;
-  --bad:#b91c1c;
-  --line:#d8e2ee;
-}
+<title>Het Gouden Ei — Quiz</title>
 
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background:var(--bg);
-  color:var(--ink);
-}
+<link rel="stylesheet" href="../assets/style.css?v=1.0">
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
-h1{
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.subtitle{
-  text-align:center;
-  color:var(--muted);
-  margin-bottom:25px;
-}
-
-.card{
-  background:var(--card);
-  border-radius:12px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  border:1px solid var(--line);
-}
-
-.question{
-  font-weight:600;
-  margin-bottom:12px;
-}
-
-.answers button{
-  display:block;
-  width:100%;
-  text-align:left;
-  padding:10px 12px;
-  margin-bottom:8px;
-  border-radius:8px;
-  border:1px solid var(--line);
-  background:white;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.answers button:hover{
-  background:var(--soft);
-}
-
-.correct{
-  background:#dcfce7;
-  border-color:#16a34a;
-}
-
-.incorrect{
-  background:#fee2e2;
-  border-color:#dc2626;
-}
-
-.score{
-  font-size:20px;
-  font-weight:600;
-  text-align:center;
-  margin-top:20px;
-}
-
-.home-btn{
-  display:block;
-  width:200px;
-  margin:30px auto;
-  text-align:center;
-  background:var(--brand);
-  color:white;
-  padding:12px;
-  border-radius:10px;
-  text-decoration:none;
-}
-
-.home-btn:hover{
-  background:var(--brand-dark);
-}
-</style>
 </head>
+
 
 <body>
 
 <div class="container">
 
-<h1>Het Gouden Ei — Quiz</h1>
-<div class="subtitle">VWO 5 Literatuur — Tim Krabbé</div>
+<h1>Het Gouden Ei</h1>
+
+<div class="subtitle">
+VWO 5 Literatuur — Tim Krabbé
+</div>
+
 
 <div id="quiz"></div>
 
-<div class="score" id="score"></div>
+<div id="score" class="score"></div>
 
-<a href="index.html" class="home-btn">Terug naar Home</a>
+
+<a class="home-btn" href="index.html">
+Terug naar Nederlands
+</a>
+
 
 </div>
 
+
+
+<script src="../assets/quiz.js?v=1.0"></script>
+
+
+
 <script>
+
 
 const questions = [
 
@@ -136,43 +59,43 @@ correct:1
 
 {
 q:"Wat is de naam van de hoofdpersoon?",
-a:["Rex Hofman","Raymond Lemorne","Saskia van Buren","Jan Dijk"],
+a:["Rex Hofman","Raymond Lemorne","Saskia van Buren","Theo"],
 correct:0
 },
 
 {
 q:"Wat gebeurt er met Saskia?",
-a:["Ze verhuist naar Frankrijk","Ze overlijdt aan ziekte","Ze verdwijnt spoorloos","Ze gaat vreemd"],
-correct:2
+a:["Ze verhuist naar Canada","Ze verdwijnt spoorloos","Ze trouwt met Rex","Ze krijgt een ongeluk"],
+correct:1
 },
 
 {
 q:"Waar verdwijnt Saskia?",
-a:["Op een camping","Bij een tankstation in Frankrijk","In een hotel","Op het strand"],
+a:["Op een strand","Bij een tankstation in Frankrijk","In een hotel","In een bos"],
 correct:1
 },
 
 {
-q:"Hoe heet de ontvoerder?",
-a:["Rex Hofman","Raymond Lemorne","Theo","Bert"],
-correct:1
-},
-
-{
-q:"Wat voor beroep heeft Raymond Lemorne?",
-a:["Chemicus","Leraar","Architect en scheikundeleraar","Journalist"],
+q:"Wie is de ontvoerder?",
+a:["Theo","Rex","Raymond Lemorne","Bert"],
 correct:2
 },
 
 {
-q:"Waarom ontvoert Raymond Saskia?",
-a:["Voor losgeld","Uit liefde","Om te bewijzen dat hij tot iets slechts in staat is","Uit jaloezie"],
+q:"Wat voor beroep heeft Raymond Lemorne?",
+a:["Arts","Architect en scheikundeleraar","Journalist","Politieagent"],
+correct:1
+},
+
+{
+q:"Waarom pleegt Raymond de ontvoering?",
+a:["Voor geld","Uit liefde","Om te bewijzen dat hij een misdaad kan plegen","Uit wraak"],
 correct:2
 },
 
 {
 q:"Hoeveel jaar zoekt Rex naar Saskia?",
-a:["1 jaar","3 jaar","8 jaar","20 jaar"],
+a:["2 jaar","5 jaar","8 jaar","15 jaar"],
 correct:2
 },
 
@@ -184,13 +107,13 @@ correct:1
 
 {
 q:"Wat belooft Raymond aan Rex?",
-a:["Hem geld te geven","Te vertellen wat er met Saskia gebeurd is","Hem te helpen zoeken","Hem naar Frankrijk te brengen"],
+a:["Geld","De waarheid over Saskia","Een baan","Een reis"],
 correct:1
 },
 
 {
-q:"Wat moet Rex doen om te weten wat er met Saskia gebeurd is?",
-a:["Een brief schrijven","Een interview geven","Hetzelfde lot ondergaan","Raymond helpen"],
+q:"Wat moet Rex doen om de waarheid te weten?",
+a:["Een boek schrijven","Een reis maken","Hetzelfde ondergaan als Saskia","Raymond helpen"],
 correct:2
 },
 
@@ -202,85 +125,85 @@ correct:2
 
 {
 q:"Wat is een belangrijk thema van het boek?",
-a:["Sport","Oorlog","Obsessie","Technologie"],
-correct:2
-},
-
-{
-q:"Wat symboliseert de droom van het gouden ei?",
-a:["Rijkdom","Eenzaamheid en opgesloten zijn","Succes","Vrijheid"],
+a:["Sport","Obsessie","Technologie","Politiek"],
 correct:1
 },
 
 {
-q:"Welke vertelperspectieven worden gebruikt?",
-a:["Alleen ik-perspectief","Alleen hij-perspectief","Meervoudig perspectief","Alleen jij-perspectief"],
+q:"Wat symboliseert de droom van het gouden ei?",
+a:["Vrijheid","Rijkdom","Opsluiting en isolement","Succes"],
 correct:2
 },
 
 {
-q:"Waarom is Rex geobsedeerd door het lot van Saskia?",
-a:["Hij wil geld","Hij kan niet leven met onzekerheid","Hij is journalist","Hij wil beroemd worden"],
+q:"Welk perspectief wordt gebruikt?",
+a:["Alleen ik-perspectief","Alleen jij-perspectief","Meervoudig perspectief","Alleen hij-perspectief"],
+correct:2
+},
+
+{
+q:"Waarom blijft Rex zoeken?",
+a:["Hij wil beroemd worden","Hij kan niet leven met onzekerheid","Hij krijgt geld","Hij wordt gedwongen"],
 correct:1
 },
 
 {
 q:"Wat voor karakter heeft Raymond?",
-a:["Onzeker en verlegen","Normaal en vriendelijk maar gevaarlijk","Agressief en impulsief","Onrealistisch"],
+a:["Impulsief","Normaal maar gevaarlijk","Emotioneel","Onzeker"],
 correct:1
 },
 
 {
 q:"Welke eigenschap van Raymond is belangrijk?",
-a:["Hij is impulsief","Hij plant alles nauwkeurig","Hij vergeet dingen","Hij is arm"],
+a:["Hij is chaotisch","Hij plant alles zorgvuldig","Hij vergeet alles","Hij is arm"],
 correct:1
 },
 
 {
-q:"Wat voor genre is Het Gouden Ei?",
-a:["Sciencefiction","Psychologische thriller","Fantasy","Historische roman"],
+q:"Tot welk genre behoort het boek?",
+a:["Fantasy","Psychologische thriller","Sciencefiction","Historische roman"],
 correct:1
 },
 
 {
 q:"Wat onderzoekt het boek vooral?",
-a:["De economie","De menselijke psyche","Sport","Techniek"],
-correct:1
+a:["Politiek","Sport","De menselijke psyche","Technologie"],
+correct:2
 },
 
 {
-q:"Waarom laat Raymond een experiment zien met een meisje dat dreigt te verdrinken?",
-a:["Om haar te helpen","Om te laten zien dat hij een held is","Om te testen of hij kan ingrijpen","Omdat hij boos is"],
+q:"Wat test Raymond bij het verdrinkexperiment?",
+a:["Zijn moed","Zijn intelligentie","Of hij kan ingrijpen of juist niet","Zijn kracht"],
 correct:2
 },
 
 {
 q:"Wat is het centrale conflict?",
-a:["Mens vs natuur","Mens vs techniek","Mens vs zichzelf","Mens vs overheid"],
-correct:2
-},
-
-{
-q:"Waarom accepteert Rex het aanbod van Raymond?",
-a:["Hij wil beroemd worden","Hij wil eindelijk zekerheid","Hij vertrouwt Raymond","Hij krijgt geld"],
+a:["Mens vs natuur","Mens vs zichzelf","Mens vs overheid","Mens vs techniek"],
 correct:1
 },
 
 {
-q:"Wat maakt het einde schokkend?",
-a:["Het is grappig","Het blijft open","Rex ondergaat hetzelfde lot als Saskia","Iedereen wordt gered"],
-correct:2
+q:"Waarom accepteert Rex het voorstel?",
+a:["Hij krijgt geld","Hij wil zekerheid","Hij vertrouwt Raymond","Hij is nieuwsgierig naar Frankrijk"],
+correct:1
 },
 
 {
-q:"Welke rol speelt toeval in het verhaal?",
-a:["Geen rol","Het bepaalt belangrijke gebeurtenissen","Alleen bij het begin","Alleen bij het einde"],
+q:"Wat maakt het einde zo schokkend?",
+a:["Het is onverwacht gelukkig","Rex ondergaat hetzelfde lot","Iedereen wordt gered","Het blijft onduidelijk"],
+correct:1
+},
+
+{
+q:"Welke rol speelt toeval?",
+a:["Geen rol","Belangrijke rol in gebeurtenissen","Alleen bij begin","Alleen bij einde"],
 correct:1
 },
 
 {
 q:"Welke structuur heeft het verhaal?",
-a:["Chronologisch zonder terugblikken","Met flashbacks en perspectiefwisselingen","Alleen dialogen","Alleen beschrijvingen"],
+a:["Alleen chronologisch","Met flashbacks en perspectiefwisselingen","Alleen dialogen","Alleen beschrijving"],
 correct:1
 },
 
@@ -298,98 +221,57 @@ correct:1
 
 {
 q:"Welke emotie overheerst bij Rex?",
-a:["Blijdschap","Onverschilligheid","Obsessie","Rust"],
-correct:2
-},
-
-{
-q:"Waarom past dit boek goed bij VWO literatuur?",
-a:["Het is heel eenvoudig","Het bevat diepere psychologische thema's","Het is alleen grappig","Het is een strip"],
+a:["Rust","Obsessie","Blijdschap","Onverschilligheid"],
 correct:1
 },
 
 {
-q:"Wat is het effect van het open karakter van sommige delen?",
-a:["Meer spanning","Minder spanning","Geen effect","Meer humor"],
-correct:0
-},
-
-{
-q:"Waarom blijft Het Gouden Ei populair?",
-a:["Het is lang","Het heeft een spannend en diep psychologisch verhaal","Het heeft veel illustraties","Het is makkelijk"],
+q:"Waarom is het boek geschikt voor VWO?",
+a:["Het is eenvoudig","Het bevat psychologische diepgang","Het is een strip","Het is humoristisch"],
 correct:1
 },
 
 {
-q:"Wat wil de schrijver laten zien over zekerheid?",
-a:["Dat zekerheid onbelangrijk is","Dat mensen alles willen weten","Dat kennis altijd gelukkig maakt","Dat mensen nooit nieuwsgierig zijn"],
+q:"Waarom wil de schrijver geen happy end?",
+a:["Dat verkoopt beter","Het past bij het thema van obsessie en zekerheid","Het boek was te kort","Het was toeval"],
 correct:1
 },
 
 {
-q:"Wat voor type boek is het?",
-a:["Detective","Psychologische roman","Strip","Gedicht"],
+q:"Wat wil Rex koste wat kost weten?",
+a:["Waar Saskia woont","Wat er met Saskia gebeurd is","Wie Raymond is","Waar het tankstation ligt"],
 correct:1
 },
 
 {
-q:"Wat is het belangrijkste idee achter het verhaal?",
-a:["Liefde overwint alles","Onzekerheid kan ondraaglijk zijn","Geld is belangrijk","Sport is gezond"],
+q:"Welke boodschap zit in het verhaal?",
+a:["Liefde overwint alles","Onzekerheid kan ondraaglijk zijn","Geld maakt gelukkig","Sport is belangrijk"],
+correct:1
+},
+
+{
+q:"Wat maakt het boek spannend?",
+a:["Actie","Psychologische spanning","Humor","Romantiek"],
+correct:1
+},
+
+{
+q:"Wat voor type roman is Het Gouden Ei?",
+a:["Detective","Psychologische roman","Strip","Dagboek"],
 correct:1
 }
 
 ];
 
-let score = 0;
 
-const quizDiv = document.getElementById("quiz");
 
-questions.forEach((item,index)=>{
+loadQuiz(questions);
 
-const card = document.createElement("div");
-card.className="card";
-
-const q = document.createElement("div");
-q.className="question";
-q.innerText = (index+1)+". "+item.q;
-
-const answers = document.createElement("div");
-answers.className="answers";
-
-item.a.forEach((text,i)=>{
-
-const btn = document.createElement("button");
-btn.innerText=text;
-
-btn.onclick=()=>{
-
-if(btn.classList.contains("correct") || btn.classList.contains("incorrect")) return;
-
-if(i===item.correct){
-btn.classList.add("correct");
-score++;
-}else{
-btn.classList.add("incorrect");
-answers.children[item.correct].classList.add("correct");
-}
-
-document.getElementById("score").innerText =
-"Score: "+score+" / "+questions.length;
-
-};
-
-answers.appendChild(btn);
-
-});
-
-card.appendChild(q);
-card.appendChild(answers);
-
-quizDiv.appendChild(card);
-
-});
 
 </script>
 
+
+
 </body>
+
 </html>
