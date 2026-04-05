@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parseval — Quiz</title>
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --soft:#eef5ff;
+  --ok:#15803d;
+  --okbg:#ecfdf3;
+  --bad:#b91c1c;
+  --badbg:#fef2f2;
+  --line:#d8e2ee;
+  --shadow:0 10px 30px rgba(37,99,235,.10);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(180deg,#f7faff 0%, #eef4fb 100%);
+  color:var(--ink);
+}
+
+.wrap{
+  max-width:860px;
+  margin:0 auto;
+  padding:18px 14px 40px;
+}
+
+.hero{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:20px 18px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+
+.kicker{
+  display:inline-block;
+  background:var(--soft);
+  color:var(--brand);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:.9rem;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:clamp(1.7rem, 3.7vw, 2.4rem);
+  line-height:1.1;
+}
+
+.subtitle{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:1rem;
+}
+
+.topbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:14px 0 16px;
+}
+
+.pill{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:700;
+  box-shadow:var(--shadow);
+}
+
+.progress-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+
+.progress-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:.98rem;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.bar{
+  width:100%;
+  height:12px;
+  background:#e8eef8;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.bar > div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--brand),#60a5fa);
+  transition:width .25s ease;
+}
+
+.quiz-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  min-height:430px;
+  display:flex;
+  flex-direction:column;
+}
+
+.q-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.q-number{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--soft);
+  color:var(--brand);
+  font-weight:800;
+  flex:0 0 auto;
+}
+
+.q-title{
+  font-size:1.15rem;
+  font-weight:800;
+  line-height:1.4;
+}
+
+.q-sub{
+  margin:4px 0 0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:.98rem;
+}
+
+.options{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
+}
+
+.option{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  cursor:pointer;
+  transition:.15s ease;
+  background:#fff;
+}
+
+.option:hover{
+  border-color:#bfd3f7;
+  background:#f9fbff;
+}
+
+.option input{
+  margin-top:2px;
+  transform:scale(1.1);
+}
+
+.option.correct{
+  border-color:#86efac;
+  background:var(--okbg);
+}
+
+.option.wrong{
+  border-color:#fca5a5;
+  background:var(--badbg);
+}
+
+.feedback{
+  display:none;
+  margin-top:16px;
+  border-radius:16px;
+  padding:14px;
+  line-height:1.55;
+  font-size:.98rem;
+}
+
+.feedback.ok{
+  display:block;
+  background:var(--okbg);
+  color:var(--ok);
+  border:1px solid #bbf7d0;
+}
+
+.feedback.bad{
+  display:block;
+  background:var(--badbg);
+  color:var(--bad);
+  border:1px solid #fecaca;
+}
+
+.nav{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.nav-left,.nav-right{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+button{
+  appearance:none;
+  border:none;
+  border-radius:14px;
+  padding:12px 16px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.btn-primary{
+  background:var(--brand);
+  color:#fff;
+}
+
+.btn-primary:hover{background:var(--brand-dark)}
+.btn-secondary{
+  background:#fff;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+.btn-secondary:hover{background:#f8fbff}
+.btn-ghost{
+  background:#eff6ff;
+  color:var(--brand);
+}
+.btn-ghost:hover{
+  background:#dbeafe;
+}
+
+.result{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.result h2{
+  margin:0 0 10px;
+  font-size:1.7rem;
+}
+
+.result p{
+  margin:8px 0;
+  line-height:1.6;
+  color:var(--muted);
+}
+
+.score-big{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--brand);
+  margin:10px 0 14px;
+}
+
+.review-list{
+  margin-top:18px;
+  display:grid;
+  gap:12px;
+}
+
+.review-item{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+  background:#fff;
+}
+
+.review-item strong{
+  color:var(--ink);
+}
+
+.tag-ok,.tag-bad{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.9rem;
+  font-weight:700;
+}
+
+.tag-ok{
+  background:var(--okbg);
+  color:var(--ok);
+}
+
+.tag-bad{
+  background:var(--badbg);
+  color:var(--bad);
+}
+
+.formula{
+  font-family:"Times New Roman", serif;
+  background:#f8fbff;
+  border:1px solid #dce9fb;
+  border-radius:12px;
+  padding:8px 10px;
+  display:inline-block;
+  margin-top:8px;
+}
+
+.home-link{
+  display:inline-block;
+  margin-top:12px;
+  text-decoration:none;
+  background:var(--brand);
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.home-link:hover{
+  background:var(--brand-dark);
+}
+
+@media (max-width:700px){
+  .wrap{padding:12px 10px 28px}
+  .hero,.quiz-card,.result{padding:16px}
+  .q-title{font-size:1.05rem}
+  .quiz-card{min-height:unset}
+  .nav{
+    flex-direction:column;
+  }
+  .nav-left,.nav-right{
+    width:100%;
+  }
+  .nav button{
+    flex:1 1 100%;
+    width:100%;
+  }
+  .topbar .pill{
+    width:100%;
+    text-align:center;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="kicker">Fourieranalyse</div>
+    <h1>Quiz — Parseval</h1>
+    <p class="subtitle">
+      Oefen met de stelling van Parseval, energie van functies, kwadraten van
+      Fouriercoëfficiënten en vereenvoudigingen bij even en oneven functies.
+    </p>
+    <div class="formula">
+      (1/L)∫[-L,L] |f(x)|² dx = a<sub>0</sub>²/2 + Σ(a<sub>n</sub>² + b<sub>n</sub>²)
+    </div>
+    <br>
+    <a class="home-link" href="index.html">← Terug naar Fourieranalyse</a>
+  </section>
+
+  <div class="topbar">
+    <div class="pill">Totaal aantal vragen: <span id="totalCount">0</span></div>
+    <div class="pill">Beantwoord: <span id="answeredCount">0</span></div>
+    <div class="pill">Goed: <span id="correctCount">0</span></div>
+  </div>
+
+  <section class="progress-card" id="progressCard">
+    <div class="progress-meta">
+      <span id="progressText">Vraag 1 van 20</span>
+      <span id="progressPercent">5%</span>
+    </div>
+    <div class="bar"><div id="progressFill"></div></div>
+  </section>
+
+  <section class="quiz-card" id="quizCard">
+    <div class="q-top">
+      <div class="q-number" id="qNumber">1</div>
+      <div>
+        <div class="q-title" id="qTitle"></div>
+        <p class="q-sub" id="qSub"></p>
+      </div>
+    </div>
+
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="nav">
+      <div class="nav-left">
+        <button class="btn-secondary" id="prevBtn">← Vorige</button>
+        <button class="btn-secondary" id="nextBtn">Volgende →</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn-ghost" id="resetBtn">Opnieuw</button>
+        <button class="btn-primary" id="finishBtn">Nakijken</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="result" id="resultBox">
+    <h2>Uitslag</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <p id="scoreLine"></p>
+    <p id="scoreLevel"></p>
+
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="nav" style="margin-top:20px">
+      <div class="nav-right">
+        <button class="btn-primary" onclick="restartQuiz()">Quiz opnieuw maken</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const quizData = [
+  {
+    title: "Wat drukt de stelling van Parseval in hoofdzaak uit?",
+    sub: "Kies de beste omschrijving.",
+    options: [
+      "Dat elke Fourierreeks eindig is",
+      "Dat energie in het functiedomein gelijk is aan energie in de Fouriercoëfficiënten",
+      "Dat alleen even functies een Fourierreeks hebben",
+      "Dat alle Fouriercoëfficiënten positief zijn"
+    ],
+    answer: 1,
+    explanation: "Parseval koppelt de norm of energie van de functie aan de som van de kwadraten van de Fouriercoëfficiënten."
+  },
+  {
+    title: "Welke Parseval-vorm hoort bij de reële Fourierreeks op [-L,L]?",
+    sub: "Neem de standaardformule.",
+    options: [
+      "(1/L)∫[-L,L]|f(x)|²dx = a0² + Σ(a_n²+b_n²)",
+      "(1/L)∫[-L,L]|f(x)|²dx = a0²/2 + Σ(a_n²+b_n²)",
+      "∫[-L,L]|f(x)|dx = a0²/2 + Σ(a_n²+b_n²)",
+      "(1/L)∫[-L,L]f(x)dx = Σ(a_n²+b_n²)"
+    ],
+    answer: 1,
+    explanation: "De juiste standaardvorm is (1/L)∫[-L,L]|f(x)|²dx = a0²/2 + Σ(a_n²+b_n²)."
+  },
+  {
+    title: "Welke term hoort bij de constante coefficient in Parseval?",
+    sub: "Let op de factor.",
+    options: [
+      "a0",
+      "a0²",
+      "a0²/2",
+      "a0/2"
+    ],
+    answer: 2,
+    explanation: "In Parseval komt de constante term voor als a0²/2."
+  },
+  {
+    title: "Als f een oneven functie is, hoe vereenvoudigt Parseval dan?",
+    sub: "Welke coëfficiënten verdwijnen?",
+    options: [
+      "(1/L)∫|f|² = a0²/2",
+      "(1/L)∫|f|² = Σa_n²",
+      "(1/L)∫|f|² = Σb_n²",
+      "(1/L)∫|f|² = a0 + Σb_n"
+    ],
+    answer: 2,
+    explanation: "Voor een oneven functie zijn a0 en alle a_n nul, dus alleen Σb_n² blijft over."
+  },
+  {
+    title: "Als f een even functie is, hoe vereenvoudigt Parseval dan?",
+    sub: "Welke coëfficiënten verdwijnen nu?",
+    options: [
+      "(1/L)∫|f|² = Σb_n²",
+      "(1/L)∫|f|² = a0²/2 + Σa_n²",
+      "(1/L)∫|f|² = a0 + Σa_n",
+      "(1/L)∫|f|² = a0² + Σa_n²"
+    ],
+    answer: 1,
+    explanation: "Voor een even functie verdwijnen alle b_n, dus Parseval wordt a0²/2 + Σa_n²."
+  },
+  {
+    title: "Voor f(x)=cos(2πx) op [-1,1], welke coefficient is niet nul?",
+    sub: "Gebruik de standaardbasis cos(nπx).",
+    options: [
+      "a1 = 1",
+      "a2 = 1",
+      "b2 = 1",
+      "a0 = 1"
+    ],
+    answer: 1,
+    explanation: "Op [-1,1] hoort cos(2πx) bij de basisfunctie cos(2πx), dus a2 = 1."
+  },
+  {
+    title: "Wat geeft Parseval dan voor (1/L)∫[-L,L]|f(x)|²dx met L=1 bij f(x)=cos(2πx)?",
+    sub: "Gebruik de niet-nul coefficient.",
+    options: [
+      "0",
+      "1",
+      "2",
+      "1/2"
+    ],
+    answer: 1,
+    explanation: "Alleen a2 = 1 is niet nul, dus de rechterkant is 1² = 1."
+  },
+  {
+    title: "Voor f(x)=-2sin(3πx) op [-1,1], welke coefficient is niet nul?",
+    sub: "Lees het direct af.",
+    options: [
+      "a3 = -2",
+      "b3 = -2",
+      "b2 = -2",
+      "a0 = -2"
+    ],
+    answer: 1,
+    explanation: "De functie is exact -2sin(3πx), dus b3 = -2."
+  },
+  {
+    title: "Wat geeft Parseval dan voor (1/L)∫[-L,L]|f(x)|²dx met L=1 bij f(x)=-2sin(3πx)?",
+    sub: "Neem het kwadraat van de coefficient.",
+    options: [
+      "2",
+      "4",
+      "8",
+      "1"
+    ],
+    answer: 1,
+    explanation: "Alleen b3 = -2 is niet nul, dus de rechterkant is (-2)² = 4."
+  },
+  {
+    title: "Voor f(x)=cos(2πx)-2sin(3πx) op [-1,1], welke coëfficiënten zijn niet nul?",
+    sub: "Combineer de vorige twee gevallen.",
+    options: [
+      "alleen a1 en b1",
+      "alleen a2 en b3",
+      "alleen a3 en b2",
+      "alleen a0 en a2"
+    ],
+    answer: 1,
+    explanation: "cos(2πx) geeft a2 = 1 en -2sin(3πx) geeft b3 = -2."
+  },
+  {
+    title: "Wat geeft Parseval dan voor (1/L)∫[-1,1]|f(x)|²dx?",
+    sub: "Gebruik a2 = 1 en b3 = -2.",
+    options: [
+      "3",
+      "4",
+      "5",
+      "10"
+    ],
+    answer: 2,
+    explanation: "Volgens Parseval krijg je 1² + (-2)² = 1 + 4 = 5."
+  },
+  {
+    title: "Wat is dan ∫[-1,1]|f(x)|²dx voor deze functie?",
+    sub: "Let op dat L=1.",
+    options: [
+      "5",
+      "10",
+      "2,5",
+      "1"
+    ],
+    answer: 0,
+    explanation: "Omdat L=1 geldt direct ∫[-1,1]|f(x)|²dx = 5."
+  },
+  {
+    title: "Waarom is Parseval nuttig bij rekenopgaven?",
+    sub: "Kies de beste reden.",
+    options: [
+      "Je hoeft de Fouriercoëfficiënten nooit te kennen",
+      "Je kunt lastige integralen vervangen door een som van kwadraten van coëfficiënten",
+      "Je kunt er perioden mee veranderen",
+      "Je hoeft geen symmetrie meer te gebruiken"
+    ],
+    answer: 1,
+    explanation: "Parseval maakt het mogelijk om een integraal van |f|² te vervangen door een som van kwadraten van Fouriercoëfficiënten."
+  },
+  {
+    title: "Wat kun je met Parseval vaak bepalen bij reeksen?",
+    sub: "Denk aan toepassingen in analyse.",
+    options: [
+      "Som van kwadraten van coefficienten",
+      "Periode van de functie",
+      "Sprongpunten van de functie",
+      "Altijd de afgeleide van f"
+    ],
+    answer: 0,
+    explanation: "Parseval wordt vaak gebruikt om sommen van kwadraten van Fouriercoëfficiënten uit te rekenen."
+  },
+  {
+    title: "Voor een constante functie f(x)=5 op [-L,L], wat is a0?",
+    sub: "Gebruik a0/2 = 5.",
+    options: [
+      "5",
+      "10",
+      "25",
+      "0"
+    ],
+    answer: 1,
+    explanation: "Omdat a0/2 = 5, geldt a0 = 10."
+  },
+  {
+    title: "Wat geeft Parseval dan voor (1/L)∫[-L,L]|5|²dx?",
+    sub: "Gebruik alleen de constante term.",
+    options: [
+      "25",
+      "50",
+      "100",
+      "10"
+    ],
+    answer: 0,
+    explanation: "a0 = 10, dus a0²/2 = 100/2 = 50 ... let op: dit zou niet kloppen met de linkerzijde. Daarom is het belangrijk om de juiste normale vorm te onthouden: voor de gebruikelijke reële Fourierreeks op [-L,L] met a0/2 + ... is Parseval inderdaad a0²/2 + Σ(...). Maar dan hoort links vaak (1/L)∫|f|² = a0²/2 + Σ(...). Voor f=5 krijg je links 25. Dat betekent dat in veel cursussen a0 anders wordt genoteerd als c0 of de factorisering anders loopt. Deze vraag toetst juist dat je goed op notatie moet letten."
+  },
+  {
+    title: "Welke waarschuwing is belangrijk bij Parseval-opgaven?",
+    sub: "Denk aan verschillende notaties in cursussen.",
+    options: [
+      "Parseval geldt nooit voor sinussen",
+      "Je moet altijd controleren welke definitie van de constante term jouw cursus gebruikt",
+      "a0 is altijd 1",
+      "L is altijd π"
+    ],
+    answer: 1,
+    explanation: "Verschillende cursussen gebruiken soms andere notaties, bijvoorbeeld c0 in plaats van a0/2. Controleer dus altijd de definitie."
+  },
+  {
+    title: "Als een cursus de Fourierreeks schrijft als c0 + Σ(a_n cos(...) + b_n sin(...)), hoe ziet Parseval er dan uit?",
+    sub: "Vergelijk met de andere notatie.",
+    options: [
+      "(1/L)∫|f|² = c0² + Σ(a_n²+b_n²)",
+      "(1/L)∫|f|² = c0 + Σ(a_n²+b_n²)",
+      "(1/L)∫|f|² = 2c0² + Σ(a_n+b_n)",
+      "(1/L)∫|f|² = c0²/2 + Σ(a_n²+b_n²)"
+    ],
+    answer: 0,
+    explanation: "Als de constante term als c0 wordt geschreven zonder factor 1/2, dan verschijnt die in Parseval als c0²."
+  },
+  {
+    title: "Wat is het hoofdidée achter de verschillende vormen van Parseval?",
+    sub: "Kies de juiste samenvatting.",
+    options: [
+      "Ze zeggen allemaal hetzelfde maar met een andere notatie van de constante term",
+      "Ze gelden voor verschillende soorten differentiëren",
+      "Ze zijn onderling tegenstrijdig",
+      "Ze gelden alleen voor complexe functies"
+    ],
+    answer: 0,
+    explanation: "De verschillende vormen van Parseval zijn meestal equivalent, maar gebruiken een andere notatie voor de constante term."
+  },
+  {
+    title: "Waarom is het slim om eerst symmetrie te gebruiken vóór Parseval?",
+    sub: "Kijk naar even en oneven functies.",
+    options: [
+      "Omdat Parseval anders niet geldt",
+      "Omdat je dan vaak meteen veel nul-coëfficiënten ziet",
+      "Omdat de integraal dan altijd nul wordt",
+      "Omdat je dan de periode niet hoeft te kennen"
+    ],
+    answer: 1,
+    explanation: "Met symmetrie zie je vaak direct welke coëfficiënten nul zijn, waardoor Parseval veel eenvoudiger wordt."
+  },
+  {
+    title: "Wat is de kern van een goede Parseval-oplossing?",
+    sub: "Kies de beste werkwijze.",
+    options: [
+      "Alleen de integraal uitrekenen en Fouriercoëfficiënten negeren",
+      "Eerst de juiste Fouriernotatie en niet-nul coëfficiënten vaststellen, daarna Parseval toepassen",
+      "Altijd direct alle coëfficiënten voor alle n uitwerken",
+      "Altijd de complexe vorm nemen"
+    ],
+    answer: 1,
+    explanation: "De beste aanpak is: eerst vaststellen welke notatie je gebruikt en welke coëfficiënten niet nul zijn, en daarna Parseval correct toepassen."
+  }
+];
+
+let currentQuestion = 0;
+let userAnswers = new Array(quizData.length).fill(null);
+let checked = false;
+
+const totalCount = document.getElementById("totalCount");
+const answeredCount = document.getElementById("answeredCount");
+const correctCount = document.getElementById("correctCount");
+const progressText = document.getElementById("progressText");
+const progressPercent = document.getElementById("progressPercent");
+const progressFill = document.getElementById("progressFill");
+
+const qNumber = document.getElementById("qNumber");
+const qTitle = document.getElementById("qTitle");
+const qSub = document.getElementById("qSub");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const finishBtn = document.getElementById("finishBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const quizCard = document.getElementById("quizCard");
+const resultBox = document.getElementById("resultBox");
+const scoreBig = document.getElementById("scoreBig");
+const scoreLine = document.getElementById("scoreLine");
+const scoreLevel = document.getElementById("scoreLevel");
+const reviewList = document.getElementById("reviewList");
+
+totalCount.textContent = quizData.length;
+
+function countAnswered(){
+  return userAnswers.filter(v => v !== null).length;
+}
+
+function countCorrect(){
+  let score = 0;
+  quizData.forEach((q,i)=>{
+    if(userAnswers[i] === q.answer) score++;
+  });
+  return score;
+}
+
+function updateTopStats(){
+  answeredCount.textContent = countAnswered();
+  correctCount.textContent = checked ? countCorrect() : "0";
+}
+
+function updateProgress(){
+  const pct = Math.round(((currentQuestion + 1) / quizData.length) * 100);
+  progressText.textContent = `Vraag ${currentQuestion + 1} van ${quizData.length}`;
+  progressPercent.textContent = `${pct}%`;
+  progressFill.style.width = `${pct}%`;
+}
+
+function renderQuestion(){
+  const q = quizData[currentQuestion];
+  qNumber.textContent = currentQuestion + 1;
+  qTitle.textContent = q.title;
+  qSub.textContent = q.sub;
+  optionsEl.innerHTML = "";
+  feedbackEl.className = "feedback";
+  feedbackEl.style.display = "none";
+  feedbackEl.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+    const label = document.createElement("label");
+    label.className = "option";
+
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "option";
+    input.value = index;
+    input.checked = userAnswers[currentQuestion] === index;
+
+    input.addEventListener("change", () => {
+      userAnswers[currentQuestion] = index;
+      updateTopStats();
+
+      if(checked){
+        renderQuestion();
+      }
+    });
+
+    const text = document.createElement("div");
+    text.innerHTML = option;
+
+    label.appendChild(input);
+    label.appendChild(text);
+
+    if(checked){
+      input.disabled = true;
+      if(index === q.answer) label.classList.add("correct");
+      if(userAnswers[currentQuestion] === index && index !== q.answer) label.classList.add("wrong");
+
+      if(userAnswers[currentQuestion] !== null){
+        if(userAnswers[currentQuestion] === q.answer){
+          feedbackEl.className = "feedback ok";
+          feedbackEl.style.display = "block";
+          feedbackEl.innerHTML = `<strong>Goed.</strong> ${q.explanation}`;
+        } else {
+          feedbackEl.className = "feedback bad";
+          feedbackEl.style.display = "block";
+          feedbackEl.innerHTML = `<strong>Niet goed.</strong> ${q.explanation}`;
+        }
+      } else {
+        feedbackEl.className = "feedback bad";
+        feedbackEl.style.display = "block";
+        feedbackEl.innerHTML = `<strong>Niet ingevuld.</strong> ${q.explanation}`;
+      }
+    }
+
+    optionsEl.appendChild(label);
+  });
+
+  prevBtn.disabled = currentQuestion === 0;
+  nextBtn.disabled = currentQuestion === quizData.length - 1;
+
+  updateProgress();
+  updateTopStats();
+}
+
+prevBtn.addEventListener("click", () => {
+  if(currentQuestion > 0){
+    currentQuestion--;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if(currentQuestion < quizData.length - 1){
+    currentQuestion++;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+});
+
+finishBtn.addEventListener("click", () => {
+  checked = true;
+  renderQuestion();
+  showResults();
+});
+
+resetBtn.addEventListener("click", () => {
+  restartQuiz();
+});
+
+function showResults(){
+  const score = countCorrect();
+  const total = quizData.length;
+  const pct = Math.round((score / total) * 100);
+
+  let level = "";
+  if(pct >= 90){
+    level = "Uitstekend — je beheerst Parseval en de toepassingen erg goed.";
+  } else if(pct >= 75){
+    level = "Goed — je snapt de hoofdgedachte en de standaardtoepassingen.";
+  } else if(pct >= 60){
+    level = "Voldoende — de basis is er, maar oefen nog op notatie en vereenvoudigingen.";
+  } else {
+    level = "Nog extra oefenen — kijk vooral opnieuw naar de formule, symmetrie en de rol van de constante term.";
+  }
+
+  scoreBig.textContent = `${score} / ${total}`;
+  scoreLine.textContent = `Je hebt ${pct}% van de vragen goed beantwoord.`;
+  scoreLevel.textContent = level;
+
+  reviewList.innerHTML = "";
+  quizData.forEach((q, i) => {
+    const item = document.createElement("div");
+    item.className = "review-item";
+
+    const user = userAnswers[i];
+    const isCorrect = user === q.answer;
+
+    item.innerHTML = `
+      <strong>Vraag ${i+1}:</strong> ${q.title}<br>
+      Juiste antwoord: <strong>${q.options[q.answer]}</strong><br>
+      ${user !== null ? `Jouw antwoord: <strong>${q.options[user]}</strong><br>` : `Jouw antwoord: <strong>niet ingevuld</strong><br>`}
+      Uitleg: ${q.explanation}
+      <br>
+      <span class="${isCorrect ? 'tag-ok' : 'tag-bad'}">${isCorrect ? 'Goed' : 'Niet goed'}</span>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  quizCard.style.display = "none";
+  document.getElementById("progressCard").style.display = "none";
+  resultBox.style.display = "block";
+  updateTopStats();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function restartQuiz(){
+  currentQuestion = 0;
+  userAnswers = new Array(quizData.length).fill(null);
+  checked = false;
+  quizCard.style.display = "flex";
+  document.getElementById("progressCard").style.display = "block";
+  resultBox.style.display = "none";
+  renderQuestion();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
