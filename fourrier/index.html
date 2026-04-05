@@ -3,134 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fourieranalyse — Quizoverzicht</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Fourieranalyse</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero__content">
-        <p class="eyebrow">Wiskunde / Analyse</p>
-        <h1>Fourieranalyse</h1>
-        <p class="hero__text">
-          Oefen met complexe getallen, inproducten, orthogonaliteit,
-          Fourierreeksen, Parseval, Fourierintegralen en Fouriergetransformeerden.
-        </p>
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Fourieranalyse</h1>
+    </div>
+    <div class="topbar-right">
+      <a href="../index.html" class="home-button">Home</a>
+    </div>
+  </header>
 
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="../index.html">← Home</a>
-        </div>
-      </div>
-    </header>
+  <main class="subject-page">
+    <section class="quiz-grid">
 
-    <main class="content">
-      <section class="section">
-        <div class="section__head">
-          <h2>Quizzen Fourieranalyse</h2>
-          <p>
-            Kies een onderwerp om te oefenen.
-          </p>
-        </div>
+      <a href="complexe_getallen.html" class="quiz-card">
+        <h2>Complexe getallen</h2>
+        <p>i, modulus en argument</p>
+      </a>
 
-        <div class="quiz-grid">
-          <a class="quiz-card" href="complexe_getallen.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Basis</span>
-            </div>
-            <h3>Complexe getallen</h3>
-            <p>Rekenen met complexe getallen, modulus, argument en poolvorm.</p>
-          </a>
+      <a href="inproducten_normen.html" class="quiz-card">
+        <h2>Inproducten en normen</h2>
+        <p>Afstand en orthogonaliteit</p>
+      </a>
 
-          <a class="quiz-card" href="inproducten_normen.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Basis</span>
-            </div>
-            <h3>Inproducten en normen</h3>
-            <p>Inproduct, norm, afstand en orthogonaliteit in functieruimten.</p>
-          </a>
+      <a href="orthogonaliteit.html" class="quiz-card">
+        <h2>Orthogonaliteit</h2>
+        <p>Loodrechte functies</p>
+      </a>
 
-          <a class="quiz-card" href="orthogonaliteit.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Basis</span>
-            </div>
-            <h3>Orthogonaliteit</h3>
-            <p>Orthogonale verzamelingen en projecties.</p>
-          </a>
+      <a href="fourierreeksen_basis.html" class="quiz-card">
+        <h2>Fourierreeksen basis</h2>
+        <p>Sinus- en cosinusreeksen</p>
+      </a>
 
-          <a class="quiz-card" href="fourierreeksen_basis.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Fourierreeksen</span>
-            </div>
-            <h3>Fourierreeksen — basis</h3>
-            <p>Algemene vorm, coëfficiënten, periode en interpretatie.</p>
-          </a>
+      <a href="even_oneven.html" class="quiz-card">
+        <h2>Even en oneven</h2>
+        <p>Symmetrie gebruiken</p>
+      </a>
 
-          <a class="quiz-card" href="fourierreeksen_even_oneven.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Fourierreeksen</span>
-            </div>
-            <h3>Even en oneven functies</h3>
-            <p>Gebruik symmetrie om Fouriercoëfficiënten sneller te bepalen.</p>
-          </a>
+      <a href="parseval.html" class="quiz-card">
+        <h2>Parseval</h2>
+        <p>Energie en coëfficiënten</p>
+      </a>
 
-          <a class="quiz-card" href="fourierreeksen_parseval.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Fourierreeksen</span>
-            </div>
-            <h3>Fourierreeksen en Parseval</h3>
-            <p>Oefenen met Fouriercoëfficiënten, energie en Parseval.</p>
-          </a>
+      <a href="complexe_fourierreeks.html" class="quiz-card">
+        <h2>Complexe Fourierreeks</h2>
+        <p>Exponentiële vorm</p>
+      </a>
 
-          <a class="quiz-card" href="fase_amplitude_vorm.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Fourierreeksen</span>
-            </div>
-            <h3>Fase-amplitude-vorm</h3>
-            <p>Sinus- en cosinustermen herschrijven met amplitude en fase.</p>
-          </a>
+      <a href="fourierintegralen.html" class="quiz-card">
+        <h2>Fourierintegralen</h2>
+        <p>Van reeks naar integraal</p>
+      </a>
 
-          <a class="quiz-card" href="complexe_fourierreeksen.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Verdieping</span>
-            </div>
-            <h3>Complexe Fourierreeksen</h3>
-            <p>Exponentiële vorm en coëfficiënten bij e<sup>inx</sup>.</p>
-          </a>
+      <a href="fouriertransformatie.html" class="quiz-card">
+        <h2>Fouriertransformatie</h2>
+        <p>Getransformeerden</p>
+      </a>
 
-          <a class="quiz-card" href="parseval_uitgebreid.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Verdieping</span>
-            </div>
-            <h3>Parseval — uitgebreid</h3>
-            <p>Verschillende vormen van Parseval en toepassingen.</p>
-          </a>
+      <a href="samenvatting.html" class="quiz-card">
+        <h2>Samenvatting</h2>
+        <p>Alles door elkaar</p>
+      </a>
 
-          <a class="quiz-card" href="fourierintegralen.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Integralen</span>
-            </div>
-            <h3>Fourierintegralen</h3>
-            <p>Van Fourierreeksen naar integraalvormen op ℝ.</p>
-          </a>
+    </section>
+  </main>
 
-          <a class="quiz-card" href="fouriergetransformeerde.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Integralen</span>
-            </div>
-            <h3>Fouriergetransformeerde</h3>
-            <p>Basisvoorbeelden, rekenregels en standaardfuncties.</p>
-          </a>
-
-          <a class="quiz-card" href="samenvatting_fourieranalyse.html">
-            <div class="quiz-card__top">
-              <span class="quiz-card__tag">Overzicht</span>
-            </div>
-            <h3>Samenvattende quiz</h3>
-            <p>Mix van alle onderwerpen uit Fourieranalyse.</p>
-          </a>
-        </div>
-      </section>
-    </main>
-  </div>
+  <script src="../js/quiz.js"></script>
 </body>
 </html>
