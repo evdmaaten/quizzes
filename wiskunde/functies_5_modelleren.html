@@ -1,370 +1,361 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Functies en modelleren 5 — Modelleren</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Functies 5 — Modelleren</title>
 <style>
 :root{
-  --bg:#f4f7fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b; --brand:#2563eb;
-  --brand-dark:#1d4ed8; --soft:#eef5ff; --ok:#15803d; --bad:#b91c1c; --line:#dbe4f0;
+  --bg:#f4f7fb; --card:#ffffff; --ink:#17324d; --muted:#5f748a; --line:#d8e2ee;
+  --brand:#2563eb; --soft:#eaf2ff; --ok:#15803d; --bad:#b91c1c;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
-a{color:inherit}
-.container{max-width:1150px;margin:0 auto;padding:16px}
-.layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
-.sidebar,.panel,.question-card{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
-.sidebar{position:sticky;top:12px;padding:14px;max-height:calc(100vh - 24px);overflow:auto}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.brand h1{font-size:1.08rem;margin:0}
-.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
-.side-group{margin-top:12px}
-.side-group h3{font-size:.9rem;color:var(--muted);margin:10px 0 6px}
-.side-links{display:grid;gap:6px}
-.side-links a{display:block;text-decoration:none;padding:9px 10px;border-radius:10px;background:#f8fbff;border:1px solid var(--line);font-size:.92rem}
-.side-links a:hover,.side-links a.active{background:var(--soft);border-color:#bfd4ff}
-.main{min-width:0}
-.panel{padding:18px;margin-bottom:16px}
-.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.title h2{margin:0 0 4px;font-size:clamp(1.35rem,4vw,2rem)}
-.sub{color:var(--muted);margin:0}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-button,.btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:11px 15px;border-radius:10px;cursor:pointer;text-decoration:none;font-weight:700}
-button:hover,.btn:hover{background:var(--brand-dark)}
-button.secondary{background:#475569}
-button.secondary:hover{background:#334155}
-button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
-button.ghost:hover{background:#f8fbff}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
-.stat{background:var(--soft);border-radius:12px;padding:10px 12px}
-.stat .label{font-size:.82rem;color:var(--muted)}
-.stat .value{font-size:1.15rem;font-weight:700}
-.progress{margin-top:14px;background:#e8eef8;border-radius:999px;height:12px;overflow:hidden}
-.progress span{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);width:0%}
-.quiz-grid{display:grid;gap:14px}
-.question-card{padding:16px}
-.question-card h3{margin:0 0 8px;font-size:1.03rem}
-.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.pill{background:#eef2ff;color:#334155;border-radius:999px;padding:4px 9px;font-size:.78rem}
-.theory{background:var(--soft);border-left:4px solid var(--brand);padding:10px 12px;border-radius:8px;margin:0 0 12px;font-size:.94rem}
-.graph-wrap{margin:8px 0 12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
-canvas.graph{display:block;width:100%;height:220px}
-.options label{display:block;padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;cursor:pointer;background:#f9fbff}
-.options label:hover{background:var(--soft)}
-.feedback{margin-top:10px}
-.good{color:var(--ok);font-weight:700}
-.bad{color:var(--bad);font-weight:700}
-.explanation{margin-top:6px;color:#334155}
-.small{font-size:.92rem;color:var(--muted)}
-.notice{background:#fff8e8;border:1px solid #f8d572;padding:10px 12px;border-radius:10px;color:#7c5f00}
-.footer-note{color:var(--muted);font-size:.92rem}
-.toggle{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#f8fbff;border:1px solid var(--line);border-radius:10px}
-.nav-arrows{display:flex;gap:8px;flex-wrap:wrap}
-@media (max-width:900px){
-  .layout{grid-template-columns:1fr}
-  .sidebar{position:static;max-height:none}
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
 }
-@media (max-width:600px){
-  .container{padding:10px}
-  .panel,.question-card,.sidebar{padding:12px}
-  canvas.graph{height:190px}
-  button,.btn{width:100%;text-align:center}
-  .controls,.nav-arrows{display:grid;grid-template-columns:1fr}
+.page{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+}
+.quiz-shell{
+  width:100%;
+  max-width:520px;
+  min-height:100vh;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #fff 0px,
+      #fff 50px,
+      #dbe5f0 51px,
+      #fff 52px
+    );
+  display:flex;
+  flex-direction:column;
+  padding:18px 16px 20px;
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+.vraag-label{
+  font-size:2rem;
+  font-weight:900;
+  color:var(--brand);
+}
+.home-btn{
+  border:3px solid var(--brand);
+  border-radius:12px;
+  padding:8px 14px;
+  text-decoration:none;
+  color:var(--brand);
+  font-weight:800;
+  background:white;
+}
+.question-box{
+  border:4px solid var(--brand);
+  border-radius:18px;
+  background:white;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.question-main{
+  padding:24px;
+  text-align:center;
+  font-size:1.35rem;
+  font-weight:800;
+  min-height:140px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.theory-bar{
+  border:none;
+  border-top:4px solid var(--brand);
+  padding:10px;
+  background:white;
+  font-weight:800;
+  color:var(--brand);
+  cursor:pointer;
+}
+.theory-content{
+  display:none;
+  padding:14px;
+  border-top:1px solid var(--line);
+}
+.theory-content.open{
+  display:block;
+}
+.answers{
+  display:grid;
+  gap:12px;
+  margin-bottom:18px;
+}
+.answer{
+  border:3px solid #9bb6db;
+  border-radius:18px;
+  padding:14px;
+  background:white;
+  cursor:pointer;
+  font-weight:700;
+}
+.answer.selected{
+  border-color:var(--brand);
+  background:var(--soft);
+}
+.answer.correct{
+  border-color:var(--ok);
+  background:#ecfdf3;
+}
+.answer.wrong{
+  border-color:var(--bad);
+  background:#fef2f2;
+}
+.check-btn{
+  width:100%;
+  border:4px solid var(--brand);
+  border-radius:18px;
+  padding:16px;
+  font-size:1.2rem;
+  font-weight:900;
+  background:white;
+  color:var(--brand);
+}
+.nav-bottom{
+  display:grid;
+  grid-template-columns:60px 1fr 60px;
+  align-items:center;
+  margin-top:10px;
+}
+.nav-btn{
+  font-size:2rem;
+  border:none;
+  background:none;
+  color:var(--brand);
+}
+.counter{
+  text-align:center;
+  font-weight:800;
+}
+.meta{
+  text-align:center;
+  font-size:.9rem;
+  color:var(--muted);
+}
+.result-panel{
+  margin-top:10px;
+  font-size:.9rem;
 }
 </style>
 </head>
+
 <body>
-<div class="container">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="brand">
-        <h1>VWO 5 Wiskunde B</h1>
-        <span class="badge">Quizsite</span>
-      </div>
-      <div class="small">Snelle navigatie tussen alle onderdelen.</div>
-      <div class="side-group"><div class="side-links"><a href="index.html">← Terug naar overzicht</a></div></div>
-      <div class="side-group"><h3>Differentiëren</h3><div class="side-links"><a class="" href="differentieren_1_basis.html">Differentiëren 1 — Basisregels</a><a class="" href="differentieren_2_tangenten.html">Differentiëren 2 — Raaklijnen</a><a class="" href="differentieren_3_extremen.html">Differentiëren 3 — Maxima en minima</a><a class="" href="differentieren_4_kettingregel.html">Differentiëren 4 — Kettingregel</a><a class="" href="differentieren_5_toepassingen.html">Differentiëren 5 — Toepassingen</a></div></div><div class="side-group"><h3>Integreren</h3><div class="side-links"><a class="" href="integreren_1_basis.html">Integreren 1 — Basis</a><a class="" href="integreren_2_bepaalde.html">Integreren 2 — Bepaalde integralen</a><a class="" href="integreren_3_oppervlakte.html">Integreren 3 — Oppervlakten</a><a class="" href="integreren_4_substitutie.html">Integreren 4 — Herkennen en substitueren</a><a class="" href="integreren_5_toepassingen.html">Integreren 5 — Toepassingen</a></div></div><div class="side-group"><h3>Goniometrie</h3><div class="side-links"><a class="" href="goniometrie_1_basis.html">Goniometrie 1 — Basis</a><a class="" href="goniometrie_2_eenheidscirkel.html">Goniometrie 2 — Eenheidscirkel en radialen</a><a class="" href="goniometrie_3_vergelijkingen.html">Goniometrie 3 — Vergelijkingen</a><a class="" href="goniometrie_4_grafieken.html">Goniometrie 4 — Grafieken</a><a class="" href="goniometrie_5_toepassingen.html">Goniometrie 5 — Toepassingen</a></div></div><div class="side-group"><h3>Exponentieel en ln</h3><div class="side-links"><a class="" href="exponentieel_1_basis.html">Exponentieel en ln 1 — Basis en e</a><a class="" href="exponentieel_2_ln.html">Exponentieel en ln 2 — Rekenen met ln</a><a class="" href="exponentieel_3_groei.html">Exponentieel en ln 3 — Groei en verval</a><a class="" href="exponentieel_4_vergelijkingen.html">Exponentieel en ln 4 — Vergelijkingen oplossen</a><a class="" href="exponentieel_5_toepassingen.html">Exponentieel en ln 5 — Toepassingen</a></div></div><div class="side-group"><h3>Functies en modelleren</h3><div class="side-links"><a class="" href="functies_1_grafieken.html">Functies en modelleren 1 — Grafieken lezen</a><a class="" href="functies_2_nulpunten.html">Functies en modelleren 2 — Nulpunten</a><a class="" href="functies_3_asymptoten.html">Functies en modelleren 3 — Asymptoten</a><a class="" href="functies_4_transformaties.html">Functies en modelleren 4 — Transformaties</a><a class="active" href="functies_5_modelleren.html">Functies en modelleren 5 — Modelleren</a></div></div>
-    </aside>
+<div class="page">
+<main class="quiz-shell">
 
-    <main class="main">
-      <section class="panel">
-        <div class="topbar">
-          <div class="title">
-            <div class="badge">Functies en modelleren</div>
-            <h2>Functies en modelleren 5 — Modelleren</h2>
-            <p class="sub">VWO 5 Wiskunde B • 8 willekeurige vragen per ronde</p>
-          </div>
-          <div class="nav-arrows">
-            <a class="btn" href="functies_4_transformaties.html">Vorige</a>
-            <a class="btn" href="index.html">Volgende</a>
-          </div>
-        </div>
+<div class="topbar">
+  <div class="vraag-label" id="vraagNummer">Vraag 1</div>
+  <a class="home-btn" href="index.html">Home</a>
+</div>
 
-        <div class="controls">
-          <button onclick="buildQuiz()">Nieuwe willekeurige quiz</button>
-          <button class="secondary" onclick="checkQuiz()">Controleer antwoorden</button>
-          <button class="ghost" onclick="toggleExamMode()"><span id="examBtnText">Toetsmodus: uit</span></button>
-          <button class="ghost" onclick="toggleTimer()"><span id="timerBtnText">Timer starten</span></button>
-        </div>
+<section class="question-box">
+  <div class="question-main" id="questionText"></div>
+  <button class="theory-bar" id="toggleTheoryBtn">THEORIE</button>
+  <div class="theory-content" id="theoryText"></div>
+</section>
 
-        <div class="stats">
-          <div class="stat"><div class="label">Vragen in databank</div><div class="value" id="bankCount"></div></div>
-          <div class="stat"><div class="label">Vragen in deze ronde</div><div class="value" id="roundCount"></div></div>
-          <div class="stat"><div class="label">Beantwoord</div><div class="value" id="answeredCount">0</div></div>
-          <div class="stat"><div class="label">Beste score</div><div class="value" id="bestScore">0</div></div>
-          <div class="stat"><div class="label">Laatste score</div><div class="value" id="lastScore">—</div></div>
-          <div class="stat"><div class="label">Timer</div><div class="value" id="timerValue">00:00</div></div>
-        </div>
+<section class="answers" id="answersWrap"></section>
 
-        <div class="progress" aria-label="Voortgang"><span id="progressBar"></span></div>
-        <p class="small" id="progressText">0 van 0 vragen ingevuld.</p>
-        <div class="notice" id="modeNotice">Toetsmodus uit: je kunt altijd tussendoor nakijken en een nieuwe set starten.</div>
-      </section>
+<button class="check-btn" id="checkBtn">CHECK ANTWOORD</button>
 
-      <div class="quiz-grid" id="quiz"></div>
+<div id="feedback"></div>
 
-      <section class="panel">
-        <h3 style="margin-top:0">Resultaat</h3>
-        <div id="result">Klik op <strong>Controleer antwoorden</strong> als je klaar bent.</div>
-        <p class="footer-note">Beste score en laatste score worden lokaal opgeslagen in je browser met <code>localStorage</code>. Timer en toetsmodus resetten bij een nieuwe ronde.</p>
-      </section>
-    </main>
+<div class="nav-bottom">
+  <button class="nav-btn" id="prevBtn">◀</button>
+  <div>
+    <div class="counter" id="counter">1 / 8</div>
+    <div class="meta">Functies • Modelleren</div>
+    <div class="meta" id="subjectProgressText"></div>
   </div>
+  <button class="nav-btn" id="nextBtn">▶</button>
+</div>
+
+<div class="result-panel">
+  Beste score: <span id="bestScore">0</span><br>
+  Laatste score: <span id="lastScore">—</span>
+</div>
+
+</main>
 </div>
 
 <script>
-const STORAGE_KEY = "functies_5_modelleren";
-const BANK = [{"prompt": "Welk model past het best bij constante toename per tijdseenheid?", "options": ["Lineair", "Exponentieel", "Sinus", "Hyperbool"], "answer": 0, "theory": "Vast verschil per stap.", "explanation": "Dat is lineair.", "graph": null}, {"prompt": "Welk model past het best bij constante procentuele groei?", "options": ["Lineair", "Exponentieel", "Kwadratisch", "Goniometrisch"], "answer": 1, "theory": "Vaste factor per stap.", "explanation": "Dat is exponentieel.", "graph": null}, {"prompt": "Welk model past het best bij een periodieke beweging?", "options": ["Lineair", "Exponentieel", "Sinus/cosinus", "Wortelfunctie"], "answer": 2, "theory": "Herhalend patroon.", "explanation": "Daar gebruik je goniometrische functies voor.", "graph": null}, {"prompt": "Welk model past vaak bij een opgeworpen bal?", "options": ["Lineair", "Exponentieel", "Parabool", "Hyperbool"], "answer": 2, "theory": "Hoogte als functie van tijd onder zwaartekracht.", "explanation": "Dat is kwadratisch.", "graph": null}, {"prompt": "Waarom is grafiekgedrag belangrijk bij modelleren?", "options": ["Om de mooiste formule te kiezen", "Om een model te kiezen dat past bij de context", "Om altijd een sinus te nemen", "Omdat getallen niet nodig zijn"], "answer": 1, "theory": "Context en vorm moeten overeenkomen.", "explanation": "Zo kies je een passend model.", "graph": null}, {"prompt": "Een model moet naast goed rekenen ook...", "options": ["altijd ingewikkeld zijn", "betekenis hebben in de context", "zonder variabelen zijn", "alleen uit tabellen bestaan"], "answer": 1, "theory": "Interpretatie hoort erbij.", "explanation": "Een model moet zinvol zijn.", "graph": null}, {"prompt": "Als data ongeveer op een rechte lijn liggen, kies je vaak...", "options": ["een lineair model", "een sinusmodel", "een exponentieel model", "een wortelmodel"], "answer": 0, "theory": "Grafiekvorm stuurt de modelkeuze.", "explanation": "Rechte lijn → lineair.", "graph": null}, {"prompt": "Als data eerst snel stijgen en daarna steeds sneller, kies je vaak...", "options": ["lineair", "exponentieel", "sinus", "constant"], "answer": 1, "theory": "Versnellende groei past bij exponentieel.", "explanation": "Dat is het standaardmodel.", "graph": null}, {"prompt": "Wat is meestal de eerste stap bij modelleren?", "options": ["Differentiëren", "De situatie begrijpen en variabelen kiezen", "De uitkomst raden", "Logaritmen nemen"], "answer": 1, "theory": "Goede variabelen en context eerst.", "explanation": "Daarna pas formulekeuze.", "graph": null}, {"prompt": "Waarom controleer je een model met de gegevens?", "options": ["Voor de vorm", "Om te zien of het model redelijk past", "Omdat het moet van de formule", "Niet nodig"], "answer": 1, "theory": "Een model is een benadering.", "explanation": "Je moet nagaan of het goed genoeg aansluit.", "graph": null}];
-const ROUND_SIZE = Math.min(8, BANK.length);
-let activeQuestions = [];
-let examMode = false;
-let timerRunning = false;
-let timerSeconds = 0;
-let timerHandle = null;
-let checkedAlready = false;
+const QUIZ_CONFIG = {
+  storageKey:'functies_5_modelleren',
+  subjectKey:'functies',
+  subjectTotal:5,
+  quizNumber:5,
+  prevQuiz:'functies_4_transformaties.html',
+  nextQuiz:null,
+  homePage:'index.html',
+  roundSize:8,
 
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
+  bank:[
 
-function formatTime(sec){
-  const m = Math.floor(sec/60).toString().padStart(2,'0');
-  const s = (sec%60).toString().padStart(2,'0');
-  return `${m}:${s}`;
-}
+    {
+      prompt:'Wat betekent modelleren in de wiskunde?',
+      options:[
+        'Een formule maken die een situatie beschrijft',
+        'Alleen een grafiek natekenen',
+        'Een vergelijking oplossen zonder context',
+        'Een afbeelding spiegelen'
+      ],
+      answer:0,
+      theory:'Bij modelleren gebruik je een formule of functie om een echte situatie te beschrijven.',
+      explanation:'Dus een model is een wiskundige beschrijving van een situatie.',
+      graph:null
+    },
 
-function updateTimerDisplay(){
-  document.getElementById('timerValue').textContent = formatTime(timerSeconds);
-}
+    {
+      prompt:'Waarom gebruik je een model?',
+      options:[
+        'Om voorspellingen te doen',
+        'Alleen om te tekenen',
+        'Om letters te vervangen',
+        'Om formules mooier te maken'
+      ],
+      answer:0,
+      theory:'Met een model kun je rekenen aan een situatie en voorspellingen maken.',
+      explanation:'Daarom zijn modellen nuttig.',
+      graph:null
+    },
 
-function toggleTimer(){
-  if(timerRunning){
-    clearInterval(timerHandle);
-    timerHandle = null;
-    timerRunning = false;
-    document.getElementById('timerBtnText').textContent = 'Timer starten';
-  } else {
-    timerRunning = true;
-    document.getElementById('timerBtnText').textContent = 'Timer pauzeren';
-    timerHandle = setInterval(() => {
-      timerSeconds += 1;
-      updateTimerDisplay();
-    }, 1000);
-  }
-}
+    {
+      prompt:'Welke functie past vaak bij constante toename?',
+      options:[
+        'Exponentiële functie',
+        'Lineaire functie',
+        'Wortelfunctie',
+        'Breukfunctie'
+      ],
+      answer:1,
+      theory:'Constante toename betekent dat er telkens hetzelfde bedrag bijkomt.',
+      explanation:'Dat hoort bij een lineair model.',
+      graph:null
+    },
 
-function stopTimer(){
-  if(timerHandle) clearInterval(timerHandle);
-  timerHandle = null;
-  timerRunning = false;
-  document.getElementById('timerBtnText').textContent = 'Timer starten';
-}
+    {
+      prompt:'Welke functie past vaak bij procentuele groei?',
+      options:[
+        'Lineaire functie',
+        'Exponentiële functie',
+        'Constante functie',
+        'Absolute waarde functie'
+      ],
+      answer:1,
+      theory:'Bij procentuele groei vermenigvuldig je steeds met dezelfde factor.',
+      explanation:'Dat hoort bij een exponentieel model.',
+      graph:null
+    },
 
-function toggleExamMode(){
-  examMode = !examMode;
-  document.getElementById('examBtnText').textContent = examMode ? 'Toetsmodus: aan' : 'Toetsmodus: uit';
-  document.getElementById('modeNotice').innerHTML = examMode
-    ? 'Toetsmodus aan: na <strong>Controleer antwoorden</strong> wordt deze ronde vergrendeld. Start daarna een nieuwe willekeurige quiz voor de volgende ronde.'
-    : 'Toetsmodus uit: je kunt altijd tussendoor nakijken en een nieuwe set starten.';
-}
+    {
+      prompt:'Wat is vaak de eerste stap bij modelleren?',
+      options:[
+        'Direct de afgeleide nemen',
+        'Kijken welke grootheden en verbanden er zijn',
+        'De integraal nemen',
+        'Een nulpunt zoeken'
+      ],
+      answer:1,
+      theory:'Eerst bepaal je welke variabelen en verbanden belangrijk zijn.',
+      explanation:'Dus eerst de situatie analyseren.',
+      graph:null
+    },
 
-function loadStats(){
-  const best = localStorage.getItem(STORAGE_KEY + "_best") || "0";
-  const last = localStorage.getItem(STORAGE_KEY + "_last") || "—";
-  document.getElementById("bestScore").textContent = best;
-  document.getElementById("lastScore").textContent = last;
-  document.getElementById("bankCount").textContent = BANK.length;
-}
+    {
+      prompt:'Wat geeft een lineair model meestal weer?',
+      options:[
+        'Constante verandering per stap',
+        'Constante factor per stap',
+        'Altijd een top',
+        'Altijd een asymptoot'
+      ],
+      answer:0,
+      theory:'Lineair betekent een vaste toename of afname.',
+      explanation:'Dus constante verandering per stap.',
+      graph:null
+    },
 
-function updateProgress(){
-  let answered = 0;
-  activeQuestions.forEach((_, index) => {
-    const sel = document.querySelector(`input[name="q${index}"]:checked`);
-    if(sel) answered++;
-  });
-  const total = activeQuestions.length || 0;
-  const pct = total ? Math.round((answered/total)*100) : 0;
-  document.getElementById('answeredCount').textContent = String(answered);
-  document.getElementById('progressText').textContent = `${answered} van ${total} vragen ingevuld.`;
-  document.getElementById('progressBar').style.width = pct + '%';
-}
+    {
+      prompt:'Wat geeft een exponentieel model meestal weer?',
+      options:[
+        'Vaste toename',
+        'Vaste afname in absolute zin',
+        'Vaste factor per stap',
+        'Altijd nulpunten'
+      ],
+      answer:2,
+      theory:'Exponentieel betekent vermenigvuldigen met dezelfde factor.',
+      explanation:'Dus vaste factor per stap.',
+      graph:null
+    },
 
-function attachOptionListeners(){
-  document.querySelectorAll('input[type="radio"]').forEach(el => {
-    el.addEventListener('change', updateProgress);
-  });
-}
+    {
+      prompt:'Waarom controleer je of een model goed past?',
+      options:[
+        'Omdat een model altijd exact klopt',
+        'Omdat een model een benadering is',
+        'Omdat je anders niet mag rekenen',
+        'Omdat grafieken altijd fout zijn'
+      ],
+      answer:1,
+      theory:'Een model is meestal een vereenvoudiging van de werkelijkheid.',
+      explanation:'Daarom controleer je of het model goed genoeg past.',
+      graph:null
+    },
 
-function buildQuiz(){
-  stopTimer();
-  timerSeconds = 0;
-  updateTimerDisplay();
-  checkedAlready = false;
-  activeQuestions = shuffle(BANK).slice(0, ROUND_SIZE);
-  document.getElementById("roundCount").textContent = activeQuestions.length;
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = "";
-  activeQuestions.forEach((item,index)=>{
-    const card = document.createElement("div");
-    card.className = "question-card";
-    const options = item.options.map((opt,i)=>`
-      <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
-    `).join("");
-    const graphHtml = item.graph ? `<div class="graph-wrap"><canvas class="graph" id="graph${index}" width="800" height="220"></canvas></div>` : "";
-    card.innerHTML = `
-      <div class="meta-row">
-        <span class="pill">Vraag ${index+1}</span>
-        <span class="pill">Functies en modelleren</span>
-      </div>
-      <div class="theory"><strong>Theorie:</strong> ${item.theory}</div>
-      <h3>${item.prompt}</h3>
-      ${graphHtml}
-      <div class="options">${options}</div>
-      <div class="feedback" id="fb${index}"></div>
-    `;
-    quiz.appendChild(card);
-  });
-  activeQuestions.forEach((item,index)=>{ if(item.graph) drawGraph("graph"+index,item.graph); });
-  attachOptionListeners();
-  updateProgress();
-  document.getElementById("result").innerHTML = "Nieuwe ronde klaar. Beantwoord de vragen en klik daarna op <strong>Controleer antwoorden</strong>.";
-}
+    {
+      prompt:'Wat kun je met een model doen als het goed past?',
+      options:[
+        'Voorspellen en interpoleren/extrapoleren',
+        'Alleen de titel veranderen',
+        'Letters weghalen',
+        'Alleen grafieken kleuren'
+      ],
+      answer:0,
+      theory:'Een goed model kun je gebruiken om waarden te schatten of voorspellen.',
+      explanation:'Dus voorspellen en rekenen aan de situatie.',
+      graph:null
+    },
 
-function lockInputs(){
-  document.querySelectorAll('input[type="radio"]').forEach(el => el.disabled = true);
-}
-
-function checkQuiz(){
-  if(!activeQuestions.length) return;
-  if(examMode && checkedAlready) return;
-  let score = 0, answered = 0;
-  activeQuestions.forEach((item,index)=>{
-    const sel = document.querySelector(`input[name="q${index}"]:checked`);
-    const fb = document.getElementById("fb"+index);
-    if(!sel){
-      fb.innerHTML = `<span class="bad">Nog niet ingevuld.</span><div class="explanation">${item.explanation}</div>`;
-      return;
+    {
+      prompt:'Wat is belangrijk bij extrapoleren?',
+      options:[
+        'Dat het altijd exact klopt',
+        'Dat je voorzichtig bent buiten het bekende gebied',
+        'Dat je nooit een formule gebruikt',
+        'Dat je alleen lineaire modellen gebruikt'
+      ],
+      answer:1,
+      theory:'Buiten het meetgebied wordt een model vaak minder betrouwbaar.',
+      explanation:'Dus extrapoleren moet voorzichtig gebeuren.',
+      graph:null
     }
-    answered++;
-    if(Number(sel.value)===item.answer){
-      score++;
-      fb.innerHTML = `<span class="good">Goed.</span><div class="explanation">${item.explanation}</div>`;
-    } else {
-      fb.innerHTML = `<span class="bad">Niet goed.</span><div class="explanation">${item.explanation}</div>`;
-    }
-  });
-  checkedAlready = true;
-  stopTimer();
-  localStorage.setItem(STORAGE_KEY+"_last", `${score} / ${activeQuestions.length} • ${formatTime(timerSeconds)}`);
-  const currentBest = Number(localStorage.getItem(STORAGE_KEY+"_best") || "0");
-  if(score > currentBest) localStorage.setItem(STORAGE_KEY+"_best", String(score));
-  loadStats();
-  let msg = "Goed bezig.";
-  if(score === activeQuestions.length) msg = "Perfecte score.";
-  else if(score >= activeQuestions.length*0.75) msg = "Sterke ronde.";
-  else if(score >= activeQuestions.length*0.5) msg = "Redelijke basis, nog even dooroefenen.";
-  else msg = "Nog wat oefenen helpt hier echt.";
-  document.getElementById("result").innerHTML = `<strong>Score:</strong> ${score} / ${activeQuestions.length}<br><strong>Ingevuld:</strong> ${answered} / ${activeQuestions.length}<br><strong>Tijd:</strong> ${formatTime(timerSeconds)}<br>${msg}`;
-  if(examMode) {
-    lockInputs();
-    document.getElementById('modeNotice').innerHTML = 'Toetsmodus aan: deze ronde is nu vergrendeld. Klik op <strong>Nieuwe willekeurige quiz</strong> voor een nieuwe ronde.';
-  }
-}
 
-function drawGraph(id, cfg){
-  const canvas = document.getElementById(id);
-  if(!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const w = canvas.width, h = canvas.height;
-  const xmin = cfg.xmin, xmax = cfg.xmax, ymin = cfg.ymin, ymax = cfg.ymax;
-
-  const X = x => (x-xmin)/(xmax-xmin)*w;
-  const Y = y => h-(y-ymin)/(ymax-ymin)*h;
-
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0,0,w,h);
-
-  ctx.strokeStyle = "#e5edf7";
-  ctx.lineWidth = 1;
-  for(let i=Math.ceil(xmin); i<=Math.floor(xmax); i++) {
-    ctx.beginPath(); ctx.moveTo(X(i),0); ctx.lineTo(X(i),h); ctx.stroke();
-  }
-  for(let j=Math.ceil(ymin); j<=Math.floor(ymax); j++) {
-    ctx.beginPath(); ctx.moveTo(0,Y(j)); ctx.lineTo(w,Y(j)); ctx.stroke();
-  }
-
-  ctx.strokeStyle = "#94a3b8";
-  ctx.lineWidth = 1.6;
-  if(xmin<0 && xmax>0) { ctx.beginPath(); ctx.moveTo(X(0),0); ctx.lineTo(X(0),h); ctx.stroke(); }
-  if(ymin<0 && ymax>0) { ctx.beginPath(); ctx.moveTo(0,Y(0)); ctx.lineTo(w,Y(0)); ctx.stroke(); }
-
-  function f(x){
-    switch(cfg.type){
-      case "line": return cfg.m*x + cfg.b;
-      case "parabola": return cfg.a*x*x + cfg.b*x + cfg.c;
-      case "trig":
-        const u = cfg.B*x + cfg.C;
-        return cfg.kind==="cos" ? cfg.A*Math.cos(u)+cfg.D : cfg.A*Math.sin(u)+cfg.D;
-      case "exp": return cfg.A*Math.exp(cfg.B*x)+cfg.C;
-      case "reciprocal":
-        if(Math.abs(x-cfg.h)<1e-4) return null;
-        return cfg.a/(x-cfg.h)+cfg.k;
-      case "poly":
-        return cfg.coeffs.reduce((acc,c)=>acc*x+c,0);
-      default: return null;
-    }
-  }
-
-  ctx.strokeStyle = "#2563eb";
-  ctx.lineWidth = 2.4;
-  let first = true;
-  for(let px=0; px<=w; px++) {
-    const x = xmin + (px/w)*(xmax-xmin);
-    const y = f(x);
-    if(y===null || !Number.isFinite(y) || y<ymin-10 || y>ymax+10) {
-      if(!first) ctx.stroke();
-      first = true;
-      continue;
-    }
-    const py = Y(y);
-    if(first) {
-      ctx.beginPath();
-      ctx.moveTo(px,py);
-      first=false;
-    } else {
-      ctx.lineTo(px,py);
-    }
-  }
-  if(!first) ctx.stroke();
-}
-
-loadStats();
-buildQuiz();
+  ]
+};
 </script>
-</body></html>
+
+<script src="../js/quiz-flow.js?v=3"></script>
+<script>
+createQuizApp(QUIZ_CONFIG);
+</script>
+
+</body>
+</html>
