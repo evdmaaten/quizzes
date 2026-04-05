@@ -1,1 +1,263 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Nederlands — Quizoverzicht</title>
+
+<style>
+
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --soft:#eef5ff;
+  --line:#d8e2ee;
+}
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:5px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:30px;
+}
+
+.grid{
+
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+
+}
+
+.card{
+
+  background:var(--card);
+  border-radius:14px;
+  padding:18px;
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+}
+
+.card h2{
+
+  margin-top:0;
+  font-size:18px;
+
+}
+
+.card p{
+
+  color:var(--muted);
+  font-size:14px;
+
+}
+
+.btn{
+
+  display:inline-block;
+  margin-top:12px;
+  padding:8px 12px;
+
+  background:var(--brand);
+  color:white;
+  border-radius:8px;
+  text-decoration:none;
+
+}
+
+.btn:hover{
+  background:var(--brand-dark);
+}
+
+.home{
+
+  display:block;
+  margin:40px auto;
+  text-align:center;
+  width:200px;
+
+  padding:12px;
+  border-radius:10px;
+
+  background:var(--brand);
+  color:white;
+  text-decoration:none;
+
+}
+
+.home:hover{
+
+  background:var(--brand-dark);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Nederlands</h1>
+<div class="subtitle">
+VWO 5 — Literatuur en taalvaardigheid
+</div>
+
+
+<div class="grid">
+
+<!-- Het Gouden Ei -->
+
+<div class="card">
+
+<h2>Het Gouden Ei</h2>
+
+<p>
+Boek van Tim Krabbé. Oefen vragen over inhoud, thema’s,
+personages en interpretatie.
+</p>
+
+<a class="btn" href="het_gouden_ei_quiz.html">
+Start quiz
+</a>
+
+</div>
+
+
+<!-- Algemene literatuur -->
+
+<div class="card">
+
+<h2>Literatuur algemeen</h2>
+
+<p>
+Begrippen zoals perspectief, motief, thema,
+tijdstructuur en stijlfiguren.
+</p>
+
+<a class="btn" href="#">
+Binnenkort
+</a>
+
+</div>
+
+
+
+<!-- Argumentatie -->
+
+<div class="card">
+
+<h2>Argumentatie</h2>
+
+<p>
+Standpunten, argumenten, drogredenen en betoogstructuur.
+</p>
+
+<a class="btn" href="#">
+Binnenkort
+</a>
+
+</div>
+
+
+
+<!-- Samenvatten -->
+
+<div class="card">
+
+<h2>Samenvatten</h2>
+
+<p>
+Hoofdgedachte herkennen, kernzinnen vinden en
+structuur analyseren.
+</p>
+
+<a class="btn" href="#">
+Binnenkort
+</a>
+
+</div>
+
+
+
+<!-- Stijlfiguren -->
+
+<div class="card">
+
+<h2>Stijlfiguren</h2>
+
+<p>
+Metafoor, vergelijking, herhaling,
+alliteratie en beeldspraak.
+</p>
+
+<a class="btn" href="#">
+Binnenkort
+</a>
+
+</div>
+
+
+
+<!-- Spelling -->
+
+<div class="card">
+
+<h2>Spelling</h2>
+
+<p>
+Werkwoordspelling, d/t regels,
+interpunctie en grammatica.
+</p>
+
+<a class="btn" href="#">
+Binnenkort
+</a>
+
+</div>
+
+
+</div>
+
+
+
+<a class="home" href="index.html">
+Home
+</a>
+
+
+
+</div>
+
+</body>
+
+</html>
