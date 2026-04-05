@@ -1,77 +1,208 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fourieranalyse</title>
-  <link rel="stylesheet" href="../css/style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fourieranalyse Quizzes</title>
+
+<style>
+
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --line:#d8e2ee;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+/* header */
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 28px;
+  background:white;
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+.topbar h1{
+  font-size:22px;
+  margin:0;
+}
+
+/* home button */
+
+.home-btn{
+  text-decoration:none;
+  background:var(--brand);
+  color:white;
+  padding:10px 18px;
+  border-radius:10px;
+  font-size:14px;
+  transition:.15s;
+}
+
+.home-btn:hover{
+  background:var(--brand-dark);
+}
+
+/* layout */
+
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:30px 20px 50px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+
+/* cards */
+
+.card{
+  display:block;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+  text-decoration:none;
+  color:inherit;
+  box-shadow:var(--shadow);
+  transition:.15s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:var(--brand);
+}
+
+.card h2{
+  margin:0 0 8px;
+  font-size:18px;
+  color:var(--brand);
+}
+
+.card p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* mobile */
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:14px 16px;
+  }
+
+  .wrap{
+    padding:20px 14px 40px;
+  }
+
+}
+
+</style>
+
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="topbar-left">
-      <h1>Fourieranalyse</h1>
-    </div>
-    <div class="topbar-right">
-      <a href="../index.html" class="home-button">Home</a>
-    </div>
-  </header>
 
-  <main class="subject-page">
-    <section class="quiz-grid">
+<div class="topbar">
 
-      <a href="complexe_getallen.html" class="quiz-card">
-        <h2>Complexe getallen</h2>
-        <p>i, modulus en argument</p>
-      </a>
+<h1>Fourieranalyse</h1>
 
-      <a href="inproducten_normen.html" class="quiz-card">
-        <h2>Inproducten en normen</h2>
-        <p>Afstand en orthogonaliteit</p>
-      </a>
+<a href="../index.html" class="home-btn">
+Home
+</a>
 
-      <a href="orthogonaliteit.html" class="quiz-card">
-        <h2>Orthogonaliteit</h2>
-        <p>Loodrechte functies</p>
-      </a>
+</div>
 
-      <a href="fourierreeksen_basis.html" class="quiz-card">
-        <h2>Fourierreeksen basis</h2>
-        <p>Sinus- en cosinusreeksen</p>
-      </a>
+<div class="wrap">
 
-      <a href="even_oneven.html" class="quiz-card">
-        <h2>Even en oneven</h2>
-        <p>Symmetrie gebruiken</p>
-      </a>
+<div class="grid">
 
-      <a href="parseval.html" class="quiz-card">
-        <h2>Parseval</h2>
-        <p>Energie en coëfficiënten</p>
-      </a>
+<a class="card" href="complexe_getallen.html">
+<h2>Complexe getallen</h2>
+<p>i, modulus en argument</p>
+</a>
 
-      <a href="complexe_fourierreeks.html" class="quiz-card">
-        <h2>Complexe Fourierreeks</h2>
-        <p>Exponentiële vorm</p>
-      </a>
+<a class="card" href="inproducten_normen.html">
+<h2>Inproducten en normen</h2>
+<p>Afstand en orthogonaliteit</p>
+</a>
 
-      <a href="fourierintegralen.html" class="quiz-card">
-        <h2>Fourierintegralen</h2>
-        <p>Van reeks naar integraal</p>
-      </a>
+<a class="card" href="orthogonaliteit.html">
+<h2>Orthogonaliteit</h2>
+<p>Loodrechte functies</p>
+</a>
 
-      <a href="fouriertransformatie.html" class="quiz-card">
-        <h2>Fouriertransformatie</h2>
-        <p>Getransformeerden</p>
-      </a>
+<a class="card" href="fourierreeksen_basis.html">
+<h2>Fourierreeksen basis</h2>
+<p>Vorm en coëfficiënten</p>
+</a>
 
-      <a href="samenvatting.html" class="quiz-card">
-        <h2>Samenvatting</h2>
-        <p>Alles door elkaar</p>
-      </a>
+<a class="card" href="even_oneven.html">
+<h2>Even en oneven functies</h2>
+<p>Symmetrie gebruiken</p>
+</a>
 
-    </section>
-  </main>
+<a class="card" href="parseval.html">
+<h2>Parseval</h2>
+<p>Normen en energie</p>
+</a>
 
-  <script src="../js/quiz.js"></script>
+<a class="card" href="fase_amplitude.html">
+<h2>Fase-amplitude-vorm</h2>
+<p>Herschrijven van reeksen</p>
+</a>
+
+<a class="card" href="complexe_fourierreeksen.html">
+<h2>Complexe Fourierreeksen</h2>
+<p>Exponentiële vorm</p>
+</a>
+
+<a class="card" href="fourierintegralen.html">
+<h2>Fourierintegralen</h2>
+<p>Van reeks naar integraal</p>
+</a>
+
+<a class="card" href="fouriergetransformeerde.html">
+<h2>Fouriergetransformeerde</h2>
+<p>Getransformeerden oefenen</p>
+</a>
+
+<a class="card" href="samenvatting_fourieranalyse.html">
+<h2>Samenvatting</h2>
+<p>Alles door elkaar</p>
+</a>
+
+<a class="card" href="fourierreeksen_parseval.html">
+<h2>Fourierreeksen en Parseval</h2>
+<p>Quiz met gemengde vragen</p>
+</a>
+
+</div>
+
+</div>
+
 </body>
 </html>
