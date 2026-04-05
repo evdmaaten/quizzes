@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase-amplitude-vorm — Quiz</title>
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --soft:#eef5ff;
+  --ok:#15803d;
+  --okbg:#ecfdf3;
+  --bad:#b91c1c;
+  --badbg:#fef2f2;
+  --line:#d8e2ee;
+  --shadow:0 10px 30px rgba(37,99,235,.10);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(180deg,#f7faff 0%, #eef4fb 100%);
+  color:var(--ink);
+}
+
+.wrap{
+  max-width:860px;
+  margin:0 auto;
+  padding:18px 14px 40px;
+}
+
+.hero{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:20px 18px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+
+.kicker{
+  display:inline-block;
+  background:var(--soft);
+  color:var(--brand);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:.9rem;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:clamp(1.7rem, 3.7vw, 2.4rem);
+  line-height:1.1;
+}
+
+.subtitle{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:1rem;
+}
+
+.topbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:14px 0 16px;
+}
+
+.pill{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:700;
+  box-shadow:var(--shadow);
+}
+
+.progress-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+
+.progress-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:.98rem;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.bar{
+  width:100%;
+  height:12px;
+  background:#e8eef8;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.bar > div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--brand),#60a5fa);
+  transition:width .25s ease;
+}
+
+.quiz-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  min-height:430px;
+  display:flex;
+  flex-direction:column;
+}
+
+.q-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.q-number{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--soft);
+  color:var(--brand);
+  font-weight:800;
+  flex:0 0 auto;
+}
+
+.q-title{
+  font-size:1.15rem;
+  font-weight:800;
+  line-height:1.4;
+}
+
+.q-sub{
+  margin:4px 0 0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:.98rem;
+}
+
+.options{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
+}
+
+.option{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  cursor:pointer;
+  transition:.15s ease;
+  background:#fff;
+}
+
+.option:hover{
+  border-color:#bfd3f7;
+  background:#f9fbff;
+}
+
+.option input{
+  margin-top:2px;
+  transform:scale(1.1);
+}
+
+.option.correct{
+  border-color:#86efac;
+  background:var(--okbg);
+}
+
+.option.wrong{
+  border-color:#fca5a5;
+  background:var(--badbg);
+}
+
+.feedback{
+  display:none;
+  margin-top:16px;
+  border-radius:16px;
+  padding:14px;
+  line-height:1.55;
+  font-size:.98rem;
+}
+
+.feedback.ok{
+  display:block;
+  background:var(--okbg);
+  color:var(--ok);
+  border:1px solid #bbf7d0;
+}
+
+.feedback.bad{
+  display:block;
+  background:var(--badbg);
+  color:var(--bad);
+  border:1px solid #fecaca;
+}
+
+.nav{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.nav-left,.nav-right{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+button{
+  appearance:none;
+  border:none;
+  border-radius:14px;
+  padding:12px 16px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.btn-primary{
+  background:var(--brand);
+  color:#fff;
+}
+
+.btn-primary:hover{background:var(--brand-dark)}
+.btn-secondary{
+  background:#fff;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+.btn-secondary:hover{background:#f8fbff}
+.btn-ghost{
+  background:#eff6ff;
+  color:var(--brand);
+}
+.btn-ghost:hover{
+  background:#dbeafe;
+}
+
+.result{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.result h2{
+  margin:0 0 10px;
+  font-size:1.7rem;
+}
+
+.result p{
+  margin:8px 0;
+  line-height:1.6;
+  color:var(--muted);
+}
+
+.score-big{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--brand);
+  margin:10px 0 14px;
+}
+
+.review-list{
+  margin-top:18px;
+  display:grid;
+  gap:12px;
+}
+
+.review-item{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+  background:#fff;
+}
+
+.review-item strong{
+  color:var(--ink);
+}
+
+.tag-ok,.tag-bad{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.9rem;
+  font-weight:700;
+}
+
+.tag-ok{
+  background:var(--okbg);
+  color:var(--ok);
+}
+
+.tag-bad{
+  background:var(--badbg);
+  color:var(--bad);
+}
+
+.formula{
+  font-family:"Times New Roman", serif;
+  background:#f8fbff;
+  border:1px solid #dce9fb;
+  border-radius:12px;
+  padding:8px 10px;
+  display:inline-block;
+  margin-top:8px;
+}
+
+.home-link{
+  display:inline-block;
+  margin-top:12px;
+  text-decoration:none;
+  background:var(--brand);
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.home-link:hover{
+  background:var(--brand-dark);
+}
+
+@media (max-width:700px){
+  .wrap{padding:12px 10px 28px}
+  .hero,.quiz-card,.result{padding:16px}
+  .q-title{font-size:1.05rem}
+  .quiz-card{min-height:unset}
+  .nav{
+    flex-direction:column;
+  }
+  .nav-left,.nav-right{
+    width:100%;
+  }
+  .nav button{
+    flex:1 1 100%;
+    width:100%;
+  }
+  .topbar .pill{
+    width:100%;
+    text-align:center;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="kicker">Fourieranalyse</div>
+    <h1>Quiz — Fase-amplitude-vorm</h1>
+    <p class="subtitle">
+      Oefen met het herschrijven van combinaties van sinus en cosinus naar
+      de vorm met amplitude en faseverschuiving.
+    </p>
+    <div class="formula">
+      a cos(\u03c9t) + b sin(\u03c9t) = R cos(\u03c9t - \u03b4)
+    </div>
+    <br>
+    <a class="home-link" href="index.html">← Terug naar Fourieranalyse</a>
+  </section>
+
+  <div class="topbar">
+    <div class="pill">Totaal aantal vragen: <span id="totalCount">0</span></div>
+    <div class="pill">Beantwoord: <span id="answeredCount">0</span></div>
+    <div class="pill">Goed: <span id="correctCount">0</span></div>
+  </div>
+
+  <section class="progress-card" id="progressCard">
+    <div class="progress-meta">
+      <span id="progressText">Vraag 1 van 20</span>
+      <span id="progressPercent">5%</span>
+    </div>
+    <div class="bar"><div id="progressFill"></div></div>
+  </section>
+
+  <section class="quiz-card" id="quizCard">
+    <div class="q-top">
+      <div class="q-number" id="qNumber">1</div>
+      <div>
+        <div class="q-title" id="qTitle"></div>
+        <p class="q-sub" id="qSub"></p>
+      </div>
+    </div>
+
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="nav">
+      <div class="nav-left">
+        <button class="btn-secondary" id="prevBtn">← Vorige</button>
+        <button class="btn-secondary" id="nextBtn">Volgende →</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn-ghost" id="resetBtn">Opnieuw</button>
+        <button class="btn-primary" id="finishBtn">Nakijken</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="result" id="resultBox">
+    <h2>Uitslag</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <p id="scoreLine"></p>
+    <p id="scoreLevel"></p>
+
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="nav" style="margin-top:20px">
+      <div class="nav-right">
+        <button class="btn-primary" onclick="restartQuiz()">Quiz opnieuw maken</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const quizData = [
+  {
+    title: "Wat is de standaard fase-amplitude-vorm van a cos(ωt) + b sin(ωt)?",
+    sub: "Kies de juiste herschrijving.",
+    options: [
+      "R sin(ωt + δ)",
+      "R cos(ωt - δ)",
+      "R cos(δ - ωt²)",
+      "R + cos(ωt - δ)"
+    ],
+    answer: 1,
+    explanation: "De standaardvorm is meestal R cos(ωt - δ), met R ≥ 0."
+  },
+  {
+    title: "Hoe bereken je de amplitude R bij a cos(ωt) + b sin(ωt)?",
+    sub: "Kijk naar de formule voor de grootte.",
+    options: [
+      "R = a + b",
+      "R = a² + b²",
+      "R = √(a² + b²)",
+      "R = |a-b|"
+    ],
+    answer: 2,
+    explanation: "De amplitude is R = √(a²+b²)."
+  },
+  {
+    title: "Welke relaties gelden bij a cos(ωt) + b sin(ωt) = R cos(ωt - δ)?",
+    sub: "Vergelijk coëfficiënten na uitwerken.",
+    options: [
+      "a = R sinδ en b = R cosδ",
+      "a = R cosδ en b = R sinδ",
+      "a = Rδ en b = R/δ",
+      "a = cosδ en b = sinδ"
+    ],
+    answer: 1,
+    explanation: "Omdat R cos(ωt-δ)=R(cosωt cosδ + sinωt sinδ), geldt a=R cosδ en b=R sinδ."
+  },
+  {
+    title: "Wat is tan(δ) in termen van a en b, als a ≠ 0?",
+    sub: "Gebruik de vorige relaties.",
+    options: [
+      "tanδ = a/b",
+      "tanδ = b/a",
+      "tanδ = ab",
+      "tanδ = √(a²+b²)"
+    ],
+    answer: 1,
+    explanation: "Uit a = R cosδ en b = R sinδ volgt tanδ = b/a."
+  },
+  {
+    title: "Wat is de amplitude van 3cos(t) + 4sin(t)?",
+    sub: "Gebruik R = √(a²+b²).",
+    options: [
+      "5",
+      "7",
+      "25",
+      "1"
+    ],
+    answer: 0,
+    explanation: "R = √(3²+4²)=√25=5."
+  },
+  {
+    title: "Wat is de amplitude van cos(t) - 2sin(t)?",
+    sub: "Neem a=1 en b=-2.",
+    options: [
+      "1",
+      "2",
+      "√5",
+      "3"
+    ],
+    answer: 2,
+    explanation: "R = √(1²+(-2)²)=√5."
+  },
+  {
+    title: "Als a=R cosδ en b=R sinδ, wat moet dan altijd gelden voor R?",
+    sub: "Denk aan een amplitude.",
+    options: [
+      "R < 0",
+      "R ≥ 0",
+      "R = 0",
+      "R ≤ 0"
+    ],
+    answer: 1,
+    explanation: "De amplitude wordt standaard niet-negatief gekozen: R ≥ 0."
+  },
+  {
+    title: "Wat is 2cos(t) in fase-amplitude-vorm?",
+    sub: "Er is geen sinus-term.",
+    options: [
+      "2cos(t - 0)",
+      "2cos(t - π/2)",
+      "2sin(t)",
+      "cos(2t)"
+    ],
+    answer: 0,
+    explanation: "Hier is R=2 en δ=0, dus 2cos(t)=2cos(t-0)."
+  },
+  {
+    title: "Wat is 2sin(t) in de vorm R cos(t - δ)?",
+    sub: "Gebruik cos(t - π/2)=sin(t).",
+    options: [
+      "2cos(t)",
+      "2cos(t - π/2)",
+      "2cos(t + π/2)",
+      "2cos(π/2 - t)"
+    ],
+    answer: 1,
+    explanation: "Omdat cos(t-π/2)=sin(t), geldt 2sin(t)=2cos(t-π/2)."
+  },
+  {
+    title: "Wat is cos(t) + sin(t) in fase-amplitude-vorm?",
+    sub: "Amplitude en fase samen.",
+    options: [
+      "√2 cos(t - π/4)",
+      "2 cos(t - π/4)",
+      "√2 cos(t + π/4)",
+      "cos(2t)"
+    ],
+    answer: 0,
+    explanation: "R=√2 en cosδ=sinδ=1/√2, dus δ=π/4."
+  },
+  {
+    title: "Wat is cos(t) - sin(t) in fase-amplitude-vorm?",
+    sub: "Let op het teken van de sinuscoëfficiënt.",
+    options: [
+      "√2 cos(t - π/4)",
+      "√2 cos(t + π/4)",
+      "2 cos(t - π/2)",
+      "√2 sin(t - π/4)"
+    ],
+    answer: 1,
+    explanation: "Hier is a=1 en b=-1, dus R=√2 en δ=-π/4. Dat is ook √2 cos(t+π/4)."
+  },
+  {
+    title: "Wat is de faseverschuiving δ bij 3cos(t)+3sin(t)?",
+    sub: "Gebruik tanδ = b/a.",
+    options: [
+      "0",
+      "π/4",
+      "π/2",
+      "π"
+    ],
+    answer: 1,
+    explanation: "Omdat b/a = 1, geldt tanδ = 1 en dus δ = π/4."
+  },
+  {
+    title: "Waarom moet je bij δ goed op het kwadrant letten?",
+    sub: "Kijk naar de tekens van a en b.",
+    options: [
+      "Omdat R negatief kan zijn",
+      "Omdat tanδ alleen de verhouding geeft en niet direct het juiste kwadrant",
+      "Omdat sinδ altijd positief is",
+      "Omdat cosδ altijd negatief is"
+    ],
+    answer: 1,
+    explanation: "tanδ=b/a bepaalt alleen de verhouding. De tekens van cosδ en sinδ bepalen het juiste kwadrant."
+  },
+  {
+    title: "Als a<0 en b>0, in welk kwadrant ligt δ dan meestal?",
+    sub: "Gebruik a=Rcosδ en b=Rsinδ.",
+    options: [
+      "I",
+      "II",
+      "III",
+      "IV"
+    ],
+    answer: 1,
+    explanation: "cosδ<0 en sinδ>0, dus δ ligt in kwadrant II."
+  },
+  {
+    title: "Als a<0 en b<0, in welk kwadrant ligt δ dan meestal?",
+    sub: "Weer naar cosδ en sinδ kijken.",
+    options: [
+      "I",
+      "II",
+      "III",
+      "IV"
+    ],
+    answer: 2,
+    explanation: "cosδ<0 en sinδ<0, dus δ ligt in kwadrant III."
+  },
+  {
+    title: "Wat is het voordeel van fase-amplitude-vorm bij Fourierreeksen?",
+    sub: "Kies de beste omschrijving.",
+    options: [
+      "Je krijgt minder termen en de bijdrage per frequentie wordt compacter weergegeven",
+      "Je hoeft geen coëfficiënten meer te kennen",
+      "De periode verdwijnt",
+      "De functie wordt automatisch even"
+    ],
+    answer: 0,
+    explanation: "Je kunt een cosinus- en sinusterm met dezelfde frequentie samenvoegen tot één term met amplitude en fase."
+  },
+  {
+    title: "Wat hoort bij de term a_n cos(ωt) + b_n sin(ωt) in fase-amplitude-vorm?",
+    sub: "Gebruik de Fouriernotatie.",
+    options: [
+      "R_n cos(ωt - δ_n)",
+      "R_n + δ_n",
+      "δ_n cos(R_nt)",
+      "R_n sin(δ_n)"
+    ],
+    answer: 0,
+    explanation: "Elke frequentieterm kan geschreven worden als R_n cos(ωt - δ_n)."
+  },
+  {
+    title: "Hoe bereken je R_n uit a_n en b_n?",
+    sub: "Amplitude per frequentie.",
+    options: [
+      "R_n = a_n + b_n",
+      "R_n = √(a_n² + b_n²)",
+      "R_n = a_n² + b_n²",
+      "R_n = b_n/a_n"
+    ],
+    answer: 1,
+    explanation: "De amplitude per frequentie is R_n = √(a_n²+b_n²)."
+  },
+  {
+    title: "Wat kun je zeggen over δ_n als R_n = 0?",
+    sub: "Denk aan de nulterm.",
+    options: [
+      "δ_n = 0",
+      "δ_n = π/2",
+      "δ_n is niet van belang / niet gedefinieerd",
+      "δ_n = π"
+    ],
+    answer: 2,
+    explanation: "Als R_n = 0, dan is de hele term nul en speelt de fase geen rol."
+  },
+  {
+    title: "Wat is een goede aanpak bij fase-amplitude-opgaven?",
+    sub: "Kies de beste werkwijze.",
+    options: [
+      "Eerst R berekenen, dan met a=Rcosδ en b=Rsinδ de fase bepalen",
+      "Eerst δ gokken en dan R kiezen",
+      "Alleen naar de sinus kijken",
+      "Altijd de complexe vorm gebruiken"
+    ],
+    answer: 0,
+    explanation: "De standaardaanpak is: bepaal eerst R = √(a²+b²), en gebruik daarna cosδ=a/R en sinδ=b/R."
+  }
+];
+
+let currentQuestion = 0;
+let userAnswers = new Array(quizData.length).fill(null);
+let checked = false;
+
+const totalCount = document.getElementById("totalCount");
+const answeredCount = document.getElementById("answeredCount");
+const correctCount = document.getElementById("correctCount");
+const progressText = document.getElementById("progressText");
+const progressPercent = document.getElementById("progressPercent");
+const progressFill = document.getElementById("progressFill");
+
+const qNumber = document.getElementById("qNumber");
+const qTitle = document.getElementById("qTitle");
+const qSub = document.getElementById("qSub");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const finishBtn = document.getElementById("finishBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const quizCard = document.getElementById("quizCard");
+const resultBox = document.getElementById("resultBox");
+const scoreBig = document.getElementById("scoreBig");
+const scoreLine = document.getElementById("scoreLine");
+const scoreLevel = document.getElementById("scoreLevel");
+const reviewList = document.getElementById("reviewList");
+
+totalCount.textContent = quizData.length;
+
+function countAnswered(){
+  return userAnswers.filter(v => v !== null).length;
+}
+
+function countCorrect(){
+  let score = 0;
+  quizData.forEach((q,i)=>{
+    if(userAnswers[i] === q.answer) score++;
+  });
+  return score;
+}
+
+function updateTopStats(){
+  answeredCount.textContent = countAnswered();
+  correctCount.textContent = checked ? countCorrect() : "0";
+}
+
+function updateProgress(){
+  const pct = Math.round(((currentQuestion + 1) / quizData.length) * 100);
+  progressText.textContent = `Vraag ${currentQuestion + 1} van ${quizData.length}`;
+  progressPercent.textContent = `${pct}%`;
+  progressFill.style.width = `${pct}%`;
+}
+
+function renderQuestion(){
+  const q = quizData[currentQuestion];
+  qNumber.textContent = currentQuestion + 1;
+  qTitle.textContent = q.title;
+  qSub.textContent = q.sub;
+  optionsEl.innerHTML = "";
+  feedbackEl.className = "feedback";
+  feedbackEl.style.display = "none";
+  feedbackEl.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+    const label = document.createElement("label");
+    label.className = "option";
+
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "option";
+    input.value = index;
+    input.checked = userAnswers[currentQuestion] === index;
+
+    input.addEventListener("change", () => {
+      userAnswers[currentQuestion] = index;
+      updateTopStats();
+
+      if(checked){
+        renderQuestion();
+      }
+    });
+
+    const text = document.createElement("div");
+    text.innerHTML = option;
+
+    label.appendChild(input);
+    label.appendChild(text);
+
+    if(checked){
+      input.disabled = true;
+      if(index === q.answer) label.classList.add("correct");
+      if(userAnswers[currentQuestion] === index && index !== q.answer) label.classList.add("wrong");
+
+      if(userAnswers[currentQuestion] !== null){
+        if(userAnswers[currentQuestion] === q.answer){
+          feedbackEl.className = "feedback ok";
+          feedbackEl.style.display = "block";
+          feedbackEl.innerHTML = `<strong>Goed.</strong> ${q.explanation}`;
+        } else {
+          feedbackEl.className = "feedback bad";
+          feedbackEl.style.display = "block";
+          feedbackEl.innerHTML = `<strong>Niet goed.</strong> ${q.explanation}`;
+        }
+      } else {
+        feedbackEl.className = "feedback bad";
+        feedbackEl.style.display = "block";
+        feedbackEl.innerHTML = `<strong>Niet ingevuld.</strong> ${q.explanation}`;
+      }
+    }
+
+    optionsEl.appendChild(label);
+  });
+
+  prevBtn.disabled = currentQuestion === 0;
+  nextBtn.disabled = currentQuestion === quizData.length - 1;
+
+  updateProgress();
+  updateTopStats();
+}
+
+prevBtn.addEventListener("click", () => {
+  if(currentQuestion > 0){
+    currentQuestion--;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if(currentQuestion < quizData.length - 1){
+    currentQuestion++;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+});
+
+finishBtn.addEventListener("click", () => {
+  checked = true;
+  renderQuestion();
+  showResults();
+});
+
+resetBtn.addEventListener("click", () => {
+  restartQuiz();
+});
+
+function showResults(){
+  const score = countCorrect();
+  const total = quizData.length;
+  const pct = Math.round((score / total) * 100);
+
+  let level = "";
+  if(pct >= 90){
+    level = "Uitstekend — je beheerst fase-amplitude-vorm erg goed.";
+  } else if(pct >= 75){
+    level = "Goed — je snapt amplitude, fase en de herschrijving goed.";
+  } else if(pct >= 60){
+    level = "Voldoende — de basis is er, maar oefen nog op de fase en het juiste kwadrant.";
+  } else {
+    level = "Nog extra oefenen — kijk vooral opnieuw naar R = √(a²+b²) en de bepaling van δ.";
+  }
+
+  scoreBig.textContent = `${score} / ${total}`;
+  scoreLine.textContent = `Je hebt ${pct}% van de vragen goed beantwoord.`;
+  scoreLevel.textContent = level;
+
+  reviewList.innerHTML = "";
+  quizData.forEach((q, i) => {
+    const item = document.createElement("div");
+    item.className = "review-item";
+
+    const user = userAnswers[i];
+    const isCorrect = user === q.answer;
+
+    item.innerHTML = `
+      <strong>Vraag ${i+1}:</strong> ${q.title}<br>
+      Juiste antwoord: <strong>${q.options[q.answer]}</strong><br>
+      ${user !== null ? `Jouw antwoord: <strong>${q.options[user]}</strong><br>` : `Jouw antwoord: <strong>niet ingevuld</strong><br>`}
+      Uitleg: ${q.explanation}
+      <br>
+      <span class="${isCorrect ? 'tag-ok' : 'tag-bad'}">${isCorrect ? 'Goed' : 'Niet goed'}</span>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  quizCard.style.display = "none";
+  document.getElementById("progressCard").style.display = "none";
+  resultBox.style.display = "block";
+  updateTopStats();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function restartQuiz(){
+  currentQuestion = 0;
+  userAnswers = new Array(quizData.length).fill(null);
+  checked = false;
+  quizCard.style.display = "flex";
+  document.getElementById("progressCard").style.display = "block";
+  resultBox.style.display = "none";
+  renderQuestion();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
