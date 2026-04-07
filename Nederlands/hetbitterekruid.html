@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Het bittere kruid — Quiz</title>
+
+<link rel="stylesheet" href="../assets/style.css?v=1.0">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Het bittere kruid</h1>
+
+<div class="subtitle">
+VWO 5 Literatuur — Marga Minco
+</div>
+
+
+<div id="quiz"></div>
+
+<div id="score" class="score"></div>
+
+
+<a class="home-btn" href="index.html">
+Terug naar Nederlands
+</a>
+
+
+</div>
+
+
+
+<script src="../assets/quiz.js?v=1.0"></script>
+
+
+
+<script>
+
+
+const questions = [
+
+{
+q:"Wie schreef Het bittere kruid?",
+a:["Hella S. Haasse","Marga Minco","Anna Blaman","Judith Herzberg"],
+correct:1
+},
+
+{
+q:"Wat is de ondertitel van het boek?",
+a:["Een kleine kroniek","Oorlog en vrede","Herinneringen van een overlevende","De verdwenen jaren"],
+correct:0
+},
+
+{
+q:"In welke periode speelt het verhaal zich af?",
+a:["De Eerste Wereldoorlog","De Tweede Wereldoorlog","De Koude Oorlog","De jaren zestig"],
+correct:1
+},
+
+{
+q:"Vanuit welk perspectief wordt het verhaal verteld?",
+a:["Ik-perspectief van een jong meisje","Alwetende verteller","Jij-perspectief","Meervoudig perspectief"],
+correct:0
+},
+
+{
+q:"Wat is de relatie tussen de verteller en de meeste personages?",
+a:["Ze zijn haar collega's","Ze zijn haar familieleden","Ze zijn haar buren","Ze zijn klasgenoten"],
+correct:1
+},
+
+{
+q:"Waarom moet de familie steeds voorzichtiger leven?",
+a:["Door bombardementen op hun straat","Door anti-Joodse maatregelen","Door een epidemie","Door geldgebrek"],
+correct:1
+},
+
+{
+q:"Wat gebeurt er met de familie van de verteller in de loop van het boek?",
+a:["Ze emigreren samen","Ze worden verspreid en verdwijnen","Ze sluiten zich aan bij het verzet","Ze verhuizen naar België"],
+correct:1
+},
+
+{
+q:"Welke sfeer overheerst in Het bittere kruid?",
+a:["Luchtig en komisch","Dreigend en sober","Romantisch en warm","Avontuurlijk en heroïsch"],
+correct:1
+},
+
+{
+q:"Wat maakt de stijl van Marga Minco opvallend?",
+a:["Lange, bloemrijke zinnen","Korte, sobere en ingehouden stijl","Veel straattaal","Alleen dialogen"],
+correct:1
+},
+
+{
+q:"Waarom werkt die sobere stijl zo sterk in dit verhaal?",
+a:["Omdat details overbodig zijn","Omdat de leegte en het verlies voelbaar worden","Omdat het boek humoristisch is","Omdat het een detective is"],
+correct:1
+},
+
+{
+q:"Wat betekent de titel Het bittere kruid het best?",
+a:["Een gerecht uit de oorlogstijd","Een symbool voor pijnlijke herinnering en verdriet","Een plant in de tuin van de familie","Een codewoord van het verzet"],
+correct:1
+},
+
+{
+q:"Welk centraal thema past het best bij het boek?",
+a:["Technologische vooruitgang","Verlies, herinnering en ontworteling","Sport en competitie","Generatieconflict"],
+correct:1
+},
+
+{
+q:"Hoe reageert de verteller vaak op schokkende gebeurtenissen?",
+a:["Met grote woede-uitbarstingen","Ingetogen, bijna afstandelijk","Met veel grappen","Volledig onverschillig"],
+correct:1
+},
+
+{
+q:"Wat zegt die ingetogen reactie over trauma in het boek?",
+a:["Trauma verdwijnt snel","Trauma kan stil en nauwelijks verwoord aanwezig zijn","Trauma komt alleen bij soldaten voor","Trauma is niet belangrijk in het verhaal"],
+correct:1
+},
+
+{
+q:"Waarom is herinneren een belangrijk motief?",
+a:["Om feiten voor een rechtbank te bewaren","Omdat de verdwenen familie in herinnering voortleeft","Om een dagboek te publiceren","Omdat de verteller historicus wil worden"],
+correct:1
+},
+
+{
+q:"Welke tegenstelling zie je vaak in het boek?",
+a:["Droom en wetenschap","Alledaagsheid en dreiging","Rijkdom en armoede","Stad en platteland"],
+correct:1
+},
+
+{
+q:"Wat maakt de impact van het verhaal extra groot voor lezers?",
+a:["Het loopt met een happy end af","Juist de gewone details maken het verlies concreet","Er zitten veel actiescènes in","Het verhaal speelt in de toekomst"],
+correct:1
+},
+
+{
+q:"Waarom wordt Het bittere kruid vaak als naoorlogse literatuur gelezen?",
+a:["Omdat het over wederopbouw gaat","Omdat het terugblikt op oorlogservaringen en de nasleep daarvan","Omdat het in 1940 is geschreven","Omdat het een propagandatekst is"],
+correct:1
+},
+
+{
+q:"Wat is géén passend kernwoord bij het boek?",
+a:["Ontheemding","Herinnering","Verlies","Triomf"],
+correct:3
+},
+
+{
+q:"Welke uitspraak past het beste bij de boodschap van het verhaal?",
+a:["Alles komt uiteindelijk goed","Wat verdwenen is, blijft als gemis aanwezig","Vergeten is de beste oplossing","Geschiedenis herhaalt zich altijd exact"],
+correct:1
+},
+
+{
+q:"Hoe worden de hoofdpersonen vooral neergezet?",
+a:["Als helden met grootse daden","Als gewone mensen in uitzonderlijke omstandigheden","Als karikaturen","Als mythische figuren"],
+correct:1
+},
+
+{
+q:"Wat doet het boek met het idee van 'normaal leven'?",
+a:["Het laat zien dat normaal leven plotseling kan verdwijnen","Het bewijst dat normaal leven altijd terugkeert","Het negeert het onderwerp","Het maakt er satire van"],
+correct:0
+},
+
+{
+q:"Waarom is het boek relevant voor een boekbespreking nu?",
+a:["Omdat het alleen over geschiedenisfeitjes gaat","Omdat het vragen oproept over menselijkheid, uitsluiting en herinnering","Omdat het vooral grappig is","Omdat het makkelijk te verfilmen is"],
+correct:1
+},
+
+{
+q:"Welke functie hebben kleine, concrete voorwerpen en situaties in het verhaal?",
+a:["Ze vertragen het verhaal zonder reden","Ze maken abstract verlies tastbaar","Ze zijn alleen decor","Ze leiden af van het thema"],
+correct:1
+},
+
+{
+q:"Wat kun je zeggen over de opbouw van het verhaal?",
+a:["Strak chronologisch met veel uitleg","Episodisch en fragmentarisch, passend bij herinneringen","Alleen brieven","Volledig in dialoogvorm"],
+correct:1
+},
+
+{
+q:"Welke emotie blijft na het lezen vaak het sterkst hangen?",
+a:["Triomf","Nuchtere opluchting","Stille ontreddering","Opwinding"],
+correct:2
+},
+
+{
+q:"Wat zegt de verteller indirect over overleven?",
+a:["Overleven voelt altijd als overwinning","Overleven kan ook gepaard gaan met schuld en gemis","Overleven is puur toeval en daarom onbelangrijk","Overleven lost het verleden volledig op"],
+correct:1
+},
+
+{
+q:"Waarom past de titel ook symbolisch bij de stijl?",
+a:["De taal is zoet en uitbundig","De taal is sober en 'bitter': zonder opsmuk","De taal is ingewikkeld en abstract","De taal is ouderwets en plechtig"],
+correct:1
+},
+
+{
+q:"Wat is een goed interpretatiepunt voor je boekbespreking?",
+a:["Hoe humor de hoofdrol speelt","Hoe stilte en weglating betekenis geven aan het trauma","Hoe technologie het verhaal stuurt","Hoe de vertelster beroemd wil worden"],
+correct:1
+},
+
+{
+q:"Welke combinatie beschrijft Het bittere kruid het best?",
+a:["Historische roman + luchtige satire","Persoonlijke getuigenis + literaire soberheid","Fantasy + coming-of-age","Detective + romantiek"],
+correct:1
+}
+
+];
+
+
+initQuiz({
+questions,
+mountId:"quiz",
+scoreId:"score",
+storageKey:"quiz_nederlands_het_bittere_kruid",
+showNumbers:true,
+randomize:false
+});
+
+
+</script>
+
+</body>
+</html>
