@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Fouriertransformatie — Rekenregels</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #17324d;
+      --muted: #5f748a;
+      --line: #d8e2ee;
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --soft: #eaf2ff;
+      --ok: #15803d;
+      --bad: #b91c1c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: white;
+      padding: 20px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar-inner,
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .subtitle {
+      color: rgba(255,255,255,.92);
+      max-width: 760px;
+      margin-bottom: 0;
+    }
+
+    .wrap {
+      padding: 24px 16px 48px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--soft);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #cfe0ff;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .question-meta {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .formula-box {
+      background: #f8fbff;
+      border: 1px dashed #bfd4f7;
+      border-radius: 14px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: "Courier New", monospace;
+      font-size: 16px;
+      white-space: pre-wrap;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button.answer-btn,
+    button.action-btn,
+    button.filter-btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .answer-btn {
+      text-align: left;
+      width: 100%;
+      padding: 14px 16px;
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line) !important;
+      border-radius: 14px;
+      transition: .18s ease;
+    }
+
+    .answer-btn:hover:not(:disabled) {
+      border-color: var(--brand) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(37,99,235,.08);
+    }
+
+    .answer-btn.correct {
+      background: #ecfdf3;
+      border-color: #86efac !important;
+      color: #14532d;
+    }
+
+    .answer-btn.wrong {
+      background: #fef2f2;
+      border-color: #fca5a5 !important;
+      color: #7f1d1d;
+    }
+
+    .answer-btn.reveal {
+      background: #eff6ff;
+      border-color: #93c5fd !important;
+      color: #1e3a8a;
+    }
+
+    .answer-btn:disabled {
+      cursor: default;
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      display: none;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.ok { background: #ecfdf3; color: #166534; border: 1px solid #86efac; }
+    .feedback.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .action-btn,
+    .filter-btn {
+      background: var(--brand);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .action-btn.secondary,
+    .filter-btn.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--brand-dark);
+      font-size: 13px;
+      font-weight: 700;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .small {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .hidden { display: none; }
+
+    .score-summary {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    ul.rule-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .question-text {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1>Quiz Fouriertransformatie — rekenregels</h1>
+      <p class="subtitle">
+        Oefen met definitie, inverse Fouriertransformatie, verschuiven, schalen, modulatie,
+        afgeleiden, vermenigvuldigen met <strong>t</strong>, convolutie, Parseval, even/oneven functies
+        en periodieke functies.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Instellingen</h2>
+      <p class="small">Kies wat je wilt oefenen. De quiz trekt daarna willekeurig vragen uit die categorie.</p>
+      <div class="filter-row" id="filterRow"></div>
+      <div class="controls">
+        <button class="action-btn" id="startBtn">Start quiz</button>
+        <button class="action-btn secondary" id="restartBtn">Opnieuw beginnen</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Vraag</div>
+          <div class="stat-value" id="vraagNr">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Goed</div>
+          <div class="stat-value" id="goedNr">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Fout</div>
+          <div class="stat-value" id="foutNr">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Resterend</div>
+          <div class="stat-value" id="restNr">0</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card" id="quizCard">
+        <div class="question-meta" id="questionMeta">Klik op start quiz.</div>
+        <div class="question-text" id="questionText">Je vraag verschijnt hier.</div>
+        <div class="formula-box" id="formulaBox">Formule / opgave</div>
+        <div class="answers" id="answers"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="controls">
+          <button class="action-btn hidden" id="nextBtn">Volgende vraag</button>
+        </div>
+      </section>
+
+      <section class="card" id="summaryCard">
+        <h2>Belangrijkste regels</h2>
+        <div id="ruleSummary"></div>
+        <p class="footer-note">
+          Deze quiz is gemaakt rond de regels en voorbeelden uit college 14 en 15.
+        </p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const categories = [
+      { key: 'basis', label: 'Basis & inverse' },
+      { key: 'regels', label: 'Rekenregels' },
+      { key: 'voorbeelden', label: 'Standaardvoorbeelden' },
+      { key: 'convolutie', label: 'Convolutie' },
+      { key: 'parseval', label: 'Parseval' },
+      { key: 'evenoneven', label: 'Even / oneven' },
+      { key: 'periodiek', label: 'Periodieke functies' }
+    ];
+
+    const questions = [
+      {
+        category: 'basis',
+        type: 'mc',
+        text: 'Wat is de definitie van de Fouriergetransformeerde?',
+        formula: 'F{f(t)}(ω) = ?',
+        options: [
+          '∫_{-∞}^{∞} f(t)e^{-iωt} dt',
+          '∫_{-∞}^{∞} f(t)e^{iωt} dt',
+          '(1/2π)∫_{-∞}^{∞} f(t)e^{-iωt} dt',
+          '∫_{0}^{∞} f(t)e^{-iωt} dt'
+        ],
+        answer: 0,
+        explanation: 'De gebruikte definitie in de colleges is F{f(t)}(ω) = ∫_{-∞}^{∞} f(t)e^{-iωt} dt.'
+      },
+      {
+        category: 'basis',
+        type: 'mc',
+        text: 'Wat is de inverse Fouriertransformatie?',
+        formula: 'F^{-1}{F(ω)} = ?',
+        options: [
+          '∫_{-∞}^{∞} F(ω)e^{iωt} dω',
+          '(1/2π)∫_{-∞}^{∞} F(ω)e^{iωt} dω',
+          '(1/π)∫_{-∞}^{∞} F(ω)e^{-iωt} dω',
+          '(1/2π)∫_{0}^{∞} F(ω)e^{iωt} dω'
+        ],
+        answer: 1,
+        explanation: 'Bij deze conventie hoort f(t) = (1/2π)∫_{-∞}^{∞} F(ω)e^{iωt} dω.'
+      },
+      {
+        category: 'basis',
+        type: 'mc',
+        text: 'Welke voorwaarde hoort bij de Dirichlet-voorwaarden?',
+        formula: 'Kies de juiste uitspraak.',
+        options: [
+          'f moet absoluut integreerbaar zijn',
+          'f moet overal differentieerbaar zijn zonder uitzonderingen',
+          'f moet periodiek zijn',
+          'F(ω) moet begrensd zijn door 1'
+        ],
+        answer: 0,
+        explanation: 'Een van de voorwaarden is dat ∫_{-∞}^{∞} |f(t)| dt convergeert.'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat is de lineariteit?',
+        formula: 'F{af(t)+bg(t)} = ?',
+        options: [
+          'aF(ω)+bG(ω)',
+          'F(ω+a)+G(ω+b)',
+          'abF(ω)G(ω)',
+          'aF(ω)-bG(ω)'
+        ],
+        answer: 0,
+        explanation: 'De Fouriertransformatie is lineair.'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat gebeurt er bij schalen?',
+        formula: 'Voor a > 0 geldt F{f(at)} = ?',
+        options: [
+          'aF(aω)',
+          '(1/a)F(ω/a)',
+          '(1/a)F(aω)',
+          'F(ω-a)'
+        ],
+        answer: 1,
+        explanation: 'Bij schalen in het t-domein krijg je (1/a)F(ω/a).'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat is de verschuivingsregel in het t-domein?',
+        formula: 'F{f(t-a)} = ?',
+        options: [
+          'e^{iaω}F(ω)',
+          'F(ω-a)',
+          'e^{-iaω}F(ω)',
+          '(1/2π)e^{-iaω}F(ω)'
+        ],
+        answer: 2,
+        explanation: 'Een verschuiving in t geeft een factor e^{-iaω} in het ω-domein.'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat is de modulatieregel?',
+        formula: 'F{e^{iat}f(t)} = ?',
+        options: [
+          'e^{-iaω}F(ω)',
+          'F(ω-a)',
+          'F(ω+a)',
+          'iF\'(ω-a)'
+        ],
+        answer: 1,
+        explanation: 'Vermenigvuldigen met e^{iat} verschuift het spectrum naar ω-a.'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat is de regel voor de afgeleide?',
+        formula: 'F{f\'(t)} = ?',
+        options: [
+          'F\'(ω)',
+          '-iωF(ω)',
+          'iωF(ω)',
+          'ω²F(ω)'
+        ],
+        answer: 2,
+        explanation: 'Differentiëren in t komt overeen met vermenigvuldigen met iω in het frequentiedomein.'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Wat is de regel voor vermenigvuldigen met t?',
+        formula: 'F{tf(t)} = ?',
+        options: [
+          'iF\'(ω)',
+          'tF(ω)',
+          'ωF\'(ω)',
+          '-iF\'(ω)'
+        ],
+        answer: 0,
+        explanation: 'Vermenigvuldigen met t in het t-domein geeft iF\'(ω).'
+      },
+      {
+        category: 'regels',
+        type: 'mc',
+        text: 'Welke combinatie is juist als F{f(t)} = F(ω)?',
+        formula: 'Neem h(t)=f(5t-2). Wat hoort bij H(ω)?',
+        options: [
+          '(1/5)e^{-2iω}F(ω/5)',
+          '(1/5)e^{-2iω/5}F(ω/5)',
+          '5e^{-2iω/5}F(5ω)',
+          'e^{-2iω}F(5ω)'
+        ],
+        answer: 1,
+        explanation: 'f(5t-2)=g(t-2/5) met g(t)=f(5t). Dus eerst schalen: (1/5)F(ω/5), daarna verschuiven: e^{-iω(2/5)}.'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{u₀(t)e^{-t}}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '1/(1-iω)',
+          '1/(1+iω)',
+          '2/(1+ω²)',
+          'πe^{-|ω|}'
+        ],
+        answer: 1,
+        explanation: 'Een standaardvoorbeeld: F{u₀(t)e^{-t}} = 1/(1+iω).'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{e^{-a|t|}} voor a > 0?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '2a/(a²+ω²)',
+          '1/(a+iω)',
+          'πe^{-|ω|}',
+          '2πδ(ω-a)'
+        ],
+        answer: 0,
+        explanation: 'Dit is een klassiek voorbeeld: F{e^{-a|t|}} = 2a/(a²+ω²).'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{δ(t-c)}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          'e^{-iωc}',
+          'δ(ω-c)',
+          '1',
+          '2πe^{-iωc}'
+        ],
+        answer: 0,
+        explanation: 'De verschoven delta geeft direct e^{-iωc}.'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{1}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '1',
+          'δ(ω)',
+          '2πδ(ω)',
+          'πδ(ω)'
+        ],
+        answer: 2,
+        explanation: 'In distributiezin geldt F{1} = 2πδ(ω).'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{δ(t)}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '0',
+          '1',
+          'δ(ω)',
+          '2π'
+        ],
+        answer: 1,
+        explanation: 'De Fouriergetransformeerde van δ(t) is 1.'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{u_{-1}(t)-u_1(t)}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '2sin(ω)/ω = 2 sinc(ω)',
+          'sin(ω)/ω = sinc(ω)',
+          'π(u_{-1}(ω)-u_1(ω))',
+          '2πδ(ω)'
+        ],
+        answer: 0,
+        explanation: 'De rechthoek in t geeft 2sin(ω)/ω = 2 sinc(ω).'
+      },
+      {
+        category: 'voorbeelden',
+        type: 'mc',
+        text: 'Wat is F{sinc(t)}?',
+        formula: 'Kies het juiste antwoord.',
+        options: [
+          '2sinc(ω)',
+          'π(u_{-1}(ω)-u_1(ω))',
+          '2a/(a²+ω²)',
+          'e^{-|ω|}'
+        ],
+        answer: 1,
+        explanation: 'In de slides staat F{sinc(t)}(ω)=π(u_{-1}(ω)-u_1(ω)).'
+      },
+      {
+        category: 'convolutie',
+        type: 'mc',
+        text: 'Wat is de definitie van convolutie?',
+        formula: '(f*g)(t) = ?',
+        options: [
+          '∫_{-∞}^{∞} f(t+τ)g(τ) dτ',
+          '∫_{-∞}^{∞} f(t-τ)g(τ) dτ',
+          'f(t)g(t)',
+          '(1/2π)∫_{-∞}^{∞} f(τ)g(τ) dτ'
+        ],
+        answer: 1,
+        explanation: 'De definitie is (f*g)(t)=∫_{-∞}^{∞} f(t-τ)g(τ)dτ.'
+      },
+      {
+        category: 'convolutie',
+        type: 'mc',
+        text: 'Wat zegt de convolutiestelling?',
+        formula: 'F{f*g} = ?',
+        options: [
+          'F{f}+F{g}',
+          '(1/2π)F{f}*F{g}',
+          'F{f}F{g}',
+          'f(t)g(t)'
+        ],
+        answer: 2,
+        explanation: 'Convolutie in t wordt vermenigvuldigen in ω.'
+      },
+      {
+        category: 'convolutie',
+        type: 'mc',
+        text: 'Wat is de bijbehorende productregel?',
+        formula: 'F{f(t)g(t)} = ?',
+        options: [
+          'F{f}F{g}',
+          '(1/2π)(F{f}*F{g})',
+          'F{f}+F{g}',
+          '2π(F{f}*F{g})'
+        ],
+        answer: 1,
+        explanation: 'Product in t wordt convolutie in ω met factor 1/(2π).'
+      },
+      {
+        category: 'convolutie',
+        type: 'mc',
+        text: 'Wat is f*δ(t-c)?',
+        formula: 'Gebruik de schuifeigenschap van de delta.',
+        options: [
+          'f(t+c)',
+          'f(t-c)',
+          'δ(t-c)',
+          'f(c)'
+        ],
+        answer: 1,
+        explanation: 'Convolutie met δ(t-c) verschuift de functie: f*δ(t-c)=f(t-c).'
+      },
+      {
+        category: 'parseval',
+        type: 'mc',
+        text: 'Wat is de formule van Parseval-Plancherel?',
+        formula: '∫ |f(t)|² dt = ?',
+        options: [
+          '∫ |F(ω)|² dω',
+          '(1/2π)∫ |F(ω)|² dω',
+          '(1/π)∫ |F(ω)|² dω',
+          '2π∫ |F(ω)|² dω'
+        ],
+        answer: 1,
+        explanation: 'Bij deze conventie geldt ∫|f|² dt = (1/2π)∫|F|² dω.'
+      },
+      {
+        category: 'evenoneven',
+        type: 'mc',
+        text: 'Welke vereenvoudiging geldt voor een even functie f?',
+        formula: 'F{f(t)} = ?',
+        options: [
+          '2∫₀^∞ f(t)cos(ωt) dt',
+          '-2i∫₀^∞ f(t)sin(ωt) dt',
+          '∫₀^∞ f(t)e^{-iωt} dt',
+          '0'
+        ],
+        answer: 0,
+        explanation: 'Voor even f valt het sinusdeel weg en blijft de cosinusintegraal over.'
+      },
+      {
+        category: 'evenoneven',
+        type: 'mc',
+        text: 'Welke vereenvoudiging geldt voor een oneven functie f?',
+        formula: 'F{f(t)} = ?',
+        options: [
+          '2∫₀^∞ f(t)cos(ωt) dt',
+          '-2i∫₀^∞ f(t)sin(ωt) dt',
+          'π(u_{-1}(ω)-u_1(ω))',
+          '2πδ(ω)'
+        ],
+        answer: 1,
+        explanation: 'Voor oneven f valt het cosinusdeel weg en blijft het sinusdeel over met factor -2i.'
+      },
+      {
+        category: 'evenoneven',
+        type: 'mc',
+        text: 'Welke uitspraak is juist als f reëel is?',
+        formula: 'Eigenschap van F(ω)',
+        options: [
+          'Re(F) is oneven en Im(F) is even',
+          'Re(F) is even en Im(F) is oneven',
+          '|F| is oneven',
+          'arg(F) is even'
+        ],
+        answer: 1,
+        explanation: 'Voor een reële functie is Re(F) even en Im(F) oneven.'
+      },
+      {
+        category: 'periodiek',
+        type: 'mc',
+        text: 'Hoe ziet de Fouriergetransformeerde van een periodieke functie eruit?',
+        formula: 'f periodiek met periode T',
+        options: [
+          'Een gewone gladde functie van ω',
+          'Een som van delta-pieken op ω_k',
+          'Altijd 0',
+          'Altijd een sinc-functie'
+        ],
+        answer: 1,
+        explanation: 'Periodieke functies hebben een discreet spectrum: een som van Dirac-delta’s.'
+      },
+      {
+        category: 'periodiek',
+        type: 'mc',
+        text: 'Wat is ω_k voor een periodieke functie met periode T?',
+        formula: 'Kies de juiste formule.',
+        options: [
+          'ω_k = kπ/T',
+          'ω_k = 2π/T',
+          'ω_k = 2πk/T',
+          'ω_k = T/(2πk)'
+        ],
+        answer: 2,
+        explanation: 'De discrete frequenties liggen op ω_k = 2πk/T.'
+      },
+      {
+        category: 'periodiek',
+        type: 'mc',
+        text: 'Welke vorm hoort bij de transformatie van een periodieke functie?',
+        formula: 'F{f(t)}(ω) = ?',
+        options: [
+          '∑ c_k δ(ω-ω_k)',
+          '2π∑ c_k δ(ω-ω_k)',
+          '(1/2π)∑ c_k δ(ω-ω_k)',
+          '∑ e^{-iω_k t}'
+        ],
+        answer: 1,
+        explanation: 'In het dictaat staat F{f(t)} = 2π∑ c_k δ(ω-ω_k).'
+      },
+      {
+        category: 'basis',
+        type: 'mc',
+        text: 'Wat gebeurt er in een sprongpunt bij de inverse formule?',
+        formula: '(1/2π)∫_{-∞}^{∞}F(ω)e^{iωt}dω = ?',
+        options: [
+          'f(t)',
+          '(f(t^-)+f(t^+))/2',
+          '0',
+          'Bestaat nooit'
+        ],
+        answer: 1,
+        explanation: 'In een discontinuïteit krijg je het gemiddelde van linker- en rechterlimiet.'
+      }
+    ];
+
+    const selectedCategories = new Set(categories.map(c => c.key));
+    let activeQuestions = [];
+    let currentIndex = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let answered = false;
+
+    const filterRow = document.getElementById('filterRow');
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const questionMeta = document.getElementById('questionMeta');
+    const questionText = document.getElementById('questionText');
+    const formulaBox = document.getElementById('formulaBox');
+    const answersBox = document.getElementById('answers');
+    const feedback = document.getElementById('feedback');
+    const vraagNr = document.getElementById('vraagNr');
+    const goedNr = document.getElementById('goedNr');
+    const foutNr = document.getElementById('foutNr');
+    const restNr = document.getElementById('restNr');
+    const ruleSummary = document.getElementById('ruleSummary');
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderFilters() {
+      filterRow.innerHTML = '';
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = selectedCategories.has(cat.key) ? 'filter-btn' : 'filter-btn secondary';
+        btn.textContent = cat.label;
+        btn.addEventListener('click', () => {
+          if (selectedCategories.has(cat.key)) {
+            if (selectedCategories.size > 1) selectedCategories.delete(cat.key);
+          } else {
+            selectedCategories.add(cat.key);
+          }
+          renderFilters();
+        });
+        filterRow.appendChild(btn);
+      });
+    }
+
+    function renderRuleSummary() {
+      ruleSummary.innerHTML = `
+        <span class="pill">Definitie</span>
+        <div class="formula-box">F{f(t)}(ω) = ∫_{-∞}^{∞} f(t)e^{-iωt} dt</div>
+
+        <span class="pill">Inverse</span>
+        <div class="formula-box">f(t) = (1/2π)∫_{-∞}^{∞} F(ω)e^{iωt} dω</div>
+
+        <span class="pill">Rekenregels</span>
+        <ul class="rule-list">
+          <li>F{af+bg} = aF + bG</li>
+          <li>F{f(at)} = (1/a)F(ω/a), a &gt; 0</li>
+          <li>F{f(t-a)} = e^{-iaω}F(ω)</li>
+          <li>F{e^{iat}f(t)} = F(ω-a)</li>
+          <li>F{f\'(t)} = iωF(ω)</li>
+          <li>F{tf(t)} = iF\'(ω)</li>
+        </ul>
+
+        <span class="pill">Convolutie</span>
+        <ul class="rule-list">
+          <li>(f*g)(t) = ∫_{-∞}^{∞} f(t-τ)g(τ)dτ</li>
+          <li>F{f*g} = F·G</li>
+          <li>F{fg} = (1/2π)(F*G)</li>
+        </ul>
+
+        <span class="pill">Parseval</span>
+        <div class="formula-box">∫_{-∞}^{∞}|f(t)|²dt = (1/2π)∫_{-∞}^{∞}|F(ω)|²dω</div>
+
+        <span class="pill">Even / oneven</span>
+        <ul class="rule-list">
+          <li>Even f: F(ω) = 2∫₀^∞ f(t)cos(ωt)dt</li>
+          <li>Oneven f: F(ω) = -2i∫₀^∞ f(t)sin(ωt)dt</li>
+        </ul>
+
+        <span class="pill">Periodiek</span>
+        <div class="formula-box">F{f(t)} = 2π∑_{k=-∞}^{∞} c_k δ(ω-ω_k), met ω_k = 2πk/T</div>
+      `;
+    }
+
+    function buildQuiz() {
+      activeQuestions = shuffle(
+        questions.filter(q => selectedCategories.has(q.category))
+      );
+      currentIndex = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      answered = false;
+      updateStats();
+      if (activeQuestions.length === 0) {
+        questionMeta.textContent = 'Geen vragen geselecteerd.';
+        questionText.textContent = 'Kies minimaal één categorie.';
+        formulaBox.textContent = '-';
+        answersBox.innerHTML = '';
+        feedback.className = 'feedback';
+        feedback.textContent = '';
+        nextBtn.classList.add('hidden');
+        return;
+      }
+      renderQuestion();
+    }
+
+    function updateStats() {
+      vraagNr.textContent = activeQuestions.length ? `${Math.min(currentIndex + 1, activeQuestions.length)}` : '0';
+      goedNr.textContent = `${correctCount}`;
+      foutNr.textContent = `${wrongCount}`;
+      restNr.textContent = `${Math.max(activeQuestions.length - currentIndex - (answered ? 1 : 0), 0)}`;
+    }
+
+    function renderQuestion() {
+      const q = activeQuestions[currentIndex];
+      answered = false;
+      nextBtn.classList.add('hidden');
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+
+      questionMeta.textContent = `Categorie: ${categories.find(c => c.key === q.category).label} • Vraag ${currentIndex + 1} van ${activeQuestions.length}`;
+      questionText.textContent = q.text;
+      formulaBox.textContent = q.formula;
+      answersBox.innerHTML = '';
+
+      q.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${option}`;
+        btn.addEventListener('click', () => handleAnswer(index));
+        answersBox.appendChild(btn);
+      });
+      updateStats();
+    }
+
+    function handleAnswer(index) {
+      if (answered) return;
+      answered = true;
+      const q = activeQuestions[currentIndex];
+      const buttons = [...answersBox.querySelectorAll('.answer-btn')];
+
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer) btn.classList.add('reveal');
+      });
+
+      if (index === q.answer) {
+        correctCount++;
+        buttons[index].classList.remove('reveal');
+        buttons[index].classList.add('correct');
+        feedback.className = 'feedback show ok';
+        feedback.innerHTML = `<strong>Goed!</strong><br>${q.explanation}`;
+      } else {
+        wrongCount++;
+        buttons[index].classList.add('wrong');
+        feedback.className = 'feedback show bad';
+        feedback.innerHTML = `<strong>Niet goed.</strong><br>${q.explanation}`;
+      }
+
+      nextBtn.classList.remove('hidden');
+      updateStats();
+    }
+
+    function showEndScreen() {
+      const totaal = activeQuestions.length;
+      const percentage = totaal ? Math.round((correctCount / totaal) * 100) : 0;
+      questionMeta.textContent = 'Klaar';
+      questionText.textContent = 'Je hebt de quiz afgerond.';
+      formulaBox.innerHTML = `Score: ${correctCount}/${totaal} (${percentage}%)`;
+      answersBox.innerHTML = '';
+      feedback.className = 'feedback show ok';
+      feedback.innerHTML = `
+        <div class="score-summary">Eindscore: ${correctCount} goed en ${wrongCount} fout.</div>
+        <div>Herhaal vooral deze kernregels:</div>
+        <ul class="rule-list">
+          <li>Definitie en inverse precies uit je hoofd kennen.</li>
+          <li>Verschuiven, schalen en modulatie uit elkaar houden.</li>
+          <li>F{f\'(t)} = iωF(ω) en F{tf(t)} = iF\'(ω) niet verwisselen.</li>
+          <li>Convolutie in t ↔ vermenigvuldigen in ω.</li>
+          <li>Product in t ↔ convolutie in ω met factor 1/(2π).</li>
+          <li>Bij periodieke functies krijg je delta-pieken.</li>
+        </ul>
+      `;
+      nextBtn.classList.add('hidden');
+      vraagNr.textContent = `${totaal}`;
+      restNr.textContent = '0';
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex++;
+      if (currentIndex >= activeQuestions.length) {
+        showEndScreen();
+      } else {
+        renderQuestion();
+      }
+    });
+
+    startBtn.addEventListener('click', buildQuiz);
+    restartBtn.addEventListener('click', buildQuiz);
+
+    renderFilters();
+    renderRuleSummary();
+  </script>
+</body>
+</html>
