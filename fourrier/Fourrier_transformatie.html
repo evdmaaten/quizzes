@@ -260,6 +260,11 @@
   </style>
 </head>
 <body>
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:white;border-bottom:1px solid #d8e2ee;box-shadow:0 6px 20px rgba(0,0,0,.06);">
+  <strong>Fouriertransformatie quiz</strong>
+  <a href="index.html" style="text-decoration:none;background:#2563eb;color:white;padding:8px 14px;border-radius:8px;font-size:14px;">Home</a>
+</div>
   <header class="topbar">
     <div class="topbar-inner">
       <h1>Quiz Fouriertransformatie — rekenregels</h1>
@@ -277,6 +282,7 @@
       <p class="small">Kies wat je wilt oefenen. De quiz trekt daarna willekeurig vragen uit die categorie.</p>
       <div class="filter-row" id="filterRow"></div>
       <div class="controls">
+          <button class="action-btn secondary hidden" id="prevBtn">Vorige vraag</button>
         <button class="action-btn" id="startBtn">Start quiz</button>
         <button class="action-btn secondary" id="restartBtn">Opnieuw beginnen</button>
       </div>
@@ -756,6 +762,7 @@
     const startBtn = document.getElementById('startBtn');
     const restartBtn = document.getElementById('restartBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
     const questionMeta = document.getElementById('questionMeta');
     const questionText = document.getElementById('questionText');
     const formulaBox = document.getElementById('formulaBox');
@@ -913,6 +920,14 @@
     }
 
     function showEndScreen() {
+      setTimeout(()=>{
+        const backBtn=document.createElement('a');
+        backBtn.href='index.html';
+        backBtn.className='action-btn';
+        backBtn.textContent='Terug naar overzicht';
+        feedback.appendChild(document.createElement('br'));
+        feedback.appendChild(backBtn);
+      },200);
       const totaal = activeQuestions.length;
       const percentage = totaal ? Math.round((correctCount / totaal) * 100) : 0;
       questionMeta.textContent = 'Klaar';
@@ -938,6 +953,7 @@
     }
 
     nextBtn.addEventListener('click', () => {
+      prevBtn.classList.remove('hidden');
       currentIndex++;
       if (currentIndex >= activeQuestions.length) {
         showEndScreen();
@@ -947,6 +963,13 @@
     });
 
     startBtn.addEventListener('click', buildQuiz);
+
+    prevBtn.addEventListener('click', ()=>{
+      if(currentIndex>0){
+        currentIndex--;
+        renderQuestion();
+      }
+    });
     restartBtn.addEventListener('click', buildQuiz);
 
     renderFilters();
