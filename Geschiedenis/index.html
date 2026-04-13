@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Geschiedenis — Quizoverzicht</title>
+
+<style>
+
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --soft:#eef5ff;
+  --line:#d8e2ee;
+}
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:5px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:30px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:18px;
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+}
+
+.card h2{
+  margin-top:0;
+  font-size:18px;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:8px 12px;
+  background:var(--brand);
+  color:white;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+.btn:hover{
+  background:var(--brand-dark);
+}
+
+.home-btn{
+  display:block;
+  margin:40px auto;
+  text-align:center;
+  width:200px;
+  padding:12px;
+  border-radius:10px;
+  background:var(--brand);
+  color:white;
+  text-decoration:none;
+}
+
+.home-btn:hover{
+  background:var(--brand-dark);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Geschiedenis</h1>
+<div class="subtitle">
+VWO 5 — Moderne geschiedenis en internationale conflicten
+</div>
+
+<div class="grid">
+
+  <!-- Midden-Oosten -->
+  <div class="card">
+    <h2>100 jaar geschiedenis van het Midden-Oosten</h2>
+    <p>
+      Oefen vragen over het einde van het Ottomaanse Rijk, de Jong-Turken,
+      de Armeense genocide, de verdeling van het Midden-Oosten, de Balfour-verklaring,
+      Brits Palestina en de stichting van Israël.
+    </p>
+    <a class="btn" href="midden-oosten.html">
+      Start quiz
+    </a>
+  </div>
+
+  <!-- placeholder -->
+  <div class="card">
+    <h2>Eerste Wereldoorlog</h2>
+    <p>
+      Oorzaken, bondgenootschappen, loopgravenoorlog en gevolgen voor Europa en het Midden-Oosten.
+    </p>
+    <a class="btn" href="#">
+      Binnenkort
+    </a>
+  </div>
+
+  <!-- placeholder -->
+  <div class="card">
+    <h2>Tweede Wereldoorlog</h2>
+    <p>
+      Oefen met begrippen als totalitarisme, Holocaust, verzet, collaboratie en naoorlogse gevolgen.
+    </p>
+    <a class="btn" href="#">
+      Binnenkort
+    </a>
+  </div>
+
+  <!-- placeholder -->
+  <div class="card">
+    <h2>Koude Oorlog</h2>
+    <p>
+      Oost-Westconflict, wapenwedloop, containment, Berlijn en de Cubacrisis.
+    </p>
+    <a class="btn" href="#">
+      Binnenkort
+    </a>
+  </div>
+
+  <!-- placeholder -->
+  <div class="card">
+    <h2>Historische vaardigheden</h2>
+    <p>
+      Bronvragen, standplaatsgebondenheid, oorzaak-gevolg, continuïteit en verandering.
+    </p>
+    <a class="btn" href="#">
+      Binnenkort
+    </a>
+  </div>
+
+  <!-- placeholder -->
+  <div class="card">
+    <h2>Nederland in de 20e eeuw</h2>
+    <p>
+      Verzuiling, crisisjaren, bezetting, wederopbouw en democratisering.
+    </p>
+    <a class="btn" href="#">
+      Binnenkort
+    </a>
+  </div>
+
+</div>
+
+<a href="../index.html" class="home-btn">
+Home
+</a>
+
+</div>
+
+</body>
+</html>
