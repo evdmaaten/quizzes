@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz - 100 jaar Midden-Oosten</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.6;
+      background: #f4f6f8;
+      color: #222;
+    }
+    .quiz-container {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .question {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .answers button:hover {
+      background: #eef2ff;
+    }
+    .result, .explanation {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .next-btn {
+      margin-top: 20px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #1e3a8a;
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+    .next-btn:hover {
+      background: #152c66;
+    }
+    .score {
+      margin-bottom: 20px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>100 jaar Midden-Oosten</h1>
+    <p>Gebaseerd op jouw hoofdstuk geschiedenis.</p>
+    <div class="score" id="score">Score: 0 / 0</div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="result" id="result"></div>
+    <div class="explanation" id="explanation"></div>
+    <button class="next-btn" id="nextBtn">Volgende vraag</button>
+  </div>
+
+  <script>
+    const quiz = [
+      {
+        question: "Waarom werd het Ottomaanse Rijk de 'zieke man van Europa' genoemd?",
+        options: [
+          "Omdat het rijk economisch en politiek verzwakte",
+          "Omdat er een epidemie uitbrak",
+          "Omdat het leger werd afgeschaft",
+          "Omdat het rijk geen havens had"
+        ],
+        answer: 0,
+        explanation: "Het Ottomaanse Rijk verloor macht, gebied en invloed en werd daardoor als een zwakke grootmacht gezien."
+      },
+      {
+        question: "Welke waterverbinding vergrootte het strategische belang van het Midden-Oosten sterk?",
+        options: [
+          "Het Panamakanaal",
+          "Het Suezkanaal",
+          "De Bosporus",
+          "Het Kanaal van Korinthe"
+        ],
+        answer: 1,
+        explanation: "Het Suezkanaal verkortte de route tussen Europa en Azië sterk en maakte Egypte geopolitiek cruciaal."
+      },
+      {
+        question: "Welke groep greep in 1908 de macht in het Ottomaanse Rijk?",
+        options: [
+          "De Sultans",
+          "De Britten",
+          "De Jong-Turken",
+          "De Mamelukken"
+        ],
+        answer: 2,
+        explanation: "De Jong-Turken wilden het rijk moderniseren en centraliseren."
+      },
+      {
+        question: "Welke gebeurtenis uit 1915 wordt vaak aangeduid als genocide?",
+        options: [
+          "De Arabische opstand",
+          "De Armeense genocide",
+          "De val van Jeruzalem",
+          "De Krimoorlog"
+        ],
+        answer: 1,
+        explanation: "In 1915 werden Armeniërs massaal gedeporteerd en gedood door het Ottomaanse regime."
+      },
+      {
+        question: "Wat beloofde Groot-Brittannië in de Balfour-verklaring van 1917?",
+        options: [
+          "Volledige Arabische onafhankelijkheid",
+          "Een Joods nationaal tehuis in Palestina",
+          "Terugkeer van de sultan",
+          "Een Frans bestuur over Palestina"
+        ],
+        answer: 1,
+        explanation: "De Balfour-verklaring sprak Britse steun uit voor een Joods nationaal tehuis in Palestina."
+      },
+      {
+        question: "Wat was volgens de Volkenbond een mandaatgebied?",
+        options: [
+          "Een gebied dat direct zelfstandig werd",
+          "Een gebied bestuurd door een Europese mogendheid namens de Volkenbond",
+          "Een neutrale bufferzone",
+          "Een religieuze bestuursvorm"
+        ],
+        answer: 1,
+        explanation: "Voormalige Ottomaanse gebieden kwamen onder Brits of Frans mandaat."
+      },
+      {
+        question: "Welke leider moderniseerde Turkije en voerde onder meer het Latijnse alfabet in?",
+        options: [
+          "Nasser",
+          "Mustafa Kemal Atatürk",
+          "Faisal",
+          "Hussein"
+        ],
+        answer: 1,
+        explanation: "Atatürk seculariseerde en moderniseerde Turkije ingrijpend."
+      },
+      {
+        question: "Wat was het zionisme?",
+        options: [
+          "Een Ottomaanse bestuursvorm",
+          "Een Arabische onafhankelijkheidsbeweging",
+          "Een beweging voor een Joods nationaal tehuis",
+          "Een socialistische stroming in Syrië"
+        ],
+        answer: 2,
+        explanation: "Het zionisme streefde naar een Joods nationaal tehuis, vooral in Palestina."
+      },
+      {
+        question: "Waarom nam de steun voor een Joodse staat na de Tweede Wereldoorlog sterk toe?",
+        options: [
+          "Door de industriële groei van Palestina",
+          "Door de Holocaust",
+          "Door steun van het Ottomaanse Rijk",
+          "Door het Suezkanaal"
+        ],
+        answer: 1,
+        explanation: "De genocide op de Joden in Europa maakte het lot van Joodse vluchtelingen extra urgent."
+      },
+      {
+        question: "In welk jaar werd de staat Israël uitgeroepen?",
+        options: [
+          "1917",
+          "1923",
+          "1945",
+          "1948"
+        ],
+        answer: 3,
+        explanation: "In mei 1948 riep David Ben-Gurion de staat Israël uit."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const resultEl = document.getElementById("result");
+    const explanationEl = document.getElementById("explanation");
+    const nextBtn = document.getElementById("nextBtn");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      answered = false;
+      resultEl.textContent = "";
+      explanationEl.textContent = "";
+      nextBtn.style.display = "none";
+
+      const q = quiz[currentQuestion];
+      questionEl.textContent = `${currentQuestion + 1}. ${q.question}`;
+      answersEl.innerHTML = "";
+
+      q.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(index);
+        answersEl.appendChild(btn);
+      });
+
+      scoreEl.textContent = `Score: ${score} / ${currentQuestion}`;
+    }
+
+    function selectAnswer(index) {
+      if (answered) return;
+      answered = true;
+
+      const q = quiz[currentQuestion];
+      const buttons = answersEl.querySelectorAll("button");
+
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer) {
+          btn.style.backgroundColor = "#d1fae5";
+          btn.style.borderColor = "#10b981";
+        } else if (i === index) {
+          btn.style.backgroundColor = "#fee2e2";
+          btn.style.borderColor = "#ef4444";
+        }
+      });
+
+      if (index === q.answer) {
+        score++;
+        resultEl.textContent = "Goed!";
+      } else {
+        resultEl.textContent = "Niet goed.";
+      }
+
+      explanationEl.textContent = q.explanation;
+      scoreEl.textContent = `Score: ${score} / ${currentQuestion + 1}`;
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < quiz.length) {
+        loadQuestion();
+      } else {
+        questionEl.textContent = "Quiz afgerond.";
+        answersEl.innerHTML = "";
+        resultEl.textContent = `Eindscore: ${score} / ${quiz.length}`;
+        explanationEl.textContent = "";
+        nextBtn.style.display = "none";
+      }
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>
