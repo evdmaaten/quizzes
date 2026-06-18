@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VWO 5 Engels — 1000 woorden</title>
+  <style>
+    :root{--navy:#172554;--blue:#2563eb;--pale:#eff6ff;--ink:#172033;--muted:#64748b;--line:#dbe5f1;--ok:#15803d;--bad:#b91c1c}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(145deg,#eef5ff,#f8fafc 45%,#eef2ff);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+    .shell{width:min(760px,calc(100% - 28px));margin:0 auto;padding:24px 0 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+    a{color:var(--blue)}.back{text-decoration:none;font-weight:700}.count{color:var(--muted);font-size:.9rem}.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(20px,5vw,38px);box-shadow:0 20px 55px rgba(30,64,175,.1)}
+    h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.15;margin:0 0 10px;color:var(--navy)}h2{margin-top:0}.lead{color:var(--muted);margin:0 0 26px}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    button,select,input{font:inherit}.primary,.secondary,.size{border:0;border-radius:12px;padding:13px 17px;font-weight:750;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary,.size{background:var(--pale);color:var(--navy);border:1px solid #bfdbfe}.size:hover,.secondary:hover{background:#dbeafe}.primary:hover{background:#1d4ed8}
+    .tip{margin:24px 0 0;padding:14px 16px;background:#f8fafc;border-radius:12px;color:var(--muted);font-size:.9rem}.hidden{display:none!important}.progress-track{height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden}.progress{height:100%;background:var(--blue);transition:width .25s}.meta{display:flex;justify-content:space-between;margin:10px 0 28px;color:var(--muted);font-size:.9rem}
+    .word{font-size:clamp(2.1rem,9vw,4rem);font-weight:850;letter-spacing:-.03em;color:var(--navy);margin:28px 0;text-align:center}.answer-row{display:flex;gap:10px}input{width:100%;border:2px solid var(--line);border-radius:12px;padding:14px 15px;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 4px #dbeafe}
+    .feedback{min-height:52px;margin-top:17px;padding:12px 14px;border-radius:12px}.feedback.ok{background:#dcfce7;color:var(--ok)}.feedback.bad{background:#fee2e2;color:var(--bad)}.actions{display:flex;justify-content:flex-end;margin-top:12px}.score{font-size:3rem;font-weight:850;color:var(--navy);margin:6px 0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.stat{background:#f8fafc;border-radius:12px;padding:13px}.stat b{display:block;font-size:1.35rem}.result-actions{display:flex;flex-wrap:wrap;gap:10px}.error{background:#fff1f2;color:#9f1239;border:1px solid #fecdd3;padding:16px;border-radius:14px}
+    @media(max-width:560px){.options{grid-template-columns:1fr}.answer-row{flex-direction:column}.summary{grid-template-columns:1fr}.primary,.secondary{width:100%}.result-actions{display:grid}.panel{border-radius:17px}.top{align-items:flex-start}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <div class="top"><a class="back" href="../index.html">← Quizoverzicht</a><span class="count" id="wordCount">Woorden laden…</span></div>
+  <section class="panel" id="start">
+    <h1>Engels → Nederlands</h1>
+    <p class="lead">Oefen 1000 Engelse woorden op VWO 5-niveau. Typ zelf de Nederlandse vertaling.</p>
+    <h2>Kies een ronde</h2>
+    <div class="options">
+      <button class="size" data-size="10">10 woorden · kort</button>
+      <button class="size" data-size="20">20 woorden · normaal</button>
+      <button class="size" data-size="50">50 woorden · stevig</button>
+      <button class="size" data-size="100">100 woorden · toets</button>
+    </div>
+    <p class="tip"><strong>Woorden aanpassen?</strong> Bewerk <code>Engels/words.csv</code>. Eén regel is <code>english;vertaling;alternatief</code>. De quiz neemt wijzigingen automatisch over.</p>
+  </section>
+
+  <section class="panel hidden" id="quiz" aria-live="polite">
+    <div class="progress-track"><div class="progress" id="progress"></div></div>
+    <div class="meta"><span id="position"></span><span id="liveScore"></span></div>
+    <div class="word" id="word"></div>
+    <form id="answerForm" class="answer-row">
+      <input id="answer" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Typ de Nederlandse vertaling" aria-label="Nederlandse vertaling" required>
+      <button class="primary" type="submit">Controleer</button>
+    </form>
+    <div class="feedback hidden" id="feedback"></div>
+    <div class="actions"><button class="primary hidden" id="next" type="button">Volgende →</button></div>
+  </section>
+
+  <section class="panel hidden" id="result">
+    <h1>Ronde afgerond</h1>
+    <div class="score" id="finalScore"></div>
+    <p class="lead" id="resultText"></p>
+    <div class="summary">
+      <div class="stat"><b id="correctTotal">0</b>goed</div>
+      <div class="stat"><b id="wrongTotal">0</b>nog oefenen</div>
+      <div class="stat"><b id="bestScore">0%</b>beste score</div>
+    </div>
+    <div class="result-actions">
+      <button class="primary" id="retryWrong">Oefen foutwoorden</button>
+      <button class="secondary" id="newRound">Nieuwe ronde</button>
+    </div>
+  </section>
+  <div class="error hidden" id="error"></div>
+</main>
+
+<script>
+  const el = (id) => document.getElementById(id);
+  let allWords = [], round = [], wrong = [], index = 0, score = 0, answered = false;
+
+  const normalise = (value) => value.toLocaleLowerCase('nl-NL').normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/[.,!?()]/g, '').replace(/\s+/g, ' ').trim();
+
+  function parseWords(csv) {
+    const lines = csv.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() && !line.trim().startsWith('#'));
+    const rows = lines.slice(1).map((line, lineIndex) => {
+      const cells = line.split(';').map((cell) => cell.trim()).filter(Boolean);
+      if (cells.length < 2) throw new Error(`Regel ${lineIndex + 2} mist een vertaling.`);
+      return { english: cells[0], answers: cells.slice(1) };
+    });
+    const unique = new Set(rows.map((row) => normalise(row.english)));
+    if (unique.size !== rows.length) throw new Error('words.csv bevat dubbele Engelse woorden.');
+    return rows;
+  }
+
+  const shuffle = (items) => {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  async function loadWords() {
+    try {
+      const response = await fetch('words.csv', { cache: 'no-store' });
+      if (!response.ok) throw new Error('words.csv kon niet worden geladen.');
+      allWords = parseWords(await response.text());
+      el('wordCount').textContent = `${allWords.length} woorden beschikbaar`;
+      document.querySelectorAll('.size').forEach((button) => button.disabled = allWords.length < Number(button.dataset.size));
+    } catch (error) {
+      el('start').classList.add('hidden');
+      el('error').textContent = `De quiz kan niet starten: ${error.message}`;
+      el('error').classList.remove('hidden');
+    }
+  }
+
+  function startRound(words) {
+    round = shuffle(words); wrong = []; index = 0; score = 0;
+    el('start').classList.add('hidden'); el('result').classList.add('hidden'); el('quiz').classList.remove('hidden');
+    showQuestion();
+  }
+
+  function showQuestion() {
+    answered = false;
+    el('word').textContent = round[index].english;
+    el('position').textContent = `Woord ${index + 1} van ${round.length}`;
+    el('liveScore').textContent = `${score} goed`;
+    el('progress').style.width = `${(index / round.length) * 100}%`;
+    el('answer').value = ''; el('answer').disabled = false; el('answer').focus();
+    el('feedback').className = 'feedback hidden'; el('next').classList.add('hidden');
+    el('answerForm').querySelector('button').classList.remove('hidden');
+  }
+
+  el('answerForm').addEventListener('submit', (event) => {
+    event.preventDefault(); if (answered) return;
+    answered = true;
+    const item = round[index], given = normalise(el('answer').value);
+    const correct = item.answers.some((answer) => normalise(answer) === given);
+    if (correct) { score++; el('feedback').textContent = 'Goed!'; el('feedback').className = 'feedback ok'; }
+    else { wrong.push(item); el('feedback').innerHTML = `Nog niet. Goed antwoord: <strong>${item.answers.join(' / ')}</strong>`; el('feedback').className = 'feedback bad'; }
+    el('answer').disabled = true; el('answerForm').querySelector('button').classList.add('hidden');
+    el('liveScore').textContent = `${score} goed`; el('next').textContent = index === round.length - 1 ? 'Bekijk resultaat →' : 'Volgende →'; el('next').classList.remove('hidden'); el('next').focus();
+  });
+
+  function finishRound() {
+    const percentage = Math.round(score / round.length * 100);
+    const previousBest = Number(localStorage.getItem('englishQuizBest') || 0);
+    const best = Math.max(previousBest, percentage); localStorage.setItem('englishQuizBest', best);
+    el('quiz').classList.add('hidden'); el('result').classList.remove('hidden');
+    el('finalScore').textContent = `${percentage}%`; el('correctTotal').textContent = score; el('wrongTotal').textContent = wrong.length; el('bestScore').textContent = `${best}%`;
+    el('resultText').textContent = wrong.length ? 'De woorden die nog lastig waren staan klaar voor een extra ronde.' : 'Alles goed—een loepzuivere ronde.';
+    el('retryWrong').classList.toggle('hidden', wrong.length === 0);
+  }
+
+  el('next').addEventListener('click', () => { index++; index < round.length ? showQuestion() : finishRound(); });
+  document.querySelectorAll('.size').forEach((button) => button.addEventListener('click', () => startRound(shuffle(allWords).slice(0, Number(button.dataset.size)))));
+  el('retryWrong').addEventListener('click', () => startRound(wrong));
+  el('newRound').addEventListener('click', () => { el('result').classList.add('hidden'); el('start').classList.remove('hidden'); });
+  loadWords();
+</script>
+</body>
+</html>
+
