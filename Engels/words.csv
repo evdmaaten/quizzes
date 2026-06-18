@@ -10,7 +10,7 @@ accuse;beschuldigen
 acknowledge;erkennen
 acquire;verwerven;verkrijgen
 adapt;aanpassen
-address;aankaarten;toespreken
+address;aankaarten;toespreken;adres
 adjust;aanpassen;bijstellen
 admire;bewonderen
 admit;toegeven;toelaten
@@ -31,7 +31,7 @@ appeal;aanspreken;in beroep gaan;beroep;aantrekkingskracht
 appear;verschijnen;lijken
 apply;toepassen;solliciteren
 appreciate;waarderen
-approach;benaderen
+approach;benaderen;aanpak;benadering
 approve;goedkeuren
 argue;beweren;ruziemaken
 arise;ontstaan
@@ -65,7 +65,7 @@ complain;klagen
 complete;voltooien
 concentrate;concentreren
 conclude;concluderen;afsluiten
-conduct;uitvoeren;leiden
+conduct;uitvoeren;leiden;gedrag
 confirm;bevestigen
 connect;verbinden
 consider;overwegen;beschouwen
@@ -158,7 +158,7 @@ introduce;introduceren;invoeren
 investigate;onderzoeken
 involve;betrekken;inhouden
 justify;rechtvaardigen
-lack;ontbreken
+lack;ontbreken;gebrek
 launch;lanceren;starten
 maintain;handhaven;onderhouden
 measure;meten;maatregel;maat
@@ -215,7 +215,7 @@ submit;indienen;zich onderwerpen
 succeed;slagen
 suffer;lijden
 suggest;voorstellen;suggereren
-support;steunen;ondersteunen
+support;steunen;ondersteunen;steun
 suppose;veronderstellen
 survive;overleven
 tackle;aanpakken
@@ -542,7 +542,7 @@ awareness;bewustzijn
 background;achtergrond
 behaviour;gedrag
 belief;overtuiging;geloof
-benefit;voordeel;uitkering
+benefit;voordeel;uitkering;profiteren;baat hebben
 bias;vooringenomenheid
 boundary;grens
 budget;begroting;budget
@@ -555,7 +555,7 @@ cause;oorzaak
 circumstance;omstandigheid
 citizen;burger
 civilisation;beschaving
-claim;bewering;aanspraak
+claim;bewering;aanspraak;beweren;opeisen;claimen
 climate;klimaat
 colleague;collega
 commitment;toewijding;verplichting
@@ -567,12 +567,12 @@ concept;begrip;concept
 conclusion;conclusie
 condition;toestand;voorwaarde
 confidence;vertrouwen
-conflict;conflict
+conflict;conflict;botsen;conflicteren
 consequence;gevolg
 consumer;consument
 context;context;samenhang
 contract;contract;overeenkomst
-contrast;tegenstelling
+contrast;tegenstelling;contrasteren
 contribution;bijdrage
 controversy;controverse
 cooperation;samenwerking
@@ -599,7 +599,7 @@ distribution;verdeling;verspreiding
 diversity;diversiteit
 economy;economie
 education;onderwijs
-effect;effect;gevolg
+effect;effect;gevolg;bewerkstelligen
 efficiency;efficiëntie
 effort;inspanning
 election;verkiezing
@@ -670,7 +670,7 @@ priority;prioriteit
 procedure;procedure;werkwijze
 process;proces
 profession;beroep
-progress;vooruitgang
+progress;vooruitgang;vorderen;vooruitgaan
 property;eigendom;eigenschap
 proposal;voorstel
 prospect;vooruitzicht
@@ -686,11 +686,11 @@ reduction;vermindering
 reference;verwijzing;referentie
 relationship;relatie;verband
 requirement;vereiste
-research;onderzoek
+research;onderzoek;onderzoeken
 resource;hulpbron;middel
 responsibility;verantwoordelijkheid
-result;resultaat
-risk;risico
+result;resultaat;resulteren
+risk;risico;riskeren
 role;rol
 security;veiligheid;beveiliging
 society;samenleving
@@ -700,7 +700,7 @@ strategy;strategie
 strength;kracht;sterkte
 structure;structuur
 success;succes
-survey;enquête;onderzoek
+survey;enquête;onderzoek;onderzoeken;overzien
 theory;theorie
 threat;bedreiging
 tradition;traditie
@@ -724,7 +724,7 @@ approval;goedkeuring
 architecture;architectuur
 aspect;aspect
 audience;publiek
-balance;evenwicht;saldo
+balance;evenwicht;saldo;balanceren;afwegen
 battery;batterij
 border;grens
 branch;tak;vestiging
