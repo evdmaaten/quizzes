@@ -126,14 +126,30 @@
     stijgen: ['stijg', 'stijgt', 'steeg', 'stegen', 'gestegen']
   };
 
+  const nonSeparablePrefixes = ['be', 'her', 'ont', 'ver'];
+  const separablePrefixes = ['achter', 'af', 'aan', 'bij', 'binnen', 'door', 'in', 'mee', 'na', 'om', 'op', 'over', 'terug', 'toe', 'uit', 'vast', 'voor', 'voort', 'weg'];
+
   function irregularDutchVerbForms(infinitive) {
     if (irregularDutchVerbs[infinitive]) return irregularDutchVerbs[infinitive];
-    const match = infinitive.match(/^(be|her|ont|ver)(.+)$/);
-    if (!match || !irregularDutchVerbs[match[2]]) return [];
-    const [, prefix, base] = match;
-    return irregularDutchVerbs[base].map((form) =>
-      prefix + (form.startsWith('ge') ? form.slice(2) : form)
-    );
+    const base = Object.keys(irregularDutchVerbs)
+      .filter((candidate) => infinitive.endsWith(candidate) && infinitive !== candidate)
+      .sort((a, b) => b.length - a.length)[0];
+    if (!base) return [];
+    const prefix = infinitive.slice(0, -base.length);
+    if (nonSeparablePrefixes.includes(prefix)) {
+      return irregularDutchVerbs[base].map((form) =>
+        prefix + (form.startsWith('ge') ? form.slice(2) : form)
+      );
+    }
+    if (separablePrefixes.includes(prefix)) {
+      const forms = [];
+      for (const form of irregularDutchVerbs[base]) {
+        if (form.startsWith('ge')) forms.push(prefix + form);
+        else { forms.push(prefix + form); forms.push(form + ' ' + prefix); }
+      }
+      return forms;
+    }
+    return [];
   }
 
   function regularDutchVerbForms(infinitive) {
@@ -150,9 +166,14 @@
       stem = stem.replace(/v$/, 'f').replace(/z$/, 's');
       const softPast = /[tkschfp]/.test(underlyingFinal);
       const past = stem + (softPast ? 'te' : 'de');
-      const prefix = /^(be|ge|her|ont|ver)/.test(infinitive) ? '' : 'ge';
+      const nonSeparable = nonSeparablePrefixes.some((prefix) => infinitive.startsWith(prefix));
+      const separable = separablePrefixes.find((prefix) => infinitive.startsWith(prefix) && infinitive.length > prefix.length + 3);
+      let participle;
+      if (nonSeparable) participle = stem + (softPast ? 't' : 'd');
+      else if (separable) participle = separable + 'ge' + stem.slice(separable.length) + (softPast ? 't' : 'd');
+      else participle = 'ge' + stem + (softPast ? 't' : 'd');
       forms.add(stem); forms.add(stem + 't'); forms.add(past); forms.add(past + 'n');
-      forms.add(prefix + stem + (softPast ? 't' : 'd'));
+      forms.add(participle);
     }
     return [...forms];
   }
