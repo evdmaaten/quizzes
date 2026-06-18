@@ -190,8 +190,12 @@
     return forms;
   }
 
-  const isAcceptedAnswer = (given, answers) =>
-    answers.some((answer) => acceptedAnswerForms(answer).has(given));
+  const isAcceptedAnswer = (given, answers) => {
+    const givenForms = new Set([given, given.replace(/^(de|het|een)\s+/, '')]);
+    return answers.some((answer) =>
+      [...givenForms].some((form) => acceptedAnswerForms(answer).has(form))
+    );
+  };
 
   function parseWords(csv) {
     const lines = csv.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() && !line.trim().startsWith('#'));
