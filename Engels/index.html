@@ -111,22 +111,50 @@
     breken: ['breek', 'breekt', 'brak', 'braken', 'gebroken'],
     trekken: ['trek', 'trekt', 'trok', 'trokken', 'getrokken'],
     laten: ['laat', 'liet', 'lieten', 'gelaten'],
-    slapen: ['slaap', 'slaapt', 'sliep', 'sliepen', 'geslapen']
+    slapen: ['slaap', 'slaapt', 'sliep', 'sliepen', 'geslapen'],
+    vragen: ['vraag', 'vraagt', 'vroeg', 'vroegen', 'gevraagd'],
+    vangen: ['vang', 'vangt', 'ving', 'vingen', 'gevangen'],
+    hangen: ['hang', 'hangt', 'hing', 'hingen', 'gehangen'],
+    helpen: ['help', 'helpt', 'hielp', 'hielpen', 'geholpen'],
+    grijpen: ['grijp', 'grijpt', 'greep', 'grepen', 'gegrepen'],
+    sluiten: ['sluit', 'sluit', 'sloot', 'sloten', 'gesloten'],
+    schieten: ['schiet', 'schoot', 'schoten', 'geschoten'],
+    bieden: ['bied', 'biedt', 'bood', 'boden', 'geboden'],
+    blijken: ['blijk', 'blijkt', 'bleek', 'bleken', 'gebleken'],
+    kijken: ['kijk', 'kijkt', 'keek', 'keken', 'gekeken'],
+    lijken: ['lijk', 'lijkt', 'leek', 'leken', 'geleken'],
+    stijgen: ['stijg', 'stijgt', 'steeg', 'stegen', 'gestegen']
   };
+
+  function irregularDutchVerbForms(infinitive) {
+    if (irregularDutchVerbs[infinitive]) return irregularDutchVerbs[infinitive];
+    const match = infinitive.match(/^(be|her|ont|ver)(.+)$/);
+    if (!match || !irregularDutchVerbs[match[2]]) return [];
+    const [, prefix, base] = match;
+    return irregularDutchVerbs[base].map((form) =>
+      prefix + (form.startsWith('ge') ? form.slice(2) : form)
+    );
+  }
 
   function regularDutchVerbForms(infinitive) {
     if (!/^[a-z]+en$/.test(infinitive) || infinitive.length < 5) return [];
-    const rawStem = infinitive.slice(0, -2);
-    let stem = rawStem.replace(/([bcdfghjklmnpqrstvwxyz])\1$/, '$1');
-    if (/[^aeiou][aeiou][bcdfghjklmnpqrstvwxyz]$/.test(stem)) {
-      stem = stem.slice(0, -2) + stem.at(-2) + stem.slice(-2);
+    let rawStem = infinitive.slice(0, -2);
+    rawStem = rawStem.replace(/([bcdfghjklmnpqrstvwxyz])\1$/, '$1');
+    const stemCandidates = new Set([rawStem]);
+    if (/[^aeiou][aeiou][bcdfghjklmnpqrstvwxyz]$/.test(rawStem)) {
+      stemCandidates.add(rawStem.slice(0, -2) + rawStem.at(-2) + rawStem.slice(-2));
     }
-    stem = stem.replace(/v$/, 'f').replace(/z$/, 's');
-    const softPast = /[tkschfp]$/.test(stem);
-    const past = stem + (softPast ? 'te' : 'de');
-    const prefix = /^(be|ge|her|ont|ver)/.test(infinitive) || /eren$/.test(infinitive) ? '' : 'ge';
-    const participle = prefix + stem + (softPast ? 't' : 'd');
-    return [stem, stem + 't', past, past + 'n', participle];
+    const forms = new Set();
+    for (let stem of stemCandidates) {
+      const underlyingFinal = stem.at(-1);
+      stem = stem.replace(/v$/, 'f').replace(/z$/, 's');
+      const softPast = /[tkschfp]/.test(underlyingFinal);
+      const past = stem + (softPast ? 'te' : 'de');
+      const prefix = /^(be|ge|her|ont|ver)/.test(infinitive) ? '' : 'ge';
+      forms.add(stem); forms.add(stem + 't'); forms.add(past); forms.add(past + 'n');
+      forms.add(prefix + stem + (softPast ? 't' : 'd'));
+    }
+    return [...forms];
   }
 
   function acceptedAnswerForms(answer) {
@@ -137,7 +165,7 @@
     const infinitive = words.at(-1);
     const addVerbForm = (form) => forms.add([...words.slice(0, -1), form].join(' '));
     regularDutchVerbForms(infinitive).forEach(addVerbForm);
-    (irregularDutchVerbs[infinitive] || []).forEach(addVerbForm);
+    irregularDutchVerbForms(infinitive).forEach(addVerbForm);
     return forms;
   }
 
