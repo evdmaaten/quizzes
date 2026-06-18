@@ -69,6 +69,81 @@
   const normalise = (value) => value.toLocaleLowerCase('nl-NL').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/[.,!?()]/g, '').replace(/\s+/g, ' ').trim();
 
+  const irregularDutchVerbs = {
+    zijn: ['ben', 'bent', 'is', 'was', 'waren', 'geweest'],
+    hebben: ['heb', 'hebt', 'heeft', 'had', 'hadden', 'gehad'],
+    worden: ['word', 'wordt', 'werd', 'werden', 'geworden'],
+    gaan: ['ga', 'gaat', 'ging', 'gingen', 'gegaan'],
+    komen: ['kom', 'komt', 'kwam', 'kwamen', 'gekomen'],
+    doen: ['doe', 'doet', 'deed', 'deden', 'gedaan'],
+    zien: ['zie', 'ziet', 'zag', 'zagen', 'gezien'],
+    geven: ['geef', 'geeft', 'gaf', 'gaven', 'gegeven'],
+    nemen: ['neem', 'neemt', 'nam', 'namen', 'genomen'],
+    krijgen: ['krijg', 'krijgt', 'kreeg', 'kregen', 'gekregen'],
+    blijven: ['blijf', 'blijft', 'bleef', 'bleven', 'gebleven'],
+    brengen: ['breng', 'brengt', 'bracht', 'brachten', 'gebracht'],
+    denken: ['denk', 'denkt', 'dacht', 'dachten', 'gedacht'],
+    weten: ['weet', 'wist', 'wisten', 'geweten'],
+    kunnen: ['kan', 'kunt', 'kon', 'konden', 'gekund'],
+    moeten: ['moet', 'moest', 'moesten', 'gemoeten'],
+    mogen: ['mag', 'mocht', 'mochten', 'gemogen'],
+    willen: ['wil', 'wilt', 'wilde', 'wilden', 'gewild'],
+    zullen: ['zal', 'zult', 'zou', 'zouden'],
+    staan: ['sta', 'staat', 'stond', 'stonden', 'gestaan'],
+    zitten: ['zit', 'zat', 'zaten', 'gezeten'],
+    liggen: ['lig', 'ligt', 'lag', 'lagen', 'gelegen'],
+    houden: ['houd', 'houdt', 'hield', 'hielden', 'gehouden'],
+    vinden: ['vind', 'vindt', 'vond', 'vonden', 'gevonden'],
+    zeggen: ['zeg', 'zegt', 'zei', 'zeiden', 'gezegd'],
+    spreken: ['spreek', 'spreekt', 'sprak', 'spraken', 'gesproken'],
+    schrijven: ['schrijf', 'schrijft', 'schreef', 'schreven', 'geschreven'],
+    lezen: ['lees', 'leest', 'las', 'lazen', 'gelezen'],
+    eten: ['eet', 'at', 'aten', 'gegeten'],
+    drinken: ['drink', 'drinkt', 'dronk', 'dronken', 'gedronken'],
+    lopen: ['loop', 'loopt', 'liep', 'liepen', 'gelopen'],
+    rijden: ['rijd', 'rijdt', 'reed', 'reden', 'gereden'],
+    vallen: ['val', 'valt', 'viel', 'vielen', 'gevallen'],
+    dragen: ['draag', 'draagt', 'droeg', 'droegen', 'gedragen'],
+    kiezen: ['kies', 'kiest', 'koos', 'kozen', 'gekozen'],
+    verliezen: ['verlies', 'verliest', 'verloor', 'verloren'],
+    winnen: ['win', 'wint', 'won', 'wonnen', 'gewonnen'],
+    beginnen: ['begin', 'begint', 'begon', 'begonnen'],
+    breken: ['breek', 'breekt', 'brak', 'braken', 'gebroken'],
+    trekken: ['trek', 'trekt', 'trok', 'trokken', 'getrokken'],
+    laten: ['laat', 'liet', 'lieten', 'gelaten'],
+    slapen: ['slaap', 'slaapt', 'sliep', 'sliepen', 'geslapen']
+  };
+
+  function regularDutchVerbForms(infinitive) {
+    if (!/^[a-z]+en$/.test(infinitive) || infinitive.length < 5) return [];
+    const rawStem = infinitive.slice(0, -2);
+    let stem = rawStem.replace(/([bcdfghjklmnpqrstvwxyz])\1$/, '$1');
+    if (/[^aeiou][aeiou][bcdfghjklmnpqrstvwxyz]$/.test(stem)) {
+      stem = stem.slice(0, -2) + stem.at(-2) + stem.slice(-2);
+    }
+    stem = stem.replace(/v$/, 'f').replace(/z$/, 's');
+    const softPast = /[tkschfp]$/.test(stem);
+    const past = stem + (softPast ? 'te' : 'de');
+    const prefix = /^(be|ge|her|ont|ver)/.test(infinitive) || /eren$/.test(infinitive) ? '' : 'ge';
+    const participle = prefix + stem + (softPast ? 't' : 'd');
+    return [stem, stem + 't', past, past + 'n', participle];
+  }
+
+  function acceptedAnswerForms(answer) {
+    const clean = normalise(answer);
+    const forms = new Set([clean]);
+    forms.add(clean.replace(/^(de|het|een)\s+/, ''));
+    const words = clean.split(' ');
+    const infinitive = words.at(-1);
+    const addVerbForm = (form) => forms.add([...words.slice(0, -1), form].join(' '));
+    regularDutchVerbForms(infinitive).forEach(addVerbForm);
+    (irregularDutchVerbs[infinitive] || []).forEach(addVerbForm);
+    return forms;
+  }
+
+  const isAcceptedAnswer = (given, answers) =>
+    answers.some((answer) => acceptedAnswerForms(answer).has(given));
+
   function parseWords(csv) {
     const lines = csv.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() && !line.trim().startsWith('#'));
     const rows = lines.slice(1).map((line, lineIndex) => {
@@ -125,7 +200,7 @@
     event.preventDefault(); if (answered) return;
     answered = true;
     const item = round[index], given = normalise(el('answer').value);
-    const correct = item.answers.some((answer) => normalise(answer) === given);
+    const correct = isAcceptedAnswer(given, item.answers);
     if (correct) { score++; el('feedback').textContent = 'Goed!'; el('feedback').className = 'feedback ok'; }
     else { wrong.push(item); el('feedback').innerHTML = `Nog niet. Goed antwoord: <strong>${item.answers.join(' / ')}</strong>`; el('feedback').className = 'feedback bad'; }
     el('answer').disabled = true; el('answerForm').querySelector('button').classList.add('hidden');
