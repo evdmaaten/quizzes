@@ -518,5 +518,271 @@
     restartBtn.onclick = start;
     start();
   </script>
+<script>
+(function () {
+  const hardQuestions = [
+    {
+      type: "open",
+      category: "Uitleg",
+      question: "Leg uit waarom de Balfour-verklaring later kon worden omschreven als '100 jaar ongemak'.",
+      context: "Gebruik in je antwoord zowel het Joodse als het Arabisch-Palestijnse perspectief.",
+      model: "De verklaring steunde een Joods nationaal tehuis in Palestina, terwijl daar al een Arabische meerderheid woonde. De rechten van die niet-Joodse gemeenschappen werden vaag beschermd. Daardoor ontstonden botsende verwachtingen over hetzelfde gebied, wat later doorwerkte in de strijd rond Israel en Palestina.",
+      checklist: ["Joods nationaal tehuis genoemd", "Arabische meerderheid/rechten genoemd", "botsende claims of verwachtingen uitgelegd"]
+    },
+    {
+      type: "order",
+      category: "Chronologie",
+      question: "Zet deze gebeurtenissen in de juiste volgorde van vroeg naar laat.",
+      items: ["Balfour-verklaring", "Peel-commissie", "Witboek", "Holocaust", "Al-Naqba", "Suez-crisis"],
+      explanation: "De juiste volgorde is 1917, 1937, 1939, 1941-1945, 1948 en 1956."
+    },
+    {
+      type: "multi",
+      category: "Ottomaanse Rijk",
+      question: "Welke vier oorzaken droegen bij aan het machtsverlies van het Ottomaanse Rijk?",
+      options: [
+        ["technologische achterstand op West-Europa", true],
+        ["Russische expansie richting Zwarte Zee en Kaukasus", true],
+        ["economisch verval en afhankelijkheid van Europese handel", true],
+        ["opkomend nationalisme van onderworpen volken", true],
+        ["succesvolle democratisering door de sultan", false],
+        ["volledige militaire steun van Arabische nationalisten", false]
+      ],
+      explanation: "De reader noemt onder meer technologische achterstand, Russische druk, economisch verval, zwakke sultans en nationalisme."
+    },
+    {
+      type: "match",
+      category: "Begrippen",
+      question: "Koppel elk begrip aan de juiste betekenis.",
+      pairs: [
+        ["Zionisme", "streven naar een Joods nationaal tehuis"],
+        ["Mandaatgebied", "bestuur namens de Volkenbond door een Europese macht"],
+        ["Al-Naqba", "Palestijnse ramp van vlucht en verdrijving rond 1948"],
+        ["Turkificatie", "minderheden aanpassen aan Turkse taal en identiteit"]
+      ],
+      explanation: "Deze begrippen komen direct terug in de reader en oefentoets."
+    },
+    {
+      type: "open",
+      category: "Suez",
+      question: "Leg uit dat de Suez-crisis past bij verzet tegen Europees modern imperialisme.",
+      model: "Nasser nationaliseerde het Suezkanaal, terwijl Groot-Brittannie en Frankrijk daar nog grote strategische en economische belangen hadden. Hun militaire reactie liet zien dat zij koloniale invloed wilden behouden. Het mislukken daarvan toont juist het afnemende gewicht van Europese imperialistische machten.",
+      checklist: ["nationalisatie door Nasser", "Brits-Franse belangen", "verband met anti-imperialisme of dekolonisatie"]
+    },
+    {
+      type: "open",
+      category: "Oorzaak-gevolg",
+      question: "Leg uit hoe de Holocaust onbedoeld bijdroeg aan latere spanningen in Palestina/Israel.",
+      model: "Door de Holocaust groeide de internationale steun voor een veilige Joodse staat. De stichting van Israel bood veel Joden bescherming, maar leidde ook tot oorlog, vlucht en verdrijving van veel Palestijnen. Zo werd een oplossing voor Joodse onveiligheid tegelijk een nieuwe bron van conflict.",
+      checklist: ["Holocaust als aanleiding voor steun", "stichting Israel genoemd", "gevolgen voor Palestijnen genoemd"]
+    },
+    {
+      type: "multi",
+      category: "Oslo",
+      question: "Welke factoren verklaren het vastlopen van het Oslo-vredesproces?",
+      options: [
+        ["discussie over de status van Jeruzalem", true],
+        ["nederzettingen en versnippering van Palestijns gebied", true],
+        ["aanslagen door Hamas en groeiende Israelische onveiligheid", true],
+        ["discussie over terugkeerrecht van Palestijnse vluchtelingen", true],
+        ["volledige overeenstemming over definitieve grenzen", false],
+        ["directe erkenning van Hamas als vredespartner door alle partijen", false]
+      ],
+      explanation: "Oslo gaf hoop, maar de moeilijkste onderwerpen bleven onopgelost."
+    },
+    {
+      type: "open",
+      category: "Bronvaardigheid",
+      question: "Een bron uit de Peel-commissie stelt dat Joden en Arabieren geen gemeenschappelijke nationale basis hebben. Leg uit waarom dat tot een verdelingsvoorstel leidde.",
+      model: "De commissie zag twee nationale gemeenschappen met eigen taal, religie, geschiedenis en politieke doelen in hetzelfde kleine gebied. Omdat hun nationale aspiraties volgens de commissie niet te combineren waren, leek verdeling een praktische oplossing.",
+      checklist: ["twee nationale gemeenschappen", "botsende aspiraties", "verdeling als gevolg/conclusie"]
+    },
+    {
+      type: "match",
+      category: "Personen",
+      question: "Koppel de persoon aan zijn rol.",
+      pairs: [
+        ["Ataturk", "moderniseerde en seculariseerde Turkije"],
+        ["Nasser", "nationaliseerde het Suezkanaal"],
+        ["Arafat", "leider van de PLO"],
+        ["Balfour", "Britse minister achter de verklaring van 1917"]
+      ],
+      explanation: "Let op: bij toetsvragen moet je personen vaak aan beleid of gevolg kunnen koppelen."
+    },
+    {
+      type: "open",
+      category: "Recente geschiedenis",
+      question: "Waarom kunnen de Abraham-akkoorden van 2020 als keerpunt worden gezien?",
+      model: "Enkele Arabische landen normaliseerden hun betrekkingen met Israel zonder eerst een volledige oplossing voor de Palestijnse kwestie af te wachten. Daardoor verschoof de regionale diplomatie richting samenwerking op gebieden als handel, technologie en veiligheid.",
+      checklist: ["normalisatie met Israel", "niet wachten op Palestijnse staat", "regionale samenwerking genoemd"]
+    }
+  ];
+
+  const els = {
+    category: document.getElementById("category"),
+    score: document.getElementById("score"),
+    progress: document.getElementById("progress"),
+    context: document.getElementById("context"),
+    question: document.getElementById("question"),
+    answers: document.getElementById("answers"),
+    result: document.getElementById("result"),
+    explanation: document.getElementById("explanation"),
+    next: document.getElementById("nextBtn"),
+    restart: document.getElementById("restartBtn")
+  };
+  let order = [], current = 0, score = 0, missed = [], done = false;
+
+  const style = document.createElement("style");
+  style.textContent = ".open-answer{width:100%;min-height:130px;border:1px solid #cbd5e1;border-radius:8px;padding:12px;font:inherit}.mixed-row{margin:10px 0}.mixed-row label{display:block;font-weight:700;margin-bottom:6px}.mixed-row select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:inherit}.model-answer{margin-top:14px;padding:12px 14px;border-left:4px solid #2563eb;background:#eff6ff;color:#1e3a8a}.checklist{margin-top:10px}.choice-active{outline:2px solid #2563eb;background:#eef2ff!important}.assessment-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}";
+  document.head.appendChild(style);
+
+  function shuffle(list) {
+    const copy = [...list];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function start() {
+    order = shuffle(hardQuestions.map((_, i) => i));
+    current = 0; score = 0; missed = [];
+    load();
+  }
+
+  function load() {
+    done = false;
+    const q = hardQuestions[order[current]];
+    els.category.textContent = q.category;
+    els.score.textContent = `Score: ${score} / ${current}`;
+    els.progress.style.width = `${(current / hardQuestions.length) * 100}%`;
+    els.question.textContent = `${current + 1}. ${q.question}`;
+    els.answers.innerHTML = "";
+    els.result.textContent = "";
+    els.explanation.innerHTML = "";
+    els.next.disabled = true;
+    els.context.hidden = !q.context;
+    els.context.textContent = q.context || "";
+    if (q.type === "open") renderOpen(q);
+    if (q.type === "multi") renderMulti(q);
+    if (q.type === "order") renderOrder(q);
+    if (q.type === "match") renderMatch(q);
+  }
+
+  function mark(ok, q, html) {
+    if (ok) score++; else missed.push(q);
+    els.score.textContent = `Score: ${score} / ${current + 1}`;
+    els.result.textContent = ok ? "Goed." : "Nog niet goed.";
+    els.explanation.innerHTML = html || q.explanation || "";
+    els.next.disabled = false;
+  }
+
+  function renderOpen(q) {
+    const area = document.createElement("textarea");
+    area.className = "open-answer";
+    area.placeholder = "Typ je antwoord in 2-5 zinnen...";
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.textContent = "Toon modelantwoord";
+    btn.onclick = () => {
+      if (done) return;
+      done = true; area.disabled = true;
+      const list = q.checklist.map(item => `<li>${item}</li>`).join("");
+      els.result.textContent = "Vergelijk je antwoord met het model.";
+      els.explanation.innerHTML = `<div class="model-answer">${q.model}</div><ul class="checklist">${list}</ul>`;
+      const box = document.createElement("div");
+      box.className = "assessment-buttons";
+      const good = document.createElement("button");
+      good.className = "btn"; good.textContent = "Kern goed";
+      const retry = document.createElement("button");
+      retry.className = "btn secondary"; retry.textContent = "Nog oefenen";
+      good.onclick = () => { good.disabled = retry.disabled = true; mark(true, q, els.explanation.innerHTML); };
+      retry.onclick = () => { good.disabled = retry.disabled = true; mark(false, q, els.explanation.innerHTML); };
+      box.append(good, retry); els.explanation.appendChild(box);
+    };
+    els.answers.append(area, btn);
+  }
+
+  function renderMulti(q) {
+    const selected = new Set();
+    shuffle(q.options.map((option, i) => ({ option, i }))).forEach(({ option, i }) => {
+      const b = document.createElement("button");
+      b.textContent = option[0];
+      b.onclick = () => { if (!done) { selected.has(i) ? selected.delete(i) : selected.add(i); b.classList.toggle("choice-active"); } };
+      els.answers.appendChild(b);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer antwoord";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const ok = q.options.every((o, i) => selected.has(i) === o[1]);
+      els.answers.querySelectorAll("button").forEach(b => {
+        b.disabled = true;
+        const opt = q.options.find(o => o[0] === b.textContent);
+        if (opt && opt[1]) b.classList.add("correct");
+        if (opt && !opt[1] && b.classList.contains("choice-active")) b.classList.add("incorrect");
+      });
+      mark(ok, q);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function renderOrder(q) {
+    shuffle(q.items).forEach(item => {
+      const row = document.createElement("div");
+      row.className = "mixed-row";
+      row.innerHTML = `<label>${item}</label><select data-item="${item}"><option value="">Kies positie</option>${q.items.map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}</select>`;
+      els.answers.appendChild(row);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer volgorde";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const selects = [...els.answers.querySelectorAll("select")];
+      const used = selects.map(s => s.value).filter(Boolean);
+      const ok = used.length === q.items.length && new Set(used).size === q.items.length && selects.every(s => Number(s.value) === q.items.indexOf(s.dataset.item) + 1);
+      selects.forEach(s => s.disabled = true);
+      mark(ok, q, ok ? q.explanation : `${q.explanation}<div class="model-answer">${q.items.map((x, i) => `${i + 1}. ${x}`).join("<br>")}</div>`);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function renderMatch(q) {
+    const defs = shuffle(q.pairs.map(pair => pair[1]));
+    q.pairs.forEach(pair => {
+      const row = document.createElement("div");
+      row.className = "mixed-row";
+      row.innerHTML = `<label>${pair[0]}</label><select data-term="${pair[0]}"><option value="">Kies uitleg</option>${defs.map(d => `<option value="${d}">${d}</option>`).join("")}</select>`;
+      els.answers.appendChild(row);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer koppelingen";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const ok = [...els.answers.querySelectorAll("select")].every(s => q.pairs.find(p => p[0] === s.dataset.term)[1] === s.value);
+      els.answers.querySelectorAll("select").forEach(s => s.disabled = true);
+      const model = q.pairs.map(p => `<strong>${p[0]}</strong>: ${p[1]}`).join("<br>");
+      mark(ok, q, ok ? q.explanation : `${q.explanation}<div class="model-answer">${model}</div>`);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function finish() {
+    els.category.textContent = "Klaar";
+    els.progress.style.width = "100%";
+    els.context.hidden = true;
+    els.question.textContent = "Quiz afgerond.";
+    els.answers.innerHTML = "";
+    els.result.textContent = `Eindscore: ${score} / ${hardQuestions.length}.`;
+    els.explanation.innerHTML = missed.length ? "Herhaal vooral: " + missed.map(q => q.category).join(", ") : "Sterk. Je kunt de kernstof ook uitleggen.";
+    els.next.disabled = true;
+  }
+
+  els.next.onclick = () => { current++; current < hardQuestions.length ? load() : finish(); };
+  els.restart.onclick = start;
+  start();
+})();
+</script>
 </body>
 </html>

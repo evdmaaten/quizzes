@@ -529,5 +529,291 @@
     restartBtn.onclick = start;
     start();
   </script>
+<script>
+(function () {
+  const hardQuestions = [
+    {
+      type: "open",
+      category: "Mini-essay",
+      question: "Leg in 4-6 zinnen uit wat de kern van de Verlichting is. Gebruik minstens drie begrippen.",
+      context: "Denk aan begrippen als rede, mondigheid, vooruitgang, kennisverspreiding, tolerantie, Spinoza, Kant of encyclopedie.",
+      model: "De Verlichting draaide om het vertrouwen dat mensen met hun eigen verstand de wereld konden begrijpen en verbeteren. Kant vatte dit samen als mondigheid: durf zelf te denken. Kennisverspreiding via encyclopedieen, tijdschriften en leeskringen moest burgers zelfstandiger maken. Denkers als Spinoza pasten daarbij door te pleiten voor tolerantie, vrijheid van meningsuiting en scheiding van kerk en staat.",
+      checklist: ["minstens drie begrippen gebruikt", "betekenis van de begrippen uitgelegd", "verband met Verlichting duidelijk gemaakt"]
+    },
+    {
+      type: "open",
+      category: "Mini-essay",
+      question: "Leg in 4-6 zinnen uit wat de kern van de Romantiek is. Gebruik minstens drie begrippen.",
+      context: "Denk aan begrippen als gevoel, individualisme, natuur, verleden, Weltschmerz, Sehnsucht, escapisme of historische roman.",
+      model: "De Romantiek reageerde op het rationele en optimistische denken van de Verlichting. Romantici legden nadruk op gevoel, individualisme, verbeelding en verlangen. Weltschmerz betekent lijden aan een onvolmaakte wereld, terwijl Sehnsucht staat voor een onvervulbaar verlangen. Ook natuur, verleden en historische romans boden manieren om aan de eigen tijd te ontsnappen.",
+      checklist: ["reactie op de Verlichting genoemd", "minstens drie romantische begrippen gebruikt", "betekenis en belang uitgelegd"]
+    },
+    {
+      type: "match",
+      category: "Begrippen",
+      question: "Koppel elk begrip aan de juiste uitleg.",
+      pairs: [
+        ["Rationalisme", "kennis ontstaat vooral door rede en redenering"],
+        ["Empirisme", "kennis ontstaat vooral door ervaring en waarneming"],
+        ["Weltschmerz", "lijden aan een onvolmaakte wereld"],
+        ["Sehnsucht", "onvervulbaar verlangen naar iets anders of hogers"]
+      ],
+      explanation: "Dit zijn kernbegrippen die je in een mini-essay correct moet kunnen gebruiken."
+    },
+    {
+      type: "match",
+      category: "Personen",
+      question: "Koppel de persoon of auteur aan het juiste idee of werk.",
+      pairs: [
+        ["Descartes", "methodische twijfel en cogito ergo sum"],
+        ["Spinoza", "tolerantie en scheiding van kerk en staat"],
+        ["Kant", "Sapere aude: durf zelf te denken"],
+        ["Multatuli", "Max Havelaar als aanklacht tegen koloniale misstanden"]
+      ],
+      explanation: "De voorbeeldtoets vraagt niet alleen herkenning, maar ook uitleg van belang."
+    },
+    {
+      type: "multi",
+      category: "Verlichting",
+      question: "Welke vier kenmerken horen duidelijk bij de Verlichting?",
+      options: [
+        ["vertrouwen in rede en kritisch onderzoek", true],
+        ["kennis verspreiden via nieuwe media en genres", true],
+        ["geloof in vooruitgang en maakbaarheid", true],
+        ["kritiek op oude machtsverhoudingen en bijgeloof", true],
+        ["vluchten in middeleeuwse ruines en mystiek", false],
+        ["nadruk op Weltschmerz en onvervulbaar verlangen", false]
+      ],
+      explanation: "De Verlichting draait om rede, mondigheid, kennis en vooruitgang."
+    },
+    {
+      type: "multi",
+      category: "Romantiek",
+      question: "Welke vier kenmerken horen duidelijk bij de Romantiek?",
+      options: [
+        ["nadruk op gevoel en subjectiviteit", true],
+        ["belangstelling voor natuur en verleden", true],
+        ["Weltschmerz en Sehnsucht als levensgevoel", true],
+        ["escapisme en verbeelding als vlucht uit de werkelijkheid", true],
+        ["vertrouwen dat de samenleving rationeel maakbaar is", false],
+        ["kennis verzamelen in encyclopedieen als hoofdideaal", false]
+      ],
+      explanation: "De Romantiek is juist een reactie op eenzijdig rationalisme en vooruitgangsgeloof."
+    },
+    {
+      type: "open",
+      category: "Descartes",
+      question: "Leg uit waarom 'cogito ergo sum' past bij Descartes' methodische twijfel.",
+      model: "Descartes twijfelde aan alles wat onzeker kon zijn, zelfs aan zintuiglijke waarneming. Maar aan het feit dat hij twijfelde, kon hij niet twijfelen. Twijfelen is denken, en als hij denkt, moet er een denkend ik bestaan. Daarom werd 'ik denk dus ik ben' zijn eerste zekerheid.",
+      checklist: ["twijfel aan zintuigen of kennis genoemd", "denken/twijfelen uitgelegd", "bestaan van het denkende ik als zekerheid"]
+    },
+    {
+      type: "open",
+      category: "Spinoza",
+      question: "Leg uit waarom Spinoza's ideeen botsend konden zijn met traditionele kerkelijke macht.",
+      model: "Spinoza zag God en natuur niet als strikt gescheiden en benadrukte natuurwetten en rede. Hij pleitte bovendien voor vrijheid van meningsuiting, tolerantie en scheiding van kerk en staat. Daarmee ondermijnde hij het idee dat geestelijken vanzelfsprekend de waarheid en politieke macht moesten bepalen.",
+      checklist: ["God/natuur of natuurwetten genoemd", "vrijheid/tolerantie genoemd", "botsing met kerkelijke macht uitgelegd"]
+    },
+    {
+      type: "open",
+      category: "Max Havelaar",
+      question: "Leg uit waarom Max Havelaar zowel literaire als politieke betekenis heeft.",
+      model: "Max Havelaar is literair bijzonder door de complexe structuur met Droogstoppel, Stern, Havelaar en het verhaal van Saidjah en Adinda. Politiek is het boek belangrijk omdat Multatuli koloniale uitbuiting in Nederlands-Indie aanklaagt en zich aan het eind direct tot de koning richt. De vorm dient dus het doel: de lezer raken en tot kritiek bewegen.",
+      checklist: ["literaire vorm/structuur genoemd", "koloniale misstanden genoemd", "doel van aanklacht uitgelegd"]
+    },
+    {
+      type: "open",
+      category: "Max Havelaar",
+      question: "Leg uit welke functie Droogstoppel heeft in Max Havelaar.",
+      model: "Droogstoppel vertegenwoordigt kortzichtig burgerlijk eigenbelang. Hij denkt zakelijk, vroom en verstandig te zijn, maar is blind voor het onrecht waar zijn welvaart mee samenhangt. Daardoor gebruikt Multatuli hem satirisch om hypocrisie en koloniale schijnmoraal zichtbaar te maken.",
+      checklist: ["kortzichtig/eigenbelang genoemd", "blindheid voor onrecht genoemd", "satire of kritiek uitgelegd"]
+    },
+    {
+      type: "order",
+      category: "Ordenen",
+      question: "Zet deze denkbewegingen grofweg in een logische volgorde.",
+      items: ["Descartes zoekt zekerheid via methodische twijfel", "Verlichtingsdenkers verspreiden rede en kennis", "Franse Revolutie toont politieke kracht van verlichte idealen", "Romantiek reageert op eenzijdige rede en vooruitgang"],
+      explanation: "Het gaat hier niet om exacte jaartallen, maar om ontwikkeling: rationalistische basis, verlichtingscultuur, politieke doorwerking, romantische reactie."
+    },
+    {
+      type: "match",
+      category: "Stromingen",
+      question: "Koppel het voorbeeld aan Verlichting of Romantiek.",
+      pairs: [
+        ["Encyclopedie", "Verlichting"],
+        ["Sapere aude", "Verlichting"],
+        ["Historische roman", "Romantiek"],
+        ["Natuurverlangen", "Romantiek"]
+      ],
+      explanation: "In de voorbeeldtoets moet je begrippen eerst correct in de juiste kolom kunnen plaatsen."
+    }
+  ];
+
+  const els = {
+    category: document.getElementById("category"),
+    score: document.getElementById("score"),
+    progress: document.getElementById("progress"),
+    context: document.getElementById("context"),
+    question: document.getElementById("question"),
+    answers: document.getElementById("answers"),
+    result: document.getElementById("result"),
+    explanation: document.getElementById("explanation"),
+    next: document.getElementById("nextBtn"),
+    restart: document.getElementById("restartBtn")
+  };
+  let order = [], current = 0, score = 0, missed = [], done = false;
+
+  const style = document.createElement("style");
+  style.textContent = ".open-answer{width:100%;min-height:130px;border:1px solid #cbd5e1;border-radius:8px;padding:12px;font:inherit}.mixed-row{margin:10px 0}.mixed-row label{display:block;font-weight:700;margin-bottom:6px}.mixed-row select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:inherit}.model-answer{margin-top:14px;padding:12px 14px;border-left:4px solid #2563eb;background:#eff6ff;color:#1e3a8a}.checklist{margin-top:10px}.choice-active{outline:2px solid #2563eb;background:#eef2ff!important}.assessment-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}";
+  document.head.appendChild(style);
+
+  function shuffle(list) {
+    const copy = [...list];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function start() {
+    order = shuffle(hardQuestions.map((_, i) => i));
+    current = 0; score = 0; missed = [];
+    load();
+  }
+
+  function load() {
+    done = false;
+    const q = hardQuestions[order[current]];
+    els.category.textContent = q.category;
+    els.score.textContent = `Score: ${score} / ${current}`;
+    els.progress.style.width = `${(current / hardQuestions.length) * 100}%`;
+    els.question.textContent = `${current + 1}. ${q.question}`;
+    els.answers.innerHTML = "";
+    els.result.textContent = "";
+    els.explanation.innerHTML = "";
+    els.next.disabled = true;
+    els.context.hidden = !q.context;
+    els.context.textContent = q.context || "";
+    if (q.type === "open") renderOpen(q);
+    if (q.type === "multi") renderMulti(q);
+    if (q.type === "order") renderOrder(q);
+    if (q.type === "match") renderMatch(q);
+  }
+
+  function mark(ok, q, html) {
+    if (ok) score++; else missed.push(q);
+    els.score.textContent = `Score: ${score} / ${current + 1}`;
+    els.result.textContent = ok ? "Goed." : "Nog niet goed.";
+    els.explanation.innerHTML = html || q.explanation || "";
+    els.next.disabled = false;
+  }
+
+  function renderOpen(q) {
+    const area = document.createElement("textarea");
+    area.className = "open-answer";
+    area.placeholder = "Typ je antwoord in 2-6 zinnen...";
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.textContent = "Toon modelantwoord";
+    btn.onclick = () => {
+      if (done) return;
+      done = true; area.disabled = true;
+      const list = q.checklist.map(item => `<li>${item}</li>`).join("");
+      els.result.textContent = "Vergelijk je antwoord met het model.";
+      els.explanation.innerHTML = `<div class="model-answer">${q.model}</div><ul class="checklist">${list}</ul>`;
+      const box = document.createElement("div");
+      box.className = "assessment-buttons";
+      const good = document.createElement("button");
+      good.className = "btn"; good.textContent = "Kern goed";
+      const retry = document.createElement("button");
+      retry.className = "btn secondary"; retry.textContent = "Nog oefenen";
+      good.onclick = () => { good.disabled = retry.disabled = true; mark(true, q, els.explanation.innerHTML); };
+      retry.onclick = () => { good.disabled = retry.disabled = true; mark(false, q, els.explanation.innerHTML); };
+      box.append(good, retry); els.explanation.appendChild(box);
+    };
+    els.answers.append(area, btn);
+  }
+
+  function renderMulti(q) {
+    const selected = new Set();
+    shuffle(q.options.map((option, i) => ({ option, i }))).forEach(({ option, i }) => {
+      const b = document.createElement("button");
+      b.textContent = option[0];
+      b.onclick = () => { if (!done) { selected.has(i) ? selected.delete(i) : selected.add(i); b.classList.toggle("choice-active"); } };
+      els.answers.appendChild(b);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer antwoord";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const ok = q.options.every((o, i) => selected.has(i) === o[1]);
+      els.answers.querySelectorAll("button").forEach(b => {
+        b.disabled = true;
+        const opt = q.options.find(o => o[0] === b.textContent);
+        if (opt && opt[1]) b.classList.add("correct");
+        if (opt && !opt[1] && b.classList.contains("choice-active")) b.classList.add("incorrect");
+      });
+      mark(ok, q);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function renderOrder(q) {
+    shuffle(q.items).forEach(item => {
+      const row = document.createElement("div");
+      row.className = "mixed-row";
+      row.innerHTML = `<label>${item}</label><select data-item="${item}"><option value="">Kies positie</option>${q.items.map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}</select>`;
+      els.answers.appendChild(row);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer volgorde";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const selects = [...els.answers.querySelectorAll("select")];
+      const used = selects.map(s => s.value).filter(Boolean);
+      const ok = used.length === q.items.length && new Set(used).size === q.items.length && selects.every(s => Number(s.value) === q.items.indexOf(s.dataset.item) + 1);
+      selects.forEach(s => s.disabled = true);
+      mark(ok, q, ok ? q.explanation : `${q.explanation}<div class="model-answer">${q.items.map((x, i) => `${i + 1}. ${x}`).join("<br>")}</div>`);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function renderMatch(q) {
+    const defs = shuffle(q.pairs.map(pair => pair[1]));
+    q.pairs.forEach(pair => {
+      const row = document.createElement("div");
+      row.className = "mixed-row";
+      row.innerHTML = `<label>${pair[0]}</label><select data-term="${pair[0]}"><option value="">Kies uitleg</option>${defs.map(d => `<option value="${d}">${d}</option>`).join("")}</select>`;
+      els.answers.appendChild(row);
+    });
+    const check = document.createElement("button");
+    check.className = "btn"; check.textContent = "Controleer koppelingen";
+    check.onclick = () => {
+      if (done) return; done = true;
+      const ok = [...els.answers.querySelectorAll("select")].every(s => q.pairs.find(p => p[0] === s.dataset.term)[1] === s.value);
+      els.answers.querySelectorAll("select").forEach(s => s.disabled = true);
+      const model = q.pairs.map(p => `<strong>${p[0]}</strong>: ${p[1]}`).join("<br>");
+      mark(ok, q, ok ? q.explanation : `${q.explanation}<div class="model-answer">${model}</div>`);
+    };
+    els.answers.appendChild(check);
+  }
+
+  function finish() {
+    els.category.textContent = "Klaar";
+    els.progress.style.width = "100%";
+    els.context.hidden = true;
+    els.question.textContent = "Quiz afgerond.";
+    els.answers.innerHTML = "";
+    els.result.textContent = `Eindscore: ${score} / ${hardQuestions.length}.`;
+    els.explanation.innerHTML = missed.length ? "Herhaal vooral: " + missed.map(q => q.category).join(", ") : "Sterk. Je kunt begrippen plaatsen en uitleggen.";
+    els.next.disabled = true;
+  }
+
+  els.next.onclick = () => { current++; current < hardQuestions.length ? load() : finish(); };
+  els.restart.onclick = start;
+  start();
+})();
+</script>
 </body>
 </html>
