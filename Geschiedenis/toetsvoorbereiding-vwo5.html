@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toetsvoorbereiding Geschiedenis VWO 5</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --brand: #1e3a8a;
+      --line: #d8e2ee;
+      --good: #d1fae5;
+      --bad: #fee2e2;
+      --warn: #fff7ed;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+
+    .quiz-container {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 34px);
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      background: #f8fafc;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .meter {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--brand);
+      transition: width .2s ease;
+    }
+
+    .question {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .context {
+      border-left: 4px solid #f59e0b;
+      background: var(--warn);
+      padding: 12px 14px;
+      margin: 0 0 16px;
+      color: #7c2d12;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .answers button:hover:not(:disabled) {
+      background: #eef2ff;
+      border-color: #93c5fd;
+    }
+
+    .answers button.correct {
+      background: var(--good);
+      border-color: #10b981;
+    }
+
+    .answers button.incorrect {
+      background: var(--bad);
+      border-color: #ef4444;
+    }
+
+    .result, .explanation {
+      margin-top: 16px;
+      font-weight: 700;
+    }
+
+    .explanation {
+      color: #334155;
+      font-weight: 400;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn.secondary {
+      background: #475569;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .final-list {
+      margin-top: 18px;
+      padding-left: 20px;
+    }
+
+    .final-list li {
+      margin: 8px 0;
+    }
+
+    @media (max-width: 640px) {
+      .quiz-container { padding: 18px; }
+      .question { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="quiz-container">
+      <div class="topbar">
+        <div>
+          <h1>Toetsvoorbereiding Geschiedenis VWO 5</h1>
+          <p class="subtitle">Midden-Oosten, Verlichting/Romantiek en historische verbanden.</p>
+        </div>
+        <span class="pill" id="category">Start</span>
+      </div>
+
+      <div class="pill" id="score">Score: 0 / 0</div>
+      <div class="meter" aria-hidden="true"><span id="progress"></span></div>
+
+      <div class="context" id="context" hidden></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <div class="result" id="result"></div>
+      <div class="explanation" id="explanation"></div>
+
+      <div class="actions">
+        <button class="btn" id="nextBtn" disabled>Volgende vraag</button>
+        <button class="btn secondary" id="restartBtn">Opnieuw oefenen</button>
+        <a class="btn secondary" href="index.html">Terug naar Geschiedenis</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const quiz = [
+      {
+        category: "Midden-Oosten",
+        question: "Welke combinatie verklaart het best waarom het Ottomaanse Rijk in de 18e en 19e eeuw onder druk kwam te staan?",
+        options: [
+          "Technologische achterstand, Russische expansie, economisch verval en opkomend nationalisme",
+          "Een verbod op handel, Amerikaanse kolonisatie, snelle industrialisatie en te veel democratie",
+          "De stichting van Israel, de Koude Oorlog, oliecrises en de Abraham-akkoorden",
+          "De Reformatie, de Franse Revolutie, de Romantiek en de NAVO"
+        ],
+        answer: 0,
+        explanation: "Dit sluit aan bij het antwoordenmodel: achterstand op het Westen, Russische druk, economisch verval, zwakke sultans en nationalisme van onderworpen volken."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom werd het Suezkanaal voor Groot-Brittannie zo belangrijk?",
+        options: [
+          "Het verkortte de zeeroute naar India en maakte Egypte strategisch cruciaal",
+          "Het gaf Groot-Brittannie toegang tot de Zwarte Zee",
+          "Het maakte Palestina onafhankelijk van het Ottomaanse Rijk",
+          "Het voorkwam dat olie nog nodig was voor de Britse marine"
+        ],
+        answer: 0,
+        explanation: "Het kanaal werd gezien als de 'navelstreng' van het Britse wereldrijk: de route naar India werd duizenden kilometers korter."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat wilden de Jong-Turken vooral bereiken na hun machtsgreep van 1908?",
+        options: [
+          "Modernisering en centralisering, maar ook turkificatie van minderheden",
+          "Een volledig Arabisch koninkrijk onder Hoessein",
+          "Een herstel van alle Europese privileges in Istanbul",
+          "Een neutrale positie in de Eerste Wereldoorlog"
+        ],
+        answer: 0,
+        explanation: "De Jong-Turken bewonderden westerse techniek, wilden het rijk versterken en drukten tegelijk niet-Turkse identiteiten hard terug."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom past de Armeense genocide bij het onderwerp nationalisme en oorlog?",
+        options: [
+          "De Jong-Turkse regering wantrouwde Armeniers als christelijke minderheid en mogelijke bondgenoten van Rusland",
+          "Armeniers vormden de meerderheid in Istanbul en wilden de sultan vervangen",
+          "De genocide was een direct gevolg van de Balfour-verklaring",
+          "De Volkenbond gaf opdracht tot deportatie van de Armeniers"
+        ],
+        answer: 0,
+        explanation: "In de context van oorlog, verliesangst en turkificatie werd een hele bevolkingsgroep als bedreiging gezien en gedeporteerd/vermoord."
+      },
+      {
+        category: "Chronologie",
+        question: "Welke volgorde is juist?",
+        options: [
+          "Balfour-verklaring - Peel-commissie - Witboek - Holocaust - Al-Naqba - Suez-crisis",
+          "Peel-commissie - Balfour-verklaring - Holocaust - Witboek - Suez-crisis - Al-Naqba",
+          "Witboek - Balfour-verklaring - Peel-commissie - Al-Naqba - Holocaust - Suez-crisis",
+          "Holocaust - Balfour-verklaring - Witboek - Peel-commissie - Suez-crisis - Al-Naqba"
+        ],
+        answer: 0,
+        explanation: "1917 Balfour, 1937 Peel, 1939 Witboek, 1941-1945 Holocaust, 1948 Al-Naqba, 1956 Suez-crisis."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat maakte de Balfour-verklaring zo explosief?",
+        options: [
+          "Ze beloofde steun aan een Joods nationaal tehuis, terwijl de rechten van de Arabische meerderheid vaag werden geformuleerd",
+          "Ze gaf de Arabieren volledige onafhankelijkheid en verbood Joodse immigratie",
+          "Ze erkende meteen een Palestijnse staat met Jeruzalem als hoofdstad",
+          "Ze maakte van Egypte een Frans protectoraat"
+        ],
+        answer: 0,
+        explanation: "De verklaring bevatte spanning tussen zionistische verwachtingen en de positie van de niet-Joodse gemeenschappen in Palestina."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom kwam de Peel-commissie in 1937 met een verdelingsplan?",
+        options: [
+          "Zij concludeerde dat Joden en Arabieren botsende nationale aspiraties hadden binnen een klein gebied",
+          "Zij wilde het Ottomaanse Rijk herstellen",
+          "Zij wilde alle Joodse immigratie naar Palestina verbieden",
+          "Zij wilde Palestina onder bestuur van de Sovjet-Unie plaatsen"
+        ],
+        answer: 0,
+        explanation: "De commissie zag twee nationale gemeenschappen zonder gemeenschappelijke basis en stelde daarom deling voor."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom was het Witboek van 1939 voor veel Joden een grote tegenslag?",
+        options: [
+          "Juist toen vervolging in Europa toenam, beperkte Groot-Brittannie de Joodse immigratie naar Palestina",
+          "Het maakte een Joodse staat onmiddellijk verplicht",
+          "Het gaf Jeruzalem aan Frankrijk",
+          "Het schafte het Britse mandaat direct af"
+        ],
+        answer: 0,
+        explanation: "De Britten wilden Arabische steun behouden met het oog op oorlog, maar sloten daarmee voor veel Joden een toevluchtsoord af."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Leg de kern van het verband tussen Holocaust en de stichting van Israel uit. Welke optie is het sterkst?",
+        options: [
+          "De Holocaust vergrootte internationale steun voor een veilige Joodse staat, maar verscherpte tegelijk het conflict met Arabische bewoners",
+          "De Holocaust maakte het zionisme overbodig, omdat Joden daarna veilig waren in Europa",
+          "De Holocaust leidde direct tot de Suez-crisis",
+          "De Holocaust zorgde ervoor dat Arabische landen de Balfour-verklaring introkken"
+        ],
+        answer: 0,
+        explanation: "Dit is precies het type toetsantwoord: noem oorzaak, gevolg en onbedoelde spanningen voor bestaande bewoners/grenzen."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat betekent Al-Naqba in de context van 1948?",
+        options: [
+          "De Palestijnse benaming voor de ramp van vlucht en verdrijving rond de stichting van Israel",
+          "De naam van het Britse Witboek",
+          "De vredesconferentie tussen Egypte en Israel",
+          "De staatsgreep van Nasser"
+        ],
+        answer: 0,
+        explanation: "Voor Palestijnen staat 1948 niet alleen voor de stichting van Israel, maar ook voor verlies van woongebied en vluchtelingenkampen."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom is de Suez-crisis een goed voorbeeld van verzet tegen Europees modern imperialisme?",
+        options: [
+          "Nasser nationaliseerde het kanaal en doorbrak Britse en Franse controle over een strategische route",
+          "Nasser vroeg Groot-Brittannie om Egypte opnieuw te bezetten",
+          "Israel gaf de Sinai terug aan Egypte",
+          "De Volkenbond dwong Egypte het kanaal te sluiten"
+        ],
+        answer: 0,
+        explanation: "De toets verwacht dat je nationalisatie koppelt aan anti-imperialisme en het afnemende wereldmachtgewicht van Groot-Brittannie en Frankrijk."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Welke gebieden veroverde Israel in de Zesdaagse Oorlog van 1967?",
+        options: [
+          "Westoever, Gazastrook, Sinai, Golanhoogten en Oost-Jeruzalem",
+          "Alleen Libanon en Irak",
+          "Alleen Tel Aviv en Haifa",
+          "Turkije, Iran en Saudi-Arabie"
+        ],
+        answer: 0,
+        explanation: "Deze veroveringen maakten veiligheid, nederzettingen, Jeruzalem en Palestijns zelfbestuur tot blijvende conflictpunten."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat was de kern van Camp David 1978/1979?",
+        options: [
+          "Vrede tussen Egypte en Israel, met teruggave van de Sinai aan Egypte",
+          "Oprichting van Hamas",
+          "Een Brits-Franse aanval op Egypte",
+          "Verdeling van Palestina door de Peel-commissie"
+        ],
+        answer: 0,
+        explanation: "Sadat, Begin en Carter bereikten een doorbraak: Egypte erkende Israel en Israel gaf de Sinai terug."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Welke omschrijving past het best bij de PLO onder Arafat?",
+        options: [
+          "Van gewapende bevrijdingsorganisatie richting politieke vertegenwoordiger die onder voorwaarden Israel wilde erkennen",
+          "Een religieus-zionistische beweging voor nederzettingen",
+          "Een Britse commissie voor mandaatbestuur",
+          "Een Egyptische socialistische partij tegen het Suezkanaal"
+        ],
+        answer: 0,
+        explanation: "De reader benadrukt de ontwikkeling van gewapende strijd en vliegtuigkapingen naar diplomatieke/politieke erkenning."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat hielden de Oslo-akkoorden van 1993 in?",
+        options: [
+          "Wederzijdse erkenning tussen Israel en PLO en Palestijns zelfbestuur in delen van Gaza en de Westoever",
+          "Directe stichting van een volledig onafhankelijke Palestijnse staat",
+          "Teruggave van de Sinai aan Egypte",
+          "Een verbod op alle Arabische partijen in Palestina"
+        ],
+        answer: 0,
+        explanation: "Oslo was een proces richting zelfbestuur, geen definitieve oplossing voor grenzen, vluchtelingen, Jeruzalem en nederzettingen."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Welke factor droeg bij aan het mislukken van het Oslo-vredesproces?",
+        options: [
+          "Nederzettingen, status van Jeruzalem, recht op terugkeer, aanslagen en wantrouwen",
+          "Het verdwijnen van alle religieuze spanningen",
+          "De volledige ontbinding van Hamas in 1993",
+          "Britse herovering van Palestina"
+        ],
+        answer: 0,
+        explanation: "Een goed toetsantwoord noemt meerdere oorzaken en laat zien waarom zelfbestuur alleen het conflict niet oploste."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Waarom werd Sharons bezoek aan de Tempelberg/Haram al-Sharif in 2000 als destabiliserend gezien?",
+        options: [
+          "Het werd door veel Palestijnen als provocatie op een heilige plek ervaren en droeg bij aan de Al-Aqsa-intifada",
+          "Het betekende dat Israel Hamas officieel erkende",
+          "Het was de ondertekening van de Abraham-akkoorden",
+          "Het maakte een einde aan alle nederzettingen"
+        ],
+        answer: 0,
+        explanation: "In de toets moet je Sharon koppelen aan symboliek, heilige plaatsen, escalatie en het vastlopen van vrede."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Wat maakte de Abraham-akkoorden van 2020 een mogelijk keerpunt?",
+        options: [
+          "Enkele Arabische landen normaliseerden betrekkingen met Israel zonder eerst volledige Palestijnse staatsvorming af te wachten",
+          "Israel en Hamas sloten een definitief vredesverdrag",
+          "Groot-Brittannie kreeg het Suezkanaal terug",
+          "De Verenigde Naties hieven Israel op"
+        ],
+        answer: 0,
+        explanation: "De akkoorden draaiden om normalisatie en samenwerking, onder meer handel, technologie en toerisme."
+      },
+      {
+        category: "Midden-Oosten",
+        question: "Welke aanleiding noemt de reader voor de huidige oorlog in Gaza vanaf oktober 2023?",
+        options: [
+          "De verrassingsaanval van Hamas op Israel op 7 oktober 2023 en de Israelische militaire reactie daarop",
+          "De opening van het Suezkanaal in 1869",
+          "De publicatie van het Witboek in 1939",
+          "De reis van Sadat naar Jeruzalem"
+        ],
+        answer: 0,
+        explanation: "De reader koppelt 7 oktober aan raketten, grensdoorbraken, dodelijk geweld, gijzelaars en vervolgens een grootschalige Israelische campagne in Gaza."
+      },
+      {
+        category: "Verlichting",
+        question: "Welke kernhouding past het best bij de Verlichting?",
+        options: [
+          "Zelf kritisch denken, vertrouwen in rede/onderzoek en geloof in vooruitgang",
+          "Volledige afwijzing van onderwijs en wetenschap",
+          "Vluchten in mystiek, middeleeuwen en Weltschmerz",
+          "Alleen gehoorzamen aan erfelijke vorsten"
+        ],
+        answer: 0,
+        explanation: "Denk aan Kant: durf je van je eigen verstand te bedienen. De Verlichting draait om mondigheid, kennisverspreiding en maakbaarheid."
+      },
+      {
+        category: "Verlichting",
+        question: "Wat bedoelde Descartes met methodische twijfel?",
+        options: [
+          "Alles betwijfelen om een onbetwijfelbare basis voor kennis te vinden",
+          "Nooit meer nadenken omdat zintuigen altijd gelijk hebben",
+          "Alleen geloven wat traditie en kerk zeggen",
+          "Kennis baseren op nationalistische gevoelens"
+        ],
+        answer: 0,
+        explanation: "Zijn nulpunt werd 'cogito ergo sum': als ik twijfel, denk ik; als ik denk, besta ik."
+      },
+      {
+        category: "Verlichting",
+        question: "Welke uitspraak past bij rationalisme?",
+        options: [
+          "De rede is de belangrijkste bron van kennis",
+          "Alle kennis komt uitsluitend uit zintuiglijke ervaring",
+          "Kunst moet vooral middeleeuws en mystiek zijn",
+          "Politieke macht moet altijd erfelijk blijven"
+        ],
+        answer: 0,
+        explanation: "Rationalisme legt nadruk op verstand en redenering; empirisme legt de nadruk op ervaring en waarneming."
+      },
+      {
+        category: "Verlichting",
+        question: "Welke uitspraak past bij empirisme?",
+        options: [
+          "Kennis ontstaat uit ervaring en waarneming",
+          "Kennis is volledig aangeboren en los van ervaring",
+          "Gevoel is altijd belangrijker dan waarneming",
+          "Alle waarheid ligt vast in oude gewoontes"
+        ],
+        answer: 0,
+        explanation: "Empirisme is a posteriori: kennis komt na waarneming/ervaring."
+      },
+      {
+        category: "Verlichting",
+        question: "Waarom past Spinoza goed bij radicalere verlichte ideeen?",
+        options: [
+          "Hij pleitte voor tolerantie, vrijheid van meningsuiting en scheiding van kerk en staat",
+          "Hij wilde de drukpers verbieden",
+          "Hij verdedigde absolute macht van geestelijken",
+          "Hij vond dat natuurwetten onbelangrijk waren"
+        ],
+        answer: 0,
+        explanation: "Spinoza koppelde natuur, rede en vrijheid aan kritiek op kerkelijke macht."
+      },
+      {
+        category: "Verlichting",
+        question: "Wat was een belangrijk effect van tijdschriften, salons, leeskringen en encyclopedieen in de 18e eeuw?",
+        options: [
+          "Zij verspreidden kennis en stimuleerden publieke opinie",
+          "Zij maakten lezen verboden voor burgers",
+          "Zij maakten een einde aan alle politieke discussie",
+          "Zij vervingen het Ottomaanse bestuur in Palestina"
+        ],
+        answer: 0,
+        explanation: "Nieuwe media en genres hielpen burgers mondiger worden en maakten kennis breder toegankelijk."
+      },
+      {
+        category: "Verlichting",
+        question: "Waarom past Sara Burgerhart bij de Verlichting?",
+        options: [
+          "De briefroman onderzoekt opvoeding, zelfstandigheid en de positie van een jonge vrouw",
+          "Het is een roman over de Zesdaagse Oorlog",
+          "Het is een pleidooi tegen lezen en onderwijs",
+          "Het is uitsluitend een middeleeuwse ridderroman"
+        ],
+        answer: 0,
+        explanation: "Wolff en Deken gebruiken de romanvorm om morele, sociale en opvoedkundige vragen uit te werken."
+      },
+      {
+        category: "Romantiek",
+        question: "Welke combinatie past het best bij de Romantiek?",
+        options: [
+          "Gevoel, individualisme, natuurverlangen, verleden, Weltschmerz en Sehnsucht",
+          "Uitsluitend rede, meetkunde, encyclopedieen en optimistisch maakbaarheidsdenken",
+          "Mandaatgebieden, olieconcessies en Britse protectoraatspolitiek",
+          "Alleen koloniale administratie en handelsbalansen"
+        ],
+        answer: 0,
+        explanation: "De Romantiek reageert op rationeel Verlichtingsdenken en legt nadruk op gevoel, verlangen, vlucht en het oorspronkelijke."
+      },
+      {
+        category: "Romantiek",
+        question: "Wat betekent Weltschmerz?",
+        options: [
+          "Lijden aan de onvolmaakte wereld",
+          "Geloof dat de wereld volledig maakbaar is",
+          "Een Britse commissie in Palestina",
+          "Een empiristische methode"
+        ],
+        answer: 0,
+        explanation: "Weltschmerz is het gevoel dat werkelijk geluk in deze wereld niet bereikbaar is."
+      },
+      {
+        category: "Romantiek",
+        question: "Wat betekent Sehnsucht?",
+        options: [
+          "Onvervulbaar verlangen naar iets hogers, anders of onbereikbaars",
+          "Een rationeel bewijs voor het bestaan van God",
+          "Een mandaat van de Volkenbond",
+          "Een economische crisis door olie"
+        ],
+        answer: 0,
+        explanation: "Sehnsucht hoort bij romantisch verlangen en escapisme."
+      },
+      {
+        category: "Romantiek",
+        question: "Waarom kan Max Havelaar zowel romantische als realistische trekken hebben?",
+        options: [
+          "Het gebruikt emotie, aanklacht en literaire vorm, maar klaagt ook concrete koloniale misstanden aan",
+          "Het gaat alleen over wiskundige zekerheden",
+          "Het verdedigt het cultuurstelsel zonder kritiek",
+          "Het is geschreven door Descartes als filosofisch traktaat"
+        ],
+        answer: 0,
+        explanation: "Multatuli wil raken en overtuigen, maar zijn doel is ook politiek-maatschappelijk: misstanden in Nederlands-Indie zichtbaar maken."
+      },
+      {
+        category: "Romantiek",
+        question: "Welke functie heeft Batavus Droogstoppel in Max Havelaar?",
+        options: [
+          "Hij belichaamt kortzichtig eigenbelang en burgerlijke schijnmoraal",
+          "Hij is de Palestijnse leider van de PLO",
+          "Hij is de filosoof van de methodische twijfel",
+          "Hij is de Britse minister van Buitenlandse Zaken in 1917"
+        ],
+        answer: 0,
+        explanation: "Droogstoppel is een satirisch personage: nuchter, zelfingenomen, zakelijk en blind voor onrecht."
+      },
+      {
+        category: "Romantiek",
+        question: "Wat is de functie van het verhaal van Saidjah en Adinda in Max Havelaar?",
+        options: [
+          "Het laat het koloniale leed vanuit het perspectief van onderdrukte Javanen voelen",
+          "Het bewijst dat kolonialisme geen slachtoffers had",
+          "Het vat de Balfour-verklaring samen",
+          "Het is een uitleg van rationalisme versus empirisme"
+        ],
+        answer: 0,
+        explanation: "Het verhaal maakt de aanklacht emotioneel concreet en versterkt Multatuli's kritiek op uitbuiting."
+      },
+      {
+        category: "Vaardigheden",
+        context: "Een toetsvraag vraagt: 'Leg uit dat de huidige problemen in het Midden-Oosten een onbedoeld gevolg zijn van onder andere de Holocaust.'",
+        question: "Welke antwoordopbouw is het sterkst?",
+        options: [
+          "Eerst Holocaust -> behoefte aan veilige Joodse staat, daarna stichting Israel -> Palestijnse vluchtelingen/grensconflict -> langdurige spanningen",
+          "Alleen zeggen dat de Holocaust erg was",
+          "Alleen jaartallen noemen zonder verband",
+          "Uitleggen dat de Holocaust na de Suez-crisis kwam"
+        ],
+        answer: 0,
+        explanation: "Bij 'leg uit' moet je een causale keten maken. Losse feiten leveren minder punten op."
+      },
+      {
+        category: "Vaardigheden",
+        context: "Een bron toont anti-militaristische kritiek in een socialistisch tijdschrift.",
+        question: "Wat moet je in zo'n bronvraag meestal doen?",
+        options: [
+          "Twee concrete beeldelementen noemen en die koppelen aan de politieke achtergrond",
+          "Alleen beschrijven wat je ziet, zonder uitleg",
+          "De bron overslaan en alleen je eigen mening geven",
+          "Alleen het onderschrift letterlijk overschrijven"
+        ],
+        answer: 0,
+        explanation: "De oefentoets beloont verwijzen naar bronmateriaal en koppelen aan context, bijvoorbeeld socialistische kritiek op oorlog en wapenwedloop."
+      },
+      {
+        category: "Vaardigheden",
+        question: "Wat is bij een mini-essay over Verlichting of Romantiek belangrijk volgens de voorbeeldtoets?",
+        options: [
+          "Begrippen correct indelen en in samenhang uitleggen wat ze betekenen en waarom ze belangrijk zijn",
+          "Alle begrippen alfabetisch opsommen zonder verband",
+          "Alleen jaartallen geven",
+          "Een mening geven zonder voorbeelden"
+        ],
+        answer: 0,
+        explanation: "De voorbeeldtoets vraagt om betekenis, belang en samenhang; de begrippen moeten dus functioneel in je verhaal zitten."
+      },
+      {
+        category: "Vaardigheden",
+        question: "Welke formulering is het meest toetswaardig bij een oorzaak-gevolgvraag?",
+        options: [
+          "Doordat ..., gebeurde ..., waardoor ...",
+          "Ik vind dit interessant",
+          "Het was vroeger anders",
+          "Dit hoort bij geschiedenis"
+        ],
+        answer: 0,
+        explanation: "Een heldere oorzaak-gevolgketen maakt zichtbaar dat je historisch redeneert."
+      }
+    ];
+
+    let order = [];
+    let current = 0;
+    let score = 0;
+    let answered = false;
+    let missed = [];
+
+    const categoryEl = document.getElementById("category");
+    const scoreEl = document.getElementById("score");
+    const progressEl = document.getElementById("progress");
+    const contextEl = document.getElementById("context");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const resultEl = document.getElementById("result");
+    const explanationEl = document.getElementById("explanation");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function start() {
+      order = shuffle(quiz.map((_, index) => index));
+      current = 0;
+      score = 0;
+      missed = [];
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      answered = false;
+      nextBtn.disabled = true;
+      resultEl.textContent = "";
+      explanationEl.textContent = "";
+      answersEl.innerHTML = "";
+
+      const q = quiz[order[current]];
+      categoryEl.textContent = q.category;
+      questionEl.textContent = `${current + 1}. ${q.question}`;
+      scoreEl.textContent = `Score: ${score} / ${current}`;
+      progressEl.style.width = `${(current / quiz.length) * 100}%`;
+
+      if (q.context) {
+        contextEl.hidden = false;
+        contextEl.textContent = q.context;
+      } else {
+        contextEl.hidden = true;
+        contextEl.textContent = "";
+      }
+
+      q.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(index);
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(index) {
+      if (answered) return;
+      answered = true;
+
+      const q = quiz[order[current]];
+      const buttons = answersEl.querySelectorAll("button");
+
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer) btn.classList.add("correct");
+        if (i === index && i !== q.answer) btn.classList.add("incorrect");
+      });
+
+      if (index === q.answer) {
+        score++;
+        resultEl.textContent = "Goed.";
+      } else {
+        missed.push(q);
+        resultEl.textContent = "Nog niet goed.";
+      }
+
+      explanationEl.textContent = q.explanation;
+      scoreEl.textContent = `Score: ${score} / ${current + 1}`;
+      nextBtn.disabled = false;
+    }
+
+    function finish() {
+      const percentage = Math.round((score / quiz.length) * 100);
+      categoryEl.textContent = "Klaar";
+      progressEl.style.width = "100%";
+      contextEl.hidden = true;
+      questionEl.textContent = "Quiz afgerond.";
+      answersEl.innerHTML = "";
+      resultEl.textContent = `Eindscore: ${score} / ${quiz.length} (${percentage}%).`;
+
+      if (missed.length === 0) {
+        explanationEl.textContent = "Sterk. Je hebt alle kernverbanden goed.";
+      } else {
+        explanationEl.innerHTML = "Herhaal vooral deze onderdelen:";
+        const list = document.createElement("ul");
+        list.className = "final-list";
+        missed.slice(0, 8).forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.category}: ${item.question}`;
+          list.appendChild(li);
+        });
+        explanationEl.appendChild(list);
+      }
+
+      nextBtn.disabled = true;
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < quiz.length) {
+        loadQuestion();
+      } else {
+        finish();
+      }
+    };
+
+    restartBtn.onclick = start;
+
+    start();
+  </script>
+</body>
+</html>
