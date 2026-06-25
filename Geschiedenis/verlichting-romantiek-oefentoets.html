@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verlichting & Romantiek oefentoets</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --brand: #1e3a8a;
+      --line: #d8e2ee;
+      --good: #d1fae5;
+      --bad: #fee2e2;
+      --note: #fff7ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 940px; margin: 0 auto; padding: 28px 18px 48px; }
+    .quiz-container {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+    .topbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    h1 { margin: 0; font-size: clamp(24px, 4vw, 34px); }
+    .subtitle { margin: 6px 0 0; color: var(--muted); }
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      background: #f8fafc;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .meter { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin: 20px 0; }
+    .meter span { display: block; height: 100%; width: 0%; background: var(--brand); transition: width .2s ease; }
+    .context { border-left: 4px solid #f59e0b; background: var(--note); padding: 12px 14px; margin: 0 0 16px; color: #7c2d12; }
+    .question { font-size: 1.22rem; font-weight: 700; margin-bottom: 16px; }
+    .answers button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .answers button:hover:not(:disabled) { background: #eef2ff; border-color: #93c5fd; }
+    .answers button.correct { background: var(--good); border-color: #10b981; }
+    .answers button.incorrect { background: var(--bad); border-color: #ef4444; }
+    .result, .explanation { margin-top: 16px; font-weight: 700; }
+    .explanation { color: #334155; font-weight: 400; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .btn {
+      display: inline-block;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn.secondary { background: #475569; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    .final-list { margin-top: 18px; padding-left: 20px; }
+    .final-list li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="quiz-container">
+      <div class="topbar">
+        <div>
+          <h1>Verlichting & Romantiek oefentoets</h1>
+          <p class="subtitle">Gebaseerd op de reader en de voorbeeldtoets.</p>
+        </div>
+        <span class="pill" id="category">Start</span>
+      </div>
+      <div class="pill" id="score">Score: 0 / 0</div>
+      <div class="meter" aria-hidden="true"><span id="progress"></span></div>
+      <div class="context" id="context" hidden></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <div class="result" id="result"></div>
+      <div class="explanation" id="explanation"></div>
+      <div class="actions">
+        <button class="btn" id="nextBtn" disabled>Volgende vraag</button>
+        <button class="btn secondary" id="restartBtn">Opnieuw oefenen</button>
+        <a class="btn secondary" href="index.html">Terug naar Geschiedenis</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const quiz = [
+      {
+        category: "Verlichting",
+        question: "Welke houding past het best bij de Verlichting?",
+        options: [
+          ["Zelf denken, kennis verspreiden en vertrouwen op rede en onderzoek.", true],
+          ["Zelf voelen, traditie herstellen en vertrouwen op mystiek en verleden.", false],
+          ["Zelf vluchten, natuur zoeken en vertrouwen op verlangen en verbeelding.", false],
+          ["Zelf gehoorzamen, standen bewaren en vertrouwen op erfelijke macht.", false]
+        ],
+        explanation: "De Verlichting draait om mondigheid, kennis, rede, vooruitgang en maakbaarheid."
+      },
+      {
+        category: "Verlichting",
+        question: "Wat bedoelt Kant met 'Sapere aude'?",
+        options: [
+          ["Heb de moed om je eigen verstand te gebruiken.", true],
+          ["Heb de moed om je gevoel boven alles te zetten.", false],
+          ["Heb de moed om oude standen te herstellen.", false],
+          ["Heb de moed om de natuurwetten af te wijzen.", false]
+        ],
+        explanation: "Kant vat de Verlichting samen als mondig worden door zelfstandig kritisch denken."
+      },
+      {
+        category: "Descartes",
+        question: "Wat is de kern van Descartes' methodische twijfel?",
+        options: [
+          ["Alles betwijfelen om een zekere basis voor kennis te vinden.", true],
+          ["Alles waarnemen om een emotionele basis voor kunst te vinden.", false],
+          ["Alles geloven om een kerkelijke basis voor bestuur te vinden.", false],
+          ["Alles bewaren om een historische basis voor natievorming te vinden.", false]
+        ],
+        explanation: "Descartes zoekt zekerheid door eerst zelfs zintuiglijke kennis te betwijfelen."
+      },
+      {
+        category: "Descartes",
+        question: "Welke uitleg past bij 'cogito ergo sum'?",
+        options: [
+          ["Omdat ik twijfel en denk, weet ik zeker dat ik besta.", true],
+          ["Omdat ik waarneem en voel, weet ik zeker dat de natuur goddelijk is.", false],
+          ["Omdat ik droom en verlang, weet ik zeker dat de wereld onvolmaakt is.", false],
+          ["Omdat ik lees en schrijf, weet ik zeker dat de roman opvoedt.", false]
+        ],
+        explanation: "Het denkende ik is voor Descartes de eerste onbetwijfelbare zekerheid."
+      },
+      {
+        category: "Descartes",
+        question: "Wat houdt Descartes' dualisme in?",
+        options: [
+          ["Geest en lichaam zijn twee onderscheiden domeinen.", true],
+          ["Rede en ervaring zijn twee identieke kennisbronnen.", false],
+          ["Kerk en staat zijn twee samengevoegde machten.", false],
+          ["Natuur en geschiedenis zijn twee romantische vluchtwegen.", false]
+        ],
+        explanation: "Descartes onderscheidt res cogitans, het denken, en res extensa, het lichamelijke of ruimtelijke."
+      },
+      {
+        category: "Spinoza",
+        question: "Waarom past Spinoza bij radicalere verlichte ideeen?",
+        options: [
+          ["Hij pleitte voor tolerantie, meningsuiting en scheiding van kerk en staat.", true],
+          ["Hij pleitte voor censuur, staatskerk en herstel van geestelijke macht.", false],
+          ["Hij pleitte voor Weltschmerz, escapisme en terugkeer naar middeleeuwen.", false],
+          ["Hij pleitte voor koloniale handel, koffiebelang en cultuurstelsel.", false]
+        ],
+        explanation: "Spinoza bekritiseerde kerkelijke macht en benadrukte vrijheid en rationeel denken."
+      },
+      {
+        category: "Spinoza",
+        question: "Welke uitspraak past bij Spinoza's idee van God of natuur?",
+        options: [
+          ["God en natuur vallen samen binnen een noodzakelijke orde.", true],
+          ["God en natuur staan los binnen een toevallige orde.", false],
+          ["God en staat vallen samen binnen een kerkelijke orde.", false],
+          ["God en gevoel staan los binnen een romantische orde.", false]
+        ],
+        explanation: "Bij Spinoza is God niet een losse wetgever buiten de natuur; alles volgt noodzakelijke natuurwetten."
+      },
+      {
+        category: "Kennisleer",
+        question: "Welke omschrijving past bij rationalisme?",
+        options: [
+          ["De rede is de belangrijkste bron voor betrouwbare kennis.", true],
+          ["De ervaring is de enige bron voor betrouwbare kennis.", false],
+          ["Het gevoel is de enige bron voor betrouwbare kunst.", false],
+          ["De traditie is de belangrijkste bron voor politieke macht.", false]
+        ],
+        explanation: "Rationalisme benadrukt verstand, redenering en a priori kennis."
+      },
+      {
+        category: "Kennisleer",
+        question: "Welke omschrijving past bij empirisme?",
+        options: [
+          ["Kennis ontstaat door zintuiglijke ervaring en waarneming.", true],
+          ["Kennis ontstaat door aangeboren begrippen en zuivere rede.", false],
+          ["Kunst ontstaat door wereldpijn en onvervulbaar verlangen.", false],
+          ["Bestuur ontstaat door erfelijke macht en religieuze plicht.", false]
+        ],
+        explanation: "Empirisme is a posteriori: kennis komt na ervaring."
+      },
+      {
+        category: "Publieke opinie",
+        question: "Waarom waren tijdschriften, salons en leeskringen belangrijk?",
+        options: [
+          ["Zij verspreidden kennis en vormden een kritische publieke opinie.", true],
+          ["Zij beperkten kennis en herstelden een gesloten hofcultuur.", false],
+          ["Zij verboden romans en versterkten uitsluitend kerkelijke preken.", false],
+          ["Zij vervingen parlementen en bestuurden kolonies rechtstreeks.", false]
+        ],
+        explanation: "Nieuwe media en ontmoetingsplaatsen maakten burgers mondiger."
+      },
+      {
+        category: "Encyclopedie",
+        question: "Waarom past de encyclopedie goed bij de Verlichting?",
+        options: [
+          ["Zij verzamelde en verspreidde bruikbare kennis voor een breder publiek.", true],
+          ["Zij beschermde geheime kennis voor een kleine erfelijke elite.", false],
+          ["Zij verving kennis door mystiek verlangen naar het verleden.", false],
+          ["Zij veranderde kennis in satire zonder maatschappelijk doel.", false]
+        ],
+        explanation: "Kennis verzamelen en toegankelijk maken was een verlicht ideaal."
+      },
+      {
+        category: "Literatuur",
+        question: "Waarom past Sara Burgerhart bij de Verlichting?",
+        options: [
+          ["De briefroman onderzoekt opvoeding, zelfstandigheid en morele keuzes.", true],
+          ["De historische roman onderzoekt ridders, ruines en nationale nostalgie.", false],
+          ["Het pamflet onderzoekt koloniale uitbuiting en spreekt de koning aan.", false],
+          ["Het gedicht onderzoekt Weltschmerz, ironie en onbereikbaar verlangen.", false]
+        ],
+        explanation: "Wolff en Deken gebruiken de roman om gedrag, opvoeding en positie van vrouwen te bespreken."
+      },
+      {
+        category: "Verlichting",
+        question: "Welke politieke idealen horen duidelijk bij de Verlichting?",
+        options: [
+          ["Vrijheid, gelijkheid, broederschap en kritiek op oude machtsverhoudingen.", true],
+          ["Gevoel, mystiek, ruines en kritiek op rationele machtsverhoudingen.", false],
+          ["Kolonie, cultuurstelsel, koffiehandel en kritiek op inlandse macht.", false],
+          ["Nederzetting, mandaat, deling en kritiek op nationale claims.", false]
+        ],
+        explanation: "De Franse Revolutie wordt in de reader verbonden met het culminatiepunt van verlichte idealen."
+      },
+      {
+        category: "Romantiek",
+        question: "Welke combinatie past het best bij Romantiek?",
+        options: [
+          ["Gevoel, individualisme, natuur, verleden, Weltschmerz en Sehnsucht.", true],
+          ["Rede, maakbaarheid, encyclopedie, tolerantie, rationalisme en vooruitgang.", false],
+          ["Mandaat, Balfour, deling, immigratie, zionisme en nationalisme.", false],
+          ["Koffie, beurs, resident, cultuurstelsel, regent en koloniale winst.", false]
+        ],
+        explanation: "Romantiek reageert op het rationele optimisme van de Verlichting."
+      },
+      {
+        category: "Romantiek",
+        question: "Wat betekent Weltschmerz?",
+        options: [
+          ["Lijden aan een wereld die als onvolmaakt wordt ervaren.", true],
+          ["Vertrouwen in een wereld die rationeel maakbaar wordt geacht.", false],
+          ["Geloof in een wereld die door koloniale handel wordt verbeterd.", false],
+          ["Analyse van een wereld die door zintuigen volledig bekend is.", false]
+        ],
+        explanation: "Weltschmerz is wereldpijn: het gevoel dat werkelijk geluk niet bereikbaar is."
+      },
+      {
+        category: "Romantiek",
+        question: "Wat betekent Sehnsucht?",
+        options: [
+          ["Onvervulbaar verlangen naar iets anders, hogers of onbereikbaars.", true],
+          ["Onbetwijfelbare zekerheid door denken, twijfel en rationele methode.", false],
+          ["Onpartijdige kennis door waarneming, experiment en ervaring.", false],
+          ["Onbeperkte macht door traditie, standenorde en erfelijk bestuur.", false]
+        ],
+        explanation: "Sehnsucht is romantisch verlangen dat nooit helemaal wordt vervuld."
+      },
+      {
+        category: "Romantiek",
+        question: "Welke houding tegenover de Verlichting past bij veel romantici?",
+        options: [
+          ["Wantrouwen tegen eenzijdige rede, vooruitgang en objectiviteit.", true],
+          ["Vertrouwen in eenzijdige rede, vooruitgang en objectiviteit.", false],
+          ["Wantrouwen tegen gevoel, natuur en historische verbeelding.", false],
+          ["Vertrouwen in koloniale winst, cultuurstelsel en handelsmoraal.", false]
+        ],
+        explanation: "Romantiek benadrukt gevoel, subjectiviteit en verlangen als tegengewicht tegen de rede."
+      },
+      {
+        category: "Romantiek",
+        question: "Welke literaire vormen passen bij de Romantiek?",
+        options: [
+          ["Dagboek, lyriek, gothic novel, reisverslag en historische roman.", true],
+          ["Encyclopedie, spectator, kindergedicht, briefroman en leerzaam toneel.", false],
+          ["Mandaattekst, commissieadvies, witboek, verklaring en vredesakkoord.", false],
+          ["Beursbericht, visitekaartje, belastingstaat, processtuk en ambtsbrief.", false]
+        ],
+        explanation: "Romantische literatuur zoekt vaak individualiteit, spanning, natuur, verleden en verbeelding."
+      },
+      {
+        category: "Romantiek",
+        question: "Waarom past Piet Paaltjens bij romantische gevoeligheid?",
+        options: [
+          ["Zijn werk speelt met wereldpijn, ironie, miskend genie en verlangen.", true],
+          ["Zijn werk speelt met meetkunde, dualisme, natuurwetten en godsbewijs.", false],
+          ["Zijn werk speelt met encyclopedieen, spectators, opvoeding en rede.", false],
+          ["Zijn werk speelt met mandaten, deling, immigratie en nationalisme.", false]
+        ],
+        explanation: "Piet Paaltjens gebruikt romantische thema's vaak serieus en ironisch tegelijk."
+      },
+      {
+        category: "Max Havelaar",
+        question: "Waarom heeft Max Havelaar zowel romantische als realistische trekken?",
+        options: [
+          ["Het gebruikt emotie en aanklacht, maar richt zich op concrete misstanden.", true],
+          ["Het gebruikt rede en meetkunde, maar richt zich op aangeboren kennis.", false],
+          ["Het gebruikt mystiek en natuur, maar richt zich op middeleeuwse ridders.", false],
+          ["Het gebruikt mandaten en verdragen, maar richt zich op Palestijnse grenzen.", false]
+        ],
+        explanation: "Multatuli wil de lezer raken en tegelijk koloniale uitbuiting aanklagen."
+      },
+      {
+        category: "Max Havelaar",
+        question: "Welke functie heeft Batavus Droogstoppel?",
+        options: [
+          ["Hij toont kortzichtig eigenbelang, schijnmoraal en burgerlijke zelfgenoegzaamheid.", true],
+          ["Hij toont rationele twijfel, zuivere methode en filosofische bescheidenheid.", false],
+          ["Hij toont romantisch verlangen, wereldpijn en religieuze natuurbeleving.", false],
+          ["Hij toont politieke bemiddeling, mandaatbestuur en diplomatieke erkenning.", false]
+        ],
+        explanation: "Droogstoppel is satirisch: hij denkt zakelijk en moreel te zijn, maar ziet onrecht niet."
+      },
+      {
+        category: "Max Havelaar",
+        question: "Wat is de functie van Saidjah en Adinda?",
+        options: [
+          ["Het verhaal laat koloniale uitbuiting emotioneel en concreet voelen.", true],
+          ["Het verhaal laat rationele twijfel abstract en methodisch verlopen.", false],
+          ["Het verhaal laat romantische ironie luchtig en afstandelijk werken.", false],
+          ["Het verhaal laat politieke deling technisch en diplomatiek slagen.", false]
+        ],
+        explanation: "Het verhaal toont het leed van Javanen en versterkt Multatuli's aanklacht."
+      },
+      {
+        category: "Max Havelaar",
+        question: "Waarom richt Multatuli zich aan het eind direct tot de koning?",
+        options: [
+          ["Hij wil de koloniale misstanden politiek onder de hoogste aandacht brengen.", true],
+          ["Hij wil de filosofische twijfel kerkelijk onder de hoogste aandacht brengen.", false],
+          ["Hij wil de romantische natuur nationaal onder de hoogste aandacht brengen.", false],
+          ["Hij wil de Britse mandaten diplomatiek onder de hoogste aandacht brengen.", false]
+        ],
+        explanation: "Het boek is niet alleen literair, maar ook een aanklacht tegen bestuur in Nederlands-Indie."
+      },
+      {
+        category: "Voorbeeldtoets",
+        context: "De voorbeeldtoets vraagt om begrippen eerst in Verlichting/Romantiek te plaatsen en daarna in een mini-essay te gebruiken.",
+        question: "Welke aanpak past het best bij die toetsvorm?",
+        options: [
+          ["Begrippen juist indelen en daarna hun betekenis en belang in samenhang uitleggen.", true],
+          ["Begrippen willekeurig indelen en daarna vooral persoonlijke voorkeuren beschrijven.", false],
+          ["Begrippen alfabetisch ordenen en daarna alleen losse definities opsommen.", false],
+          ["Begrippen overslaan en daarna vooral lange citaten zonder uitleg geven.", false]
+        ],
+        explanation: "De toets beloont samenhang: laat zien waarom een begrip bij een stroming hoort."
+      },
+      {
+        category: "Voorbeeldtoets",
+        question: "Welke koppeling is het meest logisch voor een mini-essay over de Verlichting?",
+        options: [
+          ["Kant, Spinoza, rationalisme, encyclopedie en publieke opinie.", true],
+          ["Weltschmerz, Sehnsucht, gothic novel, ruine en natuurverlangen.", false],
+          ["Droogstoppel, Saidjah, cultuurstelsel, Lebak en koloniale aanklacht.", false],
+          ["Balfour, Peel, Witboek, Al-Naqba en Suez-crisis.", false]
+        ],
+        explanation: "Deze begrippen horen bij mondigheid, kennis, rede en maatschappelijke kritiek."
+      },
+      {
+        category: "Voorbeeldtoets",
+        question: "Welke koppeling is het meest logisch voor een mini-essay over de Romantiek?",
+        options: [
+          ["Weltschmerz, Sehnsucht, natuurverlangen, individualisme en historische roman.", true],
+          ["Rationalisme, empirisme, encyclopedie, spectator en maakbaarheid.", false],
+          ["Zionisme, mandaat, Balfour, Witboek en nationalisme.", false],
+          ["Volkenbond, Sovjet-Unie, Versailles, fascisme en niet-aanvalsverdrag.", false]
+        ],
+        explanation: "Deze begrippen horen bij gevoel, verlangen, verleden en reactie op de Verlichting."
+      }
+    ];
+
+    let order = [];
+    let optionOrder = [];
+    let current = 0;
+    let score = 0;
+    let answered = false;
+    let missed = [];
+
+    const categoryEl = document.getElementById("category");
+    const scoreEl = document.getElementById("score");
+    const progressEl = document.getElementById("progress");
+    const contextEl = document.getElementById("context");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const resultEl = document.getElementById("result");
+    const explanationEl = document.getElementById("explanation");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function start() {
+      order = shuffle(quiz.map((_, index) => index));
+      current = 0;
+      score = 0;
+      missed = [];
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      answered = false;
+      nextBtn.disabled = true;
+      resultEl.textContent = "";
+      explanationEl.textContent = "";
+      answersEl.innerHTML = "";
+
+      const q = quiz[order[current]];
+      optionOrder = shuffle(q.options.map((_, index) => index));
+      categoryEl.textContent = q.category;
+      questionEl.textContent = `${current + 1}. ${q.question}`;
+      scoreEl.textContent = `Score: ${score} / ${current}`;
+      progressEl.style.width = `${(current / quiz.length) * 100}%`;
+
+      if (q.context) {
+        contextEl.hidden = false;
+        contextEl.textContent = q.context;
+      } else {
+        contextEl.hidden = true;
+        contextEl.textContent = "";
+      }
+
+      optionOrder.forEach((optionIndex) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = q.options[optionIndex][0];
+        btn.onclick = () => selectAnswer(optionIndex);
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(optionIndex) {
+      if (answered) return;
+      answered = true;
+
+      const q = quiz[order[current]];
+      const buttons = answersEl.querySelectorAll("button");
+      const correctOptionIndex = q.options.findIndex(option => option[1]);
+
+      buttons.forEach((btn, renderedIndex) => {
+        const originalIndex = optionOrder[renderedIndex];
+        btn.disabled = true;
+        if (originalIndex === correctOptionIndex) btn.classList.add("correct");
+        if (originalIndex === optionIndex && originalIndex !== correctOptionIndex) btn.classList.add("incorrect");
+      });
+
+      if (q.options[optionIndex][1]) {
+        score++;
+        resultEl.textContent = "Goed.";
+      } else {
+        missed.push(q);
+        resultEl.textContent = "Nog niet goed.";
+      }
+
+      explanationEl.textContent = q.explanation;
+      scoreEl.textContent = `Score: ${score} / ${current + 1}`;
+      nextBtn.disabled = false;
+    }
+
+    function finish() {
+      const percentage = Math.round((score / quiz.length) * 100);
+      categoryEl.textContent = "Klaar";
+      progressEl.style.width = "100%";
+      contextEl.hidden = true;
+      questionEl.textContent = "Quiz afgerond.";
+      answersEl.innerHTML = "";
+      resultEl.textContent = `Eindscore: ${score} / ${quiz.length} (${percentage}%).`;
+
+      if (missed.length === 0) {
+        explanationEl.textContent = "Sterk. Je kunt de begrippen goed plaatsen en uitleggen.";
+      } else {
+        explanationEl.innerHTML = "Herhaal vooral deze onderdelen:";
+        const list = document.createElement("ul");
+        list.className = "final-list";
+        missed.slice(0, 8).forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.category}: ${item.question}`;
+          list.appendChild(li);
+        });
+        explanationEl.appendChild(list);
+      }
+
+      nextBtn.disabled = true;
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < quiz.length) loadQuestion();
+      else finish();
+    };
+    restartBtn.onclick = start;
+    start();
+  </script>
+</body>
+</html>

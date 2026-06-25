@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midden-Oosten oefentoets</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --brand: #1e3a8a;
+      --line: #d8e2ee;
+      --good: #d1fae5;
+      --bad: #fee2e2;
+      --note: #fff7ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 940px; margin: 0 auto; padding: 28px 18px 48px; }
+    .quiz-container {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+    .topbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    h1 { margin: 0; font-size: clamp(24px, 4vw, 34px); }
+    .subtitle { margin: 6px 0 0; color: var(--muted); }
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      background: #f8fafc;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .meter { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin: 20px 0; }
+    .meter span { display: block; height: 100%; width: 0%; background: var(--brand); transition: width .2s ease; }
+    .context { border-left: 4px solid #f59e0b; background: var(--note); padding: 12px 14px; margin: 0 0 16px; color: #7c2d12; }
+    .question { font-size: 1.22rem; font-weight: 700; margin-bottom: 16px; }
+    .answers button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .answers button:hover:not(:disabled) { background: #eef2ff; border-color: #93c5fd; }
+    .answers button.correct { background: var(--good); border-color: #10b981; }
+    .answers button.incorrect { background: var(--bad); border-color: #ef4444; }
+    .result, .explanation { margin-top: 16px; font-weight: 700; }
+    .explanation { color: #334155; font-weight: 400; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .btn {
+      display: inline-block;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn.secondary { background: #475569; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    .final-list { margin-top: 18px; padding-left: 20px; }
+    .final-list li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="quiz-container">
+      <div class="topbar">
+        <div>
+          <h1>Midden-Oosten oefentoets</h1>
+          <p class="subtitle">Gebaseerd op de reader Midden-Oosten en de oefentoets.</p>
+        </div>
+        <span class="pill" id="category">Start</span>
+      </div>
+      <div class="pill" id="score">Score: 0 / 0</div>
+      <div class="meter" aria-hidden="true"><span id="progress"></span></div>
+      <div class="context" id="context" hidden></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <div class="result" id="result"></div>
+      <div class="explanation" id="explanation"></div>
+      <div class="actions">
+        <button class="btn" id="nextBtn" disabled>Volgende vraag</button>
+        <button class="btn secondary" id="restartBtn">Opnieuw oefenen</button>
+        <a class="btn secondary" href="index.html">Terug naar Geschiedenis</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const quiz = [
+      {
+        category: "Ottomaanse Rijk",
+        question: "Welke verklaring past het best bij de bijnaam 'zieke man van Europa'?",
+        options: [
+          ["Politieke zwakte, economische achterstand en gebiedsverlies maakten het rijk kwetsbaar.", true],
+          ["Religieuze eenheid, economische groei en militaire vernieuwing maakten het rijk kwetsbaar.", false],
+          ["Arabische onafhankelijkheid, Amerikaanse steun en snelle industrialisatie maakten het rijk kwetsbaar.", false],
+          ["Koloniale uitbreiding, parlementaire macht en nieuwe olie-inkomsten maakten het rijk kwetsbaar.", false]
+        ],
+        explanation: "De reader noemt onder meer technologische achterstand, Russische druk, economisch verval, zwakke sultans en nationalisme."
+      },
+      {
+        category: "Ottomaanse Rijk",
+        question: "Welke ontwikkeling hoort bij de groeiende druk op het Ottomaanse Rijk in de 18e en 19e eeuw?",
+        options: [
+          ["Rusland drong op richting Zwarte Zee, Kaukasus en zeestraten.", true],
+          ["Rusland trok zich terug uit de Zwarte Zee, Kaukasus en zeestraten.", false],
+          ["Frankrijk gaf Noord-Afrika terug aan de sultan in Istanbul.", false],
+          ["Groot-Brittannie schafte het Suezkanaal af als handelsroute.", false]
+        ],
+        explanation: "Russische expansie richting de noordrand van het rijk was een belangrijke oorzaak van machtsverlies."
+      },
+      {
+        category: "Imperialisme",
+        question: "Waarom werd het Suezkanaal zo belangrijk voor Groot-Brittannie?",
+        options: [
+          ["Het verkortte de route naar India en versterkte Britse controle over handel.", true],
+          ["Het verbond Londen met Rusland en versterkte Britse controle over de Zwarte Zee.", false],
+          ["Het verving olie door steenkool en versterkte Britse controle over Anatolie.", false],
+          ["Het maakte Palestina zelfstandig en versterkte Britse controle over Jeruzalem.", false]
+        ],
+        explanation: "Het kanaal verkortte de route naar India sterk en kreeg daarom groot strategisch belang."
+      },
+      {
+        category: "Jong-Turken",
+        question: "Welke omschrijving past bij de Jong-Turken na 1908?",
+        options: [
+          ["Zij wilden modernisering, centralisering en turkificatie van minderheden.", true],
+          ["Zij wilden federalisering, Arabische autonomie en herstel van de sultan.", false],
+          ["Zij wilden neutraliteit, Europese voogdij en afschaffing van het leger.", false],
+          ["Zij wilden dekolonisatie, Palestijnse staatsvorming en opheffing van Istanbul.", false]
+        ],
+        explanation: "De Jong-Turken wilden het rijk versterken, maar hun nationalisme drukte niet-Turkse groepen hard terug."
+      },
+      {
+        category: "Genocide",
+        question: "Waarom wordt de vervolging van Armeniers in 1915 genocide genoemd?",
+        options: [
+          ["De overheid organiseerde deportaties en massamoord op een etnisch-religieuze groep.", true],
+          ["De overheid sloot tijdelijk grenzen voor een politieke oppositiegroep.", false],
+          ["De overheid voerde belastingdruk op voor een economische beroepsgroep.", false],
+          ["De overheid verplaatste soldaten binnen een gewone militaire campagne.", false]
+        ],
+        explanation: "Het ging om doelgerichte uitroeiing van een bevolkingsgroep, niet alleen om oorlogsschade."
+      },
+      {
+        category: "Nationalisme",
+        question: "Welk verband tussen nationalisme en zionisme is toetswaardig?",
+        options: [
+          ["Zionisme past bij het idee dat een volk recht heeft op een eigen staat.", true],
+          ["Zionisme past bij het idee dat religie elke nationale identiteit vervangt.", false],
+          ["Zionisme past bij het idee dat imperia sterker zijn dan volkssoevereiniteit.", false],
+          ["Zionisme past bij het idee dat kolonies zonder grenzen moeten blijven.", false]
+        ],
+        explanation: "Het zionisme wilde een Joods nationaal tehuis; dat sluit aan bij nationalistische staatsvorming."
+      },
+      {
+        category: "Britse beloften",
+        question: "Waarom waren Britse beloften tijdens en na de Eerste Wereldoorlog problematisch?",
+        options: [
+          ["Arabische onafhankelijkheid, zionistische steun en Frans-Britse verdeling botsten met elkaar.", true],
+          ["Arabische neutraliteit, Ottomaanse winst en Russische kolonisatie sloten precies op elkaar aan.", false],
+          ["Joodse migratie, Turkse eenheid en Franse terugtrekking losten alle claims op.", false],
+          ["Brits vertrek, Palestijnse erkenning en Koerdische staatsvorming werden tegelijk uitgevoerd.", false]
+        ],
+        explanation: "Denk aan McMahon-Hoessein, Sykes-Picot en Balfour: verschillende verwachtingen konden niet tegelijk worden waargemaakt."
+      },
+      {
+        category: "Balfour",
+        question: "Waarom leidde de Balfour-verklaring tot langdurige spanning?",
+        options: [
+          ["Zij steunde een Joods nationaal tehuis, terwijl Arabische rechten vaag bleven.", true],
+          ["Zij steunde Arabische staatsvorming, terwijl Joodse migratie volledig vrij bleef.", false],
+          ["Zij steunde Turks herstel, terwijl Britse belangen volledig verdwenen.", false],
+          ["Zij steunde Franse annexatie, terwijl Jeruzalem Ottomaans bleef.", false]
+        ],
+        explanation: "De verklaring koppelde steun aan zionisme aan een onduidelijke belofte over de niet-Joodse meerderheid."
+      },
+      {
+        category: "Mandaat Palestina",
+        question: "Wat was de kern van een Volkenbondmandaat zoals Palestina?",
+        options: [
+          ["Een Europese macht bestuurde tijdelijk namens de Volkenbond een voormalig Ottomaans gebied.", true],
+          ["Een Europese macht annexeerde definitief namens de NAVO een voormalig Russisch gebied.", false],
+          ["Een Arabische macht bestuurde tijdelijk namens Duitsland een voormalig Brits gebied.", false],
+          ["Een Joodse macht annexeerde definitief namens Frankrijk een voormalig Egyptisch gebied.", false]
+        ],
+        explanation: "Palestina werd na de Eerste Wereldoorlog een Brits mandaatgebied."
+      },
+      {
+        category: "Peel en Witboek",
+        question: "Waarom stelde de Peel-commissie in 1937 deling van Palestina voor?",
+        options: [
+          ["Zij zag twee nationale gemeenschappen met botsende claims op hetzelfde gebied.", true],
+          ["Zij zag twee religieuze groepen die al akkoord waren met een gezamenlijke staat.", false],
+          ["Zij zag twee Europese mogendheden die Palestina onderling wilden ruilen.", false],
+          ["Zij zag twee Ottomaanse provincies die naar Istanbul wilden terugkeren.", false]
+        ],
+        explanation: "De commissie zag dat Arabische en Joodse nationale idealen moeilijk te verenigen waren."
+      },
+      {
+        category: "Peel en Witboek",
+        question: "Waarom was het Witboek van 1939 voor veel Joden een grote tegenslag?",
+        options: [
+          ["Het beperkte immigratie op het moment dat Joden in Europa juist gevaar liepen.", true],
+          ["Het versnelde immigratie op het moment dat Arabieren volledige steun gaven.", false],
+          ["Het verbood zelfbestuur op het moment dat Britten Palestina wilden verlaten.", false],
+          ["Het herstelde Ottomaans bestuur op het moment dat Turkije Duitsland steunde.", false]
+        ],
+        explanation: "De Britten wilden Arabische steun behouden, maar beperkten daarmee een vluchtweg voor vervolgde Joden."
+      },
+      {
+        category: "Chronologie",
+        question: "Welke volgorde klopt van vroeg naar laat?",
+        options: [
+          ["Balfour-verklaring - Peel-commissie - Witboek - Holocaust - Al-Naqba - Suez-crisis", true],
+          ["Peel-commissie - Witboek - Balfour-verklaring - Al-Naqba - Holocaust - Suez-crisis", false],
+          ["Witboek - Balfour-verklaring - Holocaust - Peel-commissie - Suez-crisis - Al-Naqba", false],
+          ["Holocaust - Peel-commissie - Balfour-verklaring - Witboek - Al-Naqba - Suez-crisis", false]
+        ],
+        explanation: "1917, 1937, 1939, 1941-1945, 1948 en 1956."
+      },
+      {
+        category: "1948",
+        question: "Welke uitleg verbindt Holocaust, Israel en Palestijnse vluchtelingen het best?",
+        options: [
+          ["De Holocaust vergrootte steun voor Israel, maar de stichting ervan verdreef veel Palestijnen.", true],
+          ["De Holocaust verminderde steun voor Israel, maar de stichting ervan herstelde Ottomaans bestuur.", false],
+          ["De Holocaust vergrootte steun voor Egypte, maar de stichting ervan verdreef veel Turken.", false],
+          ["De Holocaust verminderde steun voor Palestina, maar de stichting ervan sloot het Suezkanaal.", false]
+        ],
+        explanation: "De toets vraagt om een oorzaak-gevolgketen met ook onbedoelde gevolgen."
+      },
+      {
+        category: "1948",
+        question: "Wat bedoelen Palestijnen met Al-Naqba?",
+        options: [
+          ["De ramp van vlucht, verdrijving en verlies rond de oorlog van 1948.", true],
+          ["De vrede van erkenning, terugkeer en herstel rond de oorlog van 1956.", false],
+          ["De wet van immigratie, deling en mandaat rond de oorlog van 1917.", false],
+          ["De top van normalisatie, handel en toerisme rond de akkoorden van 2020.", false]
+        ],
+        explanation: "Al-Naqba betekent de ramp en verwijst naar Palestijnse vlucht en verdrijving rond 1948."
+      },
+      {
+        category: "Suez",
+        question: "Waarom past de Suez-crisis bij verzet tegen Europees modern imperialisme?",
+        options: [
+          ["Nasser nationaliseerde het kanaal en doorbrak Britse en Franse controle.", true],
+          ["Nasser privatiseerde het kanaal en herstelde Britse en Franse controle.", false],
+          ["Nasser sloot het kanaal en herstelde Ottomaanse controle over Egypte.", false],
+          ["Nasser verkocht het kanaal en versterkte Volkenbondcontrole over Palestina.", false]
+        ],
+        explanation: "Nationalisatie was een anti-imperialistische daad tegen Britse en Franse belangen."
+      },
+      {
+        category: "Suez",
+        question: "Wat laat de Suez-crisis zien over Groot-Brittannie en Frankrijk?",
+        options: [
+          ["Hun koloniale macht nam af en zij moesten rekening houden met VS en Sovjet-Unie.", true],
+          ["Hun koloniale macht nam toe en zij konden zonder VS en Sovjet-Unie handelen.", false],
+          ["Hun mandaatmacht keerde terug en zij bestuurden Palestina opnieuw samen.", false],
+          ["Hun oorlogsmacht verdween niet en zij herstelden het Ottomaanse Rijk.", false]
+        ],
+        explanation: "De crisis liet zien dat oude Europese mogendheden niet meer zelfstandig de regio konden bepalen."
+      },
+      {
+        category: "Oorlogen",
+        question: "Welke gebieden veroverde Israel in 1967?",
+        options: [
+          ["Westoever, Gazastrook, Sinai, Golanhoogten en Oost-Jeruzalem.", true],
+          ["Libanon, Irak, Iran, West-Jeruzalem en het Suezkanaal.", false],
+          ["Anatolie, Mekka, Medina, Noord-Afrika en de Bosporus.", false],
+          ["Koeweit, Bahrein, VAE, Jordanie en de Dardanellen.", false]
+        ],
+        explanation: "Deze veroveringen bleven belangrijk voor nederzettingen, veiligheid, vluchtelingen en Jeruzalem."
+      },
+      {
+        category: "Oorlogen",
+        question: "Welke kern hoort bij Camp David?",
+        options: [
+          ["Egypte erkende Israel en Israel gaf de Sinai terug aan Egypte.", true],
+          ["Syrië erkende Israel en Israel gaf de Golan terug aan Syrië.", false],
+          ["Jordanie erkende Hamas en Hamas gaf Gaza terug aan Jordanie.", false],
+          ["Turkije erkende de PLO en de PLO gaf Jeruzalem terug aan Turkije.", false]
+        ],
+        explanation: "Camp David leidde tot vrede tussen Egypte en Israel."
+      },
+      {
+        category: "Palestijnse organisaties",
+        question: "Welke ontwikkeling past bij de PLO onder Arafat?",
+        options: [
+          ["Van gewapende strijd richting politieke erkenning en onderhandelingen.", true],
+          ["Van Britse commissie richting mandaatbestuur en koloniale verdeling.", false],
+          ["Van zionistische bond richting nederzettingen en religieuze annexatie.", false],
+          ["Van Turkse partij richting centralisering en gedwongen turkificatie.", false]
+        ],
+        explanation: "De PLO schoof geleidelijk richting politieke vertegenwoordiging en erkenning onder voorwaarden."
+      },
+      {
+        category: "Oslo",
+        question: "Wat was de kern van de Oslo-akkoorden?",
+        options: [
+          ["Wederzijdse erkenning en Palestijns zelfbestuur in delen van Gaza en Westoever.", true],
+          ["Wederzijdse annexatie en Brits zelfbestuur in delen van Sinai en Golan.", false],
+          ["Wederzijdse afwijzing en Frans bestuur in delen van Irak en Syrie.", false],
+          ["Wederzijdse neutraliteit en Ottomaans bestuur in delen van Libanon en Egypte.", false]
+        ],
+        explanation: "Oslo gaf hoop op vrede, maar loste grenzen, Jeruzalem, vluchtelingen en nederzettingen niet definitief op."
+      },
+      {
+        category: "Oslo",
+        question: "Welke combinatie verklaart het vastlopen van Oslo het best?",
+        options: [
+          ["Nederzettingen, Jeruzalem, terugkeerrecht, aanslagen en groeiend wantrouwen.", true],
+          ["Ontwapening, consensus, open grenzen, terugkeerrecht en dalend wantrouwen.", false],
+          ["Ottomaans herstel, Britse steun, oliehandel, drukpers en Arabisch alfabet.", false],
+          ["Peel-verdeling, Witboek, Volkenbond, Sykes-Picot en Franse bezetting.", false]
+        ],
+        explanation: "Een goed antwoord noemt meerdere structurele obstakels en directe escalaties."
+      },
+      {
+        category: "Recente geschiedenis",
+        question: "Waarom was Sharons bezoek in 2000 destabiliserend?",
+        options: [
+          ["Het bezoek aan een heilige plek werd als provocatie gezien en voedde de intifada.", true],
+          ["Het bezoek aan een Britse haven werd als verdrag gezien en beeindigde de intifada.", false],
+          ["Het bezoek aan een Turkse moskee werd als herstel gezien en stopte nederzettingen.", false],
+          ["Het bezoek aan een Franse basis werd als mandaat gezien en erkende de PLO.", false]
+        ],
+        explanation: "De symboliek van de Tempelberg/Haram al-Sharif maakte het bezoek politiek zeer geladen."
+      },
+      {
+        category: "Recente geschiedenis",
+        question: "Waarom kunnen de Abraham-akkoorden als keerpunt worden gezien?",
+        options: [
+          ["Enkele Arabische landen normaliseerden relaties met Israel zonder eerst Palestijnse staat.", true],
+          ["Enkele Arabische landen verbraken relaties met Israel na volledige Palestijnse staat.", false],
+          ["Enkele Europese landen herstelden mandaten na volledige Joodse staat.", false],
+          ["Enkele Turkse leiders herstelden relaties na volledige Ottomaanse staat.", false]
+        ],
+        explanation: "Normalisatie met de VAE en Bahrein veranderde regionale verhoudingen."
+      },
+      {
+        category: "Recente geschiedenis",
+        question: "Welke aanleiding noemt de reader voor de Gaza-oorlog vanaf oktober 2023?",
+        options: [
+          ["De Hamas-aanval van 7 oktober en de daaropvolgende Israelische militaire reactie.", true],
+          ["De Suez-nationalisatie van 1956 en de daaropvolgende Britse militaire reactie.", false],
+          ["Het Witboek van 1939 en de daaropvolgende Franse militaire reactie.", false],
+          ["De Peel-verdeling van 1937 en de daaropvolgende Ottomaanse militaire reactie.", false]
+        ],
+        explanation: "De reader noemt 7 oktober, gijzelaars, dodelijk geweld en daarna de oorlog in Gaza."
+      },
+      {
+        category: "Toetsvaardigheid",
+        context: "Een toetsvraag begint met: 'Leg uit dat ...'",
+        question: "Welke antwoordvorm levert meestal de meeste punten op?",
+        options: [
+          ["Een oorzaak-gevolgketen met begrippen, jaartallen en een duidelijke conclusie.", true],
+          ["Een opsomming van losse feiten zonder verband en zonder conclusie.", false],
+          ["Een persoonlijke mening met weinig begrippen en zonder jaartallen.", false],
+          ["Een bronbeschrijving zonder context en zonder historisch verband.", false]
+        ],
+        explanation: "Bij 'leg uit' moet je zichtbaar redeneren: doordat..., daardoor..., dus..."
+      }
+    ];
+
+    let order = [];
+    let optionOrder = [];
+    let current = 0;
+    let score = 0;
+    let answered = false;
+    let missed = [];
+
+    const categoryEl = document.getElementById("category");
+    const scoreEl = document.getElementById("score");
+    const progressEl = document.getElementById("progress");
+    const contextEl = document.getElementById("context");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const resultEl = document.getElementById("result");
+    const explanationEl = document.getElementById("explanation");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function start() {
+      order = shuffle(quiz.map((_, index) => index));
+      current = 0;
+      score = 0;
+      missed = [];
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      answered = false;
+      nextBtn.disabled = true;
+      resultEl.textContent = "";
+      explanationEl.textContent = "";
+      answersEl.innerHTML = "";
+
+      const q = quiz[order[current]];
+      optionOrder = shuffle(q.options.map((_, index) => index));
+      categoryEl.textContent = q.category;
+      questionEl.textContent = `${current + 1}. ${q.question}`;
+      scoreEl.textContent = `Score: ${score} / ${current}`;
+      progressEl.style.width = `${(current / quiz.length) * 100}%`;
+
+      if (q.context) {
+        contextEl.hidden = false;
+        contextEl.textContent = q.context;
+      } else {
+        contextEl.hidden = true;
+        contextEl.textContent = "";
+      }
+
+      optionOrder.forEach((optionIndex) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = q.options[optionIndex][0];
+        btn.onclick = () => selectAnswer(optionIndex);
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(optionIndex) {
+      if (answered) return;
+      answered = true;
+
+      const q = quiz[order[current]];
+      const buttons = answersEl.querySelectorAll("button");
+      const correctOptionIndex = q.options.findIndex(option => option[1]);
+
+      buttons.forEach((btn, renderedIndex) => {
+        const originalIndex = optionOrder[renderedIndex];
+        btn.disabled = true;
+        if (originalIndex === correctOptionIndex) btn.classList.add("correct");
+        if (originalIndex === optionIndex && originalIndex !== correctOptionIndex) btn.classList.add("incorrect");
+      });
+
+      if (q.options[optionIndex][1]) {
+        score++;
+        resultEl.textContent = "Goed.";
+      } else {
+        missed.push(q);
+        resultEl.textContent = "Nog niet goed.";
+      }
+
+      explanationEl.textContent = q.explanation;
+      scoreEl.textContent = `Score: ${score} / ${current + 1}`;
+      nextBtn.disabled = false;
+    }
+
+    function finish() {
+      const percentage = Math.round((score / quiz.length) * 100);
+      categoryEl.textContent = "Klaar";
+      progressEl.style.width = "100%";
+      contextEl.hidden = true;
+      questionEl.textContent = "Quiz afgerond.";
+      answersEl.innerHTML = "";
+      resultEl.textContent = `Eindscore: ${score} / ${quiz.length} (${percentage}%).`;
+
+      if (missed.length === 0) {
+        explanationEl.textContent = "Sterk. Je beheerst de kernverbanden.";
+      } else {
+        explanationEl.innerHTML = "Herhaal vooral deze onderdelen:";
+        const list = document.createElement("ul");
+        list.className = "final-list";
+        missed.slice(0, 8).forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.category}: ${item.question}`;
+          list.appendChild(li);
+        });
+        explanationEl.appendChild(list);
+      }
+
+      nextBtn.disabled = true;
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < quiz.length) loadQuestion();
+      else finish();
+    };
+    restartBtn.onclick = start;
+    start();
+  </script>
+</body>
+</html>
