@@ -22,7 +22,7 @@
   <div class="top"><a class="back" href="../index.html">← Quizoverzicht</a><span class="count" id="wordCount">Woorden laden…</span></div>
   <section class="panel" id="start">
     <h1>Engels → Nederlands</h1>
-    <p class="lead">Oefen 1000 Engelse woorden op VWO 5-niveau. Typ zelf de Nederlandse vertaling.</p>
+    <p class="lead">Oefen 1000 Engelse woorden op VWO 5-niveau. Typ zelf de Nederlandse vertaling. Werkwoorden herken je aan <strong>to</strong> en zelfstandige naamwoorden aan <strong>the</strong>.</p>
     <h2>Kies een ronde</h2>
     <div class="options">
       <button class="size" data-size="10">10 woorden · kort</button>
@@ -68,6 +68,134 @@
 
   const normalise = (value) => value.toLocaleLowerCase('nl-NL').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/[.,!?()]/g, '').replace(/\s+/g, ' ').trim();
+
+  const irregularDutchVerbs = {
+    zijn: ['ben', 'bent', 'is', 'was', 'waren', 'geweest'],
+    hebben: ['heb', 'hebt', 'heeft', 'had', 'hadden', 'gehad'],
+    worden: ['word', 'wordt', 'werd', 'werden', 'geworden'],
+    gaan: ['ga', 'gaat', 'ging', 'gingen', 'gegaan'],
+    komen: ['kom', 'komt', 'kwam', 'kwamen', 'gekomen'],
+    doen: ['doe', 'doet', 'deed', 'deden', 'gedaan'],
+    zien: ['zie', 'ziet', 'zag', 'zagen', 'gezien'],
+    geven: ['geef', 'geeft', 'gaf', 'gaven', 'gegeven'],
+    nemen: ['neem', 'neemt', 'nam', 'namen', 'genomen'],
+    krijgen: ['krijg', 'krijgt', 'kreeg', 'kregen', 'gekregen'],
+    blijven: ['blijf', 'blijft', 'bleef', 'bleven', 'gebleven'],
+    brengen: ['breng', 'brengt', 'bracht', 'brachten', 'gebracht'],
+    denken: ['denk', 'denkt', 'dacht', 'dachten', 'gedacht'],
+    weten: ['weet', 'wist', 'wisten', 'geweten'],
+    kunnen: ['kan', 'kunt', 'kon', 'konden', 'gekund'],
+    moeten: ['moet', 'moest', 'moesten', 'gemoeten'],
+    mogen: ['mag', 'mocht', 'mochten', 'gemogen'],
+    willen: ['wil', 'wilt', 'wilde', 'wilden', 'gewild'],
+    zullen: ['zal', 'zult', 'zou', 'zouden'],
+    staan: ['sta', 'staat', 'stond', 'stonden', 'gestaan'],
+    zitten: ['zit', 'zat', 'zaten', 'gezeten'],
+    liggen: ['lig', 'ligt', 'lag', 'lagen', 'gelegen'],
+    houden: ['houd', 'houdt', 'hield', 'hielden', 'gehouden'],
+    vinden: ['vind', 'vindt', 'vond', 'vonden', 'gevonden'],
+    zeggen: ['zeg', 'zegt', 'zei', 'zeiden', 'gezegd'],
+    spreken: ['spreek', 'spreekt', 'sprak', 'spraken', 'gesproken'],
+    schrijven: ['schrijf', 'schrijft', 'schreef', 'schreven', 'geschreven'],
+    lezen: ['lees', 'leest', 'las', 'lazen', 'gelezen'],
+    eten: ['eet', 'at', 'aten', 'gegeten'],
+    drinken: ['drink', 'drinkt', 'dronk', 'dronken', 'gedronken'],
+    lopen: ['loop', 'loopt', 'liep', 'liepen', 'gelopen'],
+    rijden: ['rijd', 'rijdt', 'reed', 'reden', 'gereden'],
+    vallen: ['val', 'valt', 'viel', 'vielen', 'gevallen'],
+    dragen: ['draag', 'draagt', 'droeg', 'droegen', 'gedragen'],
+    kiezen: ['kies', 'kiest', 'koos', 'kozen', 'gekozen'],
+    verliezen: ['verlies', 'verliest', 'verloor', 'verloren'],
+    winnen: ['win', 'wint', 'won', 'wonnen', 'gewonnen'],
+    beginnen: ['begin', 'begint', 'begon', 'begonnen'],
+    breken: ['breek', 'breekt', 'brak', 'braken', 'gebroken'],
+    trekken: ['trek', 'trekt', 'trok', 'trokken', 'getrokken'],
+    laten: ['laat', 'liet', 'lieten', 'gelaten'],
+    slapen: ['slaap', 'slaapt', 'sliep', 'sliepen', 'geslapen'],
+    vragen: ['vraag', 'vraagt', 'vroeg', 'vroegen', 'gevraagd'],
+    vangen: ['vang', 'vangt', 'ving', 'vingen', 'gevangen'],
+    hangen: ['hang', 'hangt', 'hing', 'hingen', 'gehangen'],
+    helpen: ['help', 'helpt', 'hielp', 'hielpen', 'geholpen'],
+    grijpen: ['grijp', 'grijpt', 'greep', 'grepen', 'gegrepen'],
+    sluiten: ['sluit', 'sluit', 'sloot', 'sloten', 'gesloten'],
+    schieten: ['schiet', 'schoot', 'schoten', 'geschoten'],
+    bieden: ['bied', 'biedt', 'bood', 'boden', 'geboden'],
+    blijken: ['blijk', 'blijkt', 'bleek', 'bleken', 'gebleken'],
+    kijken: ['kijk', 'kijkt', 'keek', 'keken', 'gekeken'],
+    lijken: ['lijk', 'lijkt', 'leek', 'leken', 'geleken'],
+    stijgen: ['stijg', 'stijgt', 'steeg', 'stegen', 'gestegen']
+  };
+
+  const nonSeparablePrefixes = ['be', 'her', 'ont', 'ver'];
+  const separablePrefixes = ['achter', 'af', 'aan', 'bij', 'binnen', 'door', 'in', 'mee', 'na', 'om', 'op', 'over', 'terug', 'toe', 'uit', 'vast', 'voor', 'voort', 'weg'];
+
+  function irregularDutchVerbForms(infinitive) {
+    if (irregularDutchVerbs[infinitive]) return irregularDutchVerbs[infinitive];
+    const base = Object.keys(irregularDutchVerbs)
+      .filter((candidate) => infinitive.endsWith(candidate) && infinitive !== candidate)
+      .sort((a, b) => b.length - a.length)[0];
+    if (!base) return [];
+    const prefix = infinitive.slice(0, -base.length);
+    if (nonSeparablePrefixes.includes(prefix)) {
+      return irregularDutchVerbs[base].map((form) =>
+        prefix + (form.startsWith('ge') ? form.slice(2) : form)
+      );
+    }
+    if (separablePrefixes.includes(prefix)) {
+      const forms = [];
+      for (const form of irregularDutchVerbs[base]) {
+        if (form.startsWith('ge')) forms.push(prefix + form);
+        else { forms.push(prefix + form); forms.push(form + ' ' + prefix); }
+      }
+      return forms;
+    }
+    return [];
+  }
+
+  function regularDutchVerbForms(infinitive) {
+    if (!/^[a-z]+en$/.test(infinitive) || infinitive.length < 5) return [];
+    let rawStem = infinitive.slice(0, -2);
+    rawStem = rawStem.replace(/([bcdfghjklmnpqrstvwxyz])\1$/, '$1');
+    const stemCandidates = new Set([rawStem]);
+    if (/[^aeiou][aeiou][bcdfghjklmnpqrstvwxyz]$/.test(rawStem)) {
+      stemCandidates.add(rawStem.slice(0, -2) + rawStem.at(-2) + rawStem.slice(-2));
+    }
+    const forms = new Set();
+    for (let stem of stemCandidates) {
+      const underlyingFinal = stem.at(-1);
+      stem = stem.replace(/v$/, 'f').replace(/z$/, 's');
+      const softPast = /[tkschfp]/.test(underlyingFinal);
+      const past = stem + (softPast ? 'te' : 'de');
+      const nonSeparable = nonSeparablePrefixes.some((prefix) => infinitive.startsWith(prefix));
+      const separable = separablePrefixes.find((prefix) => infinitive.startsWith(prefix) && infinitive.length > prefix.length + 3);
+      let participle;
+      if (nonSeparable) participle = stem + (softPast ? 't' : 'd');
+      else if (separable) participle = separable + 'ge' + stem.slice(separable.length) + (softPast ? 't' : 'd');
+      else participle = 'ge' + stem + (softPast ? 't' : 'd');
+      forms.add(stem); forms.add(stem + 't'); forms.add(past); forms.add(past + 'n');
+      forms.add(participle);
+    }
+    return [...forms];
+  }
+
+  function acceptedAnswerForms(answer) {
+    const clean = normalise(answer);
+    const forms = new Set([clean]);
+    forms.add(clean.replace(/^(de|het|een)\s+/, ''));
+    const words = clean.split(' ');
+    const infinitive = words.at(-1);
+    const addVerbForm = (form) => forms.add([...words.slice(0, -1), form].join(' '));
+    regularDutchVerbForms(infinitive).forEach(addVerbForm);
+    irregularDutchVerbForms(infinitive).forEach(addVerbForm);
+    return forms;
+  }
+
+  const isAcceptedAnswer = (given, answers) => {
+    const givenForms = new Set([given, given.replace(/^(de|het|een)\s+/, '')]);
+    return answers.some((answer) =>
+      [...givenForms].some((form) => acceptedAnswerForms(answer).has(form))
+    );
+  };
 
   function parseWords(csv) {
     const lines = csv.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() && !line.trim().startsWith('#'));
@@ -125,7 +253,7 @@
     event.preventDefault(); if (answered) return;
     answered = true;
     const item = round[index], given = normalise(el('answer').value);
-    const correct = item.answers.some((answer) => normalise(answer) === given);
+    const correct = isAcceptedAnswer(given, item.answers);
     if (correct) { score++; el('feedback').textContent = 'Goed!'; el('feedback').className = 'feedback ok'; }
     else { wrong.push(item); el('feedback').innerHTML = `Nog niet. Goed antwoord: <strong>${item.answers.join(' / ')}</strong>`; el('feedback').className = 'feedback bad'; }
     el('answer').disabled = true; el('answerForm').querySelector('button').classList.add('hidden');
